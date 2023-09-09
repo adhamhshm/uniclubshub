@@ -1,0 +1,105 @@
+@import "../../globals.scss";
+
+.register {
+    height: 100vh;
+    background-color: rgb(193, 190, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+        width: 60%;
+        display: flex;
+        flex-direction: row-reverse;
+        background-color: white;
+        border-radius: 10px;
+        min-height: 600px;
+        overflow: hidden;
+
+        .right {
+            flex: 1;
+            background: linear-gradient(rgba(21, 2, 55, 0.852), rgba(103, 67, 145, 0.699)), url(https://images.pexels.com/photos/1036804/pexels-photo-1036804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1) center;
+            background-size: cover;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            color: white;
+            justify-content: space-between;
+
+            h1 {
+                font-size: 100px;
+                line-height: 100px;
+
+                @include tablet {
+                    font-size: 50px;
+                    line-height: 50px;
+                    margin-bottom: 200px;
+                }
+            }
+
+            span {
+                font-size: 14px;
+            }
+
+            @include mobile {
+                display: none;
+            }
+
+            @include tablet {
+                display: none;
+            }
+        }
+
+        .left {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: max-content;
+
+            h1 {
+                color: #555555;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                input {
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 15px 10px;
+                    outline: none;
+                }
+                
+                .button-div {
+                    margin-top: 10px;
+
+                    button {
+                        width: 100%;
+                        padding: 10px 20px;
+                        border: none;
+                        background-color: #938EEF;
+                        color: white;
+                        font-weight: bold;
+                        cursor: pointer;
+                        border-radius: 20px;
+                    }
+                }
+            }
+        }
+
+        @include mobile {
+            width: 80%;
+            min-height: 200px;
+        }
+
+        @include tablet {
+            width: 80%;
+            min-height: 600px;
+        }
+    }
+}

@@ -1,0 +1,110 @@
+@import "../../globals.scss";
+
+.rightbar {
+    @include themify($theme) {
+        flex: 3;
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        overflow: scroll;
+        background-color: themed("bgSoft");
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container {
+            padding: 20px;
+
+            .item {
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+                -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+                -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+                background-color: themed("bg");
+                border-radius: 10px;
+
+                span{
+                    color: themed("textColor");
+                }
+
+                .user {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin: 20px;
+
+                    .userInfo {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        position: relative;
+
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+
+                        .online {
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            background-color: limegreen;
+                            position: absolute;
+                            top: 0;
+                            left: 30px;
+                        }
+
+                        span {
+                            font-weight: 500;
+                            color: themed("textColor");
+                        }
+
+                        p {
+                            color: grey;
+                        }
+                    }
+
+                    .buttons{
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+
+                        button {
+                            border: none;
+                            padding: 5px;
+                            color: white;
+                            cursor: pointer;
+                            font-weight: bold;
+                            border-radius: 20px;
+                            padding: 10px 20px;
+
+                            &:first-child {
+                                background-color: #938EEF;
+                            }
+
+                            &:last-child {
+                                background-color: red;
+                            }
+                        }
+
+                        .icon {
+                            color: themed("textColor");
+                        }
+                    }
+                }
+            }
+        }
+
+        @include mobile {
+            display: none;
+        }
+
+        @include tablet {
+            display: none;
+        }
+    }
+}

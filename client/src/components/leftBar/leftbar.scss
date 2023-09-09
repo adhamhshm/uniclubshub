@@ -1,0 +1,85 @@
+@import "../../globals.scss";
+
+.leftbar {
+    @include themify($theme) {
+        flex: 2;
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        overflow: scroll;
+        background-color: themed("bg");
+        color: themed("textColor");
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container {
+            padding: 20px;
+
+            .menu {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                justify-content: space-between;
+
+                .bottom {
+                    display: flex;
+                    align-items: left;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 10px;
+                    cursor: pointer;
+
+                    img{
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+                    span {
+                        font-size: 20px;
+                    }
+
+                }
+
+                .bottom:hover {
+                    background-color: gainsboro;
+                }
+
+                .upper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: left;
+                    gap: 10px;
+                    height: 80vh;
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                    }
+
+                    span {
+                        font-size: 20px;
+                    }
+
+                    div {
+                        padding: 10px;
+                        border-radius: 10px;
+                        cursor: pointer;
+                    }
+
+                    div:hover {
+                        background-color:gainsboro;
+                    }
+                }
+                
+            }
+        }
+
+        @include mobile {
+            display: none;
+        }
+    }
+}

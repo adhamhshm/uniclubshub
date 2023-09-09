@@ -1,0 +1,110 @@
+@import "../../globals.scss";
+
+.writePost {
+
+    @include themify($theme) {
+        box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+        -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+        -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+        border-radius: 20px;
+        background-color: themed("bg");
+        color: themed("textColor");
+        margin-bottom: 20px;
+
+        .container {
+            padding: 20px;
+
+            .top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+        
+                .left {
+                    display: flex;
+                    // align-items: center;
+                    flex: 7;
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        margin-right: 10px;
+                        margin-top: 10px;
+                    }
+            
+                    textarea {
+                        border: none;
+                        outline: none;
+                        resize: none;
+                        padding: 20px 10px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        background-color: transparent;
+                        width: 85%;
+                        height: 60px;
+                        color: themed("textColor");
+                    }
+                }
+                    
+                .right {
+                    flex: 1;
+                    display: flex;
+                    justify-content: flex-end;
+
+                    .imageFile {
+                        width: 100px;
+                        height: 100px;
+                        object-fit: cover;
+                        border-radius: 20px;
+                    }
+                }
+            }
+      
+            hr {
+                margin: 20px 0px;
+                border: none;
+                height: 0.5px;
+                background-color: themed("border");
+            }
+      
+            .bottom {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .left {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+            
+                    .item {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        cursor: pointer;
+            
+                        img {
+                            height: 20px;
+                        }
+            
+                        span {
+                            font-size: 12px;
+                            color: gray;
+                        }
+                    }
+                }
+
+                .right {
+                    button {
+                        border: none;
+                        padding: 10px 20px;
+                        color: white;
+                        cursor: pointer;
+                        background-color: #938EEF;
+                        font-weight: bold;
+                        border-radius: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

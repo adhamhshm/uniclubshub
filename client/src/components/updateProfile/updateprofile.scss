@@ -1,0 +1,119 @@
+@import "../../globals.scss";
+
+.updateProfile {
+        @include themify($theme) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    
+        .wrapper {
+            margin: auto;
+            width: 30%;
+            height: 60%;
+            background-color: themed("bg");
+            padding: 50px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+            position: relative;
+            border-radius: 20px;
+            
+            @include mobile {
+                width: 70%;
+                height: 50%;
+            }
+    
+            h1 {
+                color: themed("textColor");
+            
+                @include mobile {
+                font-size: 20px;
+                }
+            }
+    
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+    
+                .files {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 50px;
+                }
+
+                label {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    color: gray;
+                    font-size: 14px;
+        
+                    .imageContainer {
+                        position: relative;
+                        
+                        img {
+                            width: 100px;
+                            height: 100px;
+                            object-fit: cover;
+                            cursor: pointer;
+                            border-radius: 10px;
+                        }
+            
+                        .icon {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                            font-size: 30px;
+                            color: lightgray;
+                            cursor: pointer;
+                        }
+                    }
+                }
+    
+                input {
+                    padding: 10px;
+                    border: none;
+                    margin-top: -20px;
+                    border-bottom: 1px solid themed("border");
+                    color: gray;
+                    outline: none;
+                    background-color: transparent;
+                }
+        
+                button {
+                    border: none;
+                    padding: 10px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    color: white;
+                    background-color: #938EEF;
+                }
+            }
+    
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+                color: themed("textColor");
+            }
+        }
+    }
+}

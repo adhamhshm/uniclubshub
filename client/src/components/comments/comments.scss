@@ -1,0 +1,73 @@
+@import "../../globals.scss";
+
+.comments {
+    @include themify($theme) {
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .write {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 20px 0px;
+
+            textarea {
+                resize: none;
+                flex: 5;
+                padding: 10px;
+                border: 1px solid themed("border");
+                border-radius: 10px;
+                background-color: transparent;
+                color: themed("textColor");
+                outline: none;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            button {
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                cursor: pointer;
+                background-color: #938EEF;
+                font-weight: bold;
+                border-radius: 20px;
+            }
+        }
+
+        .comment {
+            margin: 20px 0px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+            .info {
+                flex: 5;
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                align-items: flex-start;
+
+                span {
+                    font-weight: 500;
+                }
+
+                p {
+                    color: themed("textColorSoft");
+                    margin: 0;
+                }
+            }
+
+            .date {
+                flex: 1;
+                align-self: center;
+                color: grey;
+                font-size: 12px;
+            }
+        }
+    }
+}

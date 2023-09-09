@@ -1,0 +1,86 @@
+@import "../../../globals.scss";
+
+.post {
+    @include themify($theme) {
+    box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+    -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+    -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+    border-radius: 20px;
+    background-color: themed("bg");
+    color: themed("textColor");
+
+        .container {
+            padding: 20px;
+
+            .user {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+
+                .userInfo {
+                    display: flex;
+                    gap: 20px;
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+                    .details {
+                        display: flex;
+                        flex-direction: column;
+
+                        .username {
+                            font-weight: 500;
+                        }
+
+                        .date {
+                            font-size: 12px;
+                        }
+                    }
+                }
+
+                button {
+                    position: absolute;
+                    top: 35px;
+                    right: 0;
+                    border: none;
+                    background-color: #f0544f;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    color: white;
+                    font-weight: bold;
+                    border-radius: 5px;
+                }
+            }
+
+            .content {
+                margin: 20px 0px;
+
+                img {
+                    width: 100%;
+                    max-height: 400px;
+                    object-fit: cover;
+                    margin-top: 20px;
+                }
+            }
+
+            .info {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+
+                .item {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

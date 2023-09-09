@@ -1,0 +1,70 @@
+@import "../../globals.scss";
+
+.stories {
+    display: flex;
+    gap: 10px;
+    height: 250px;
+    margin-bottom: 30px;
+
+    .story {
+        // flex: 1;
+        overflow: hidden;
+        position: relative;
+
+        img {
+            width: 150px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        span {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-weight: 500;
+
+            @include mobile {
+                display: none;
+            }
+        }
+
+        button {
+            position: absolute;
+            bottom: 40px;
+            left: 10px;
+            color: white;
+            background-color: #5271ff;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+
+        }
+
+        @include mobile {
+            flex: none;
+            width: 70px;
+            height: 110px;
+        }
+
+        @include tablet {
+            height: 110px;
+            width: 70px;
+            flex: none;
+        }
+    }
+
+    @include mobile {
+        height: 100px;
+    }
+
+    @include tablet {
+        height: 100px;
+    }
+}
