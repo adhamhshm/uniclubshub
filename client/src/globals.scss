@@ -1,3 +1,7 @@
+// custom color to override theme
+$customTextColor: #FF0000; // Replace with your desired color
+$customActiveTextColor: #00FF00; // Replace with your desired color
+
 html, body {
     padding: 0;
     margin: 0;
@@ -7,20 +11,22 @@ html, body {
 
 $theme: (
     light: (
-        textColor: #000,
+        textColor: #000000,
+        activeTextColor: #938EEF,
         bg: white,
         logo: darkblue,
         bgSoft: #f6f3f3,
-        textColorSoft: #555,
+        textColorSoft: #555555,
         border: lightgray,
     ),
     dark: (
         textColor: whitesmoke,
-        bg: #222,
+        activeTextColor: #938EEF,
+        bg: #222222,
         logo: white,
-        bgSoft: #333,
+        bgSoft: #333333,
         textColorSoft: lightgray,
-        border: #444,
+        border: #444444,
     )
 );
 

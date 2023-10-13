@@ -5,11 +5,12 @@ const RightBar = () => {
     return (
         <div className="rightbar">
             <div className="container">
+                {/* First item div that contains suggestion of clubs */}
                 <div className="item">
-                    <span>Suggestion Users</span>
+                    <span>Suggestion Clubs and Societies</span>
                     <div className="user">
                         <div className="userInfo">
-                            <span>User</span>
+                            <span>Club 1</span>
                         </div>
                         <div className="buttons">
                             <button>Follow</button>
@@ -18,7 +19,7 @@ const RightBar = () => {
                     </div>
                 </div>
                 {/* Second item div */}
-                <div className="item">
+                {/* <div className="item">
                     <span>Activities</span>
                     <div className="user">
                         <div className="userInfo">
@@ -26,9 +27,9 @@ const RightBar = () => {
                         </div>
                         <span>1 min ago</span>
                     </div>
-                </div>
+                </div> */}
                 {/* Third item div */}
-                <div className="item">
+                {/* <div className="item">
                     <span>Online Friends</span>
                     <div className="user">
                         <div className="userInfo">
@@ -44,7 +45,7 @@ const RightBar = () => {
                             <span>User</span>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     )

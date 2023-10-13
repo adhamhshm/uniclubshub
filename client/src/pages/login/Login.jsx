@@ -29,15 +29,28 @@ const Login = () => {
     }
 
     const handleChange = (e) => {
-        setSigninInputs((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }))
+        // Transform the input to uppercase as the user types
+        const { name, value } = e.target;
+        if (name === "username") {
+            setSigninInputs((prev) => ({
+                ...prev,
+                [name]: value.toUpperCase(),
+            }));
+        } else {
+            setSigninInputs((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
     };
 
     const handleSignin = async (e) => {
         e.preventDefault();
         if (validateForm()) return;
+
+        // Convert the entire username to uppercase
+        signinInputs.username = signinInputs.username.toUpperCase();
+
         try {
             await login(signinInputs);
             navigate("/");
@@ -62,7 +75,7 @@ const Login = () => {
                 <div className="right">
                     <h1>Login</h1>
                     <form>
-                        <input type="text" placeholder="Username" name="username" onChange={handleChange} />
+                        <input type="text" placeholder="Student/Club Id" name="username" onChange={handleChange} value={signinInputs.username} />
                         <input type="password" placeholder="Password" name="password" onChange={handleChange} />
                         <div className="button-div">
                             <button onClick={handleSignin}>Sign In</button>

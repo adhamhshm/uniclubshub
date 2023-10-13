@@ -61,11 +61,11 @@ const Profile = () => {
             </div>
             <div className="profileContainer">
                 <div className="userInfo">
-                    <div className="left">
-                        <span>Test</span>
-                    </div>
                     <div className="center">
                         <span>{data?.name}</span>
+                        <div className="bio">
+                            <span>Test</span>
+                        </div>
                         <div className="info">
                             <div className="item">
                                 {userId === currentUser.id 
@@ -75,9 +75,9 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="right">
+                    {/* <div className="right">
                         <MoreIcon />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="profilePosts">

@@ -52,9 +52,10 @@ export const signup = (req, res) => {
             req.body.email, 
             hashedPassword, 
             req.body.name,
+            req.body.role,
         ]
         // insert the user to the database
-        const q = "INSERT INTO users (`username`, `email`, `password`, `name`) VALUE (?)";
+        const q = "INSERT INTO users (`username`, `email`, `password`, `name`, `role`) VALUE (?)";
         db.query(q, [values], (err, data) => {
             if (err) {
                 return console.log("Error creating user: " + res.status(500).json(err));

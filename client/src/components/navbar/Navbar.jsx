@@ -30,10 +30,10 @@ const Navbar = () => {
                 ) : (
                     <MoonIcon style={{ cursor: "pointer" }} onClick={toggle} />
                 )}
-                <div className="search">
+                {/* <div className="search">
                     <SearchIcon />
                     <input type="text" placeholder="Search here..." />
-                </div>
+                </div> */}
             </div>
             <div className="right">
                 {/* <NotificationIcon style={{ cursor: "pointer" }} /> */}

@@ -9,7 +9,8 @@
         overflow: scroll;
         background-color: themed("bg");
         color: themed("textColor");
-
+        // color: $customTextColor; // Use your custom color variable here
+        
         &::-webkit-scrollbar {
             display: none;
         }
@@ -23,36 +24,11 @@
                 gap: 10px;
                 justify-content: space-between;
 
-                .bottom {
-                    display: flex;
-                    align-items: left;
-                    gap: 10px;
-                    padding: 10px;
-                    border-radius: 10px;
-                    cursor: pointer;
-
-                    img{
-                        width: 30px;
-                        height: 30px;
-                        border-radius: 50%;
-                        object-fit: cover;
-                    }
-
-                    span {
-                        font-size: 20px;
-                    }
-
-                }
-
-                .bottom:hover {
-                    background-color: gainsboro;
-                }
-
-                .upper {
+                .menu-list {
                     display: flex;
                     flex-direction: column;
                     align-items: left;
-                    gap: 10px;
+                    gap: 20px;
                     height: 80vh;
 
                     img {
@@ -62,19 +38,21 @@
 
                     span {
                         font-size: 20px;
+                        display: block;
+                        float: left;
+                        margin: auto 0 0 0;
+                        padding: 5px 10px;
+                        text-decoration: none;
+                        color: themed("textColor");
                     }
 
-                    div {
-                        padding: 10px;
-                        border-radius: 10px;
-                        cursor: pointer;
-                    }
-
-                    div:hover {
-                        background-color:gainsboro;
+                    .active {
+                        //background-color: #938EEF;
+                        // color: #938EEF;
+                        color: $customActiveTextColor;
+                        font-weight: 700;
                     }
                 }
-                
             }
         }
 

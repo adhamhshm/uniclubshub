@@ -2,12 +2,13 @@ import "./globals.scss";
 
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import { createBrowserRouter, RouterProvider, Route, Link, Outlet, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import Unauthorized from "./pages/unauthorized/Unauthorized";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
@@ -27,7 +28,7 @@ function App() {
                 <div className={`theme-${darkMode ? "dark" : "light" }`}>
                     <Navbar />
                     <div style={{display: "flex"}}>
-                        <LeftBar />
+                        <LeftBar currentUser={currentUser} />
                         <div style={{ flex: 6}}>
                             <Outlet />
                         </div>
@@ -38,10 +39,18 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children }) => {
+    const ProtectedRoute = ({ children, requiredRole }) => {
         if (!currentUser) {
             return <Navigate to="/login" />
         }
+
+        console.log(currentUser);
+        // Check if the user has the required role to access the route
+        if (requiredRole && currentUser.role !== requiredRole) {
+            // Redirect to a different route or show an unauthorized message
+            return <Navigate to="/unauthorized" />;
+        }
+
         // children is the protected Layout
         return children;
     }
@@ -50,7 +59,7 @@ function App() {
         {
             path: "/",
             element: (
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole="club">
                     <Layout />
                 </ProtectedRoute>
             ),
@@ -66,13 +75,35 @@ function App() {
             ]
         },
         {
-            path: "/login", 
-            element: <Login />,
+            path: "/",
+            element: (
+                <ProtectedRoute  requiredRole="participant">
+                    <Layout />
+                </ProtectedRoute>
+            ),
+            children: [
+                {
+                    path: "/",
+                    element: <Home />
+                },
+                {
+                    path: "/",
+                    element: <Profile />
+                }
+            ]
+        },
+        {
+            path: "/login",
+            element: <Login />
         },
         {
             path: "/register",
-            element: <Register />,
+            element: <Register />
         },
+        {
+            path: "/unauthorized",
+            element: <Unauthorized />
+        }
     ]);
 
     return (
