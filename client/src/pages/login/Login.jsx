@@ -10,14 +10,14 @@ const Login = () => {
     const navigate = useNavigate();
 
     const [signinInputs, setSigninInputs] = useState({
-        username: "",
+        id: "",
         password: "",
     });
 
     const validateForm = () => {
         let errors = "";
-        if (!signinInputs.username) {
-            errors += "Username is empty.\n";
+        if (!signinInputs.id) {
+            errors += "Id is empty.\n";
         }
         if (!signinInputs.password) {
             errors += "Password is empty.\n";
@@ -31,7 +31,7 @@ const Login = () => {
     const handleChange = (e) => {
         // Transform the input to uppercase as the user types
         const { name, value } = e.target;
-        if (name === "username") {
+        if (name === "id") {
             setSigninInputs((prev) => ({
                 ...prev,
                 [name]: value.toUpperCase(),
@@ -47,9 +47,6 @@ const Login = () => {
     const handleSignin = async (e) => {
         e.preventDefault();
         if (validateForm()) return;
-
-        // Convert the entire username to uppercase
-        signinInputs.username = signinInputs.username.toUpperCase();
 
         try {
             await login(signinInputs);
@@ -75,7 +72,7 @@ const Login = () => {
                 <div className="right">
                     <h1>Login</h1>
                     <form>
-                        <input type="text" placeholder="Student/Club Id" name="username" onChange={handleChange} value={signinInputs.username} />
+                        <input type="text" placeholder="Student/Club Id" name="id" onChange={handleChange} value={signinInputs.id} />
                         <input type="password" placeholder="Password" name="password" onChange={handleChange} />
                         <div className="button-div">
                             <button onClick={handleSignin}>Sign In</button>

@@ -8,7 +8,7 @@ const Register = () => {
     const navigate = useNavigate();
 
     const [signupInputs, setSignupInputs] = useState({
-        username: "",
+        id: "",
         email: "",
         password: "",
         name: "",
@@ -20,13 +20,30 @@ const Register = () => {
         //     ...prev,
         //     [e.target.name]: e.target.value
         // }))
+        
+        // why "name" and "value"? (it may sounds confusing)
+        // because that is the attribute used to identify each input field
         const { name, value } = e.target;
-        if (name === "username") {
+        if (name === "id") {
+            // Capitalize the id
             setSignupInputs((prev) => ({
                 ...prev,
                 [name]: value.toUpperCase(),
             }));
-        } else {
+        }
+        else if (name === "name") {
+            // Capitalize the first letter of each word in the name
+            const capitalizedName = value
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    
+            setSignupInputs((prev) => ({
+                ...prev,
+                [name]: capitalizedName,
+            }));
+        } 
+        else {
             setSignupInputs((prev) => ({
                 ...prev,
                 [name]: value,
@@ -36,7 +53,7 @@ const Register = () => {
 
     const validateForm = () => {
         let errors = "";
-        if (!signupInputs.username) {
+        if (!signupInputs.id) {
             errors += "Id is empty.\n";
         }
         if (!signupInputs.email) {
@@ -50,7 +67,7 @@ const Register = () => {
         }
         if (errors) {
             alert(errors);
-            return true;
+            return;
         }
     }
     
@@ -58,16 +75,16 @@ const Register = () => {
         e.preventDefault();
         if (validateForm()) return;
 
-        // Check if the first letter of the username is "c" and the length is equal to 5 characters
-        if (signupInputs.username.length === 6 && signupInputs.username[0].toUpperCase() === "C") {
+        // Check if the first letter of the id is "c" and the length is equal to 5 characters
+        if (signupInputs.id.length === 6 && signupInputs.id[0].toUpperCase() === "C") {
             // Assign the "club" role
             signupInputs.role = "club";
-        } else if (signupInputs.username.length === 10) {
+        } else if (signupInputs.id.length === 10) {
             // Assign the "participant"
             signupInputs.role = "participant";
         } else {
             alert("Invalid Id.");
-            return;
+            return true;
         }
 
         try {
@@ -95,7 +112,7 @@ const Register = () => {
                 <div className="left">
                     <h1>Register</h1>
                     <form>
-                        <input type="text" placeholder="Student/Club Id" name="username" value={signupInputs.username} onChange={handleChange} />
+                        <input type="text" placeholder="Student/Club Id" name="id" value={signupInputs.id} onChange={handleChange} />
                         <input type="email" placeholder="Email" name="email" value={signupInputs.email} onChange={handleChange} />
                         <input type="password" placeholder="Password" name="password" value={signupInputs.password} onChange={handleChange} />
                         <input type="text" placeholder="Name" name="name" value={signupInputs.name} onChange={handleChange} />

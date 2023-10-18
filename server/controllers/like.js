@@ -2,7 +2,7 @@ import { db } from "../connectDB.js";
 import jwt from "jsonwebtoken";
 
 export const getLikes = (req, res) => {
-    const q = "SELECT userId FROM likes WHERE postId = ?";
+    const q = "SELECT participantId FROM likes WHERE postId = ?";
 
     db.query(q, [req.query.postId], (err, data) => {
         if (err) {
@@ -10,7 +10,7 @@ export const getLikes = (req, res) => {
             return res.status(500).json(err);
         }
         else {
-            return res.status(200).json(data.map(like => like.userId));
+            return res.status(200).json(data.map(like => like.participantId));
         }
     });
 };
@@ -27,7 +27,7 @@ export const addLike = (req, res) => {
             return res.status(403).json("Token is not valid.");
         }
 
-        const q = "INSERT INTO likes (`userId`, `postId`) VALUES (?)";
+        const q = "INSERT INTO likes (`participantId`, `postId`) VALUES (?)";
 
         const values = [
             userInfo.id,
@@ -58,7 +58,7 @@ export const deleteLike = (req, res) => {
             return res.status(403).json("Token is not valid.");
         }
 
-        const q = "DELETE FROM likes where `userId` = ? AND `postId` = ?";
+        const q = "DELETE FROM likes where `participantId` = ? AND `postId` = ?";
 
         db.query(q, [userInfo.id, req.query.postId], (err, data) => {
             if (err) {

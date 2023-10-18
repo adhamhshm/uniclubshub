@@ -38,7 +38,12 @@ const Navbar = () => {
             <div className="right">
                 {/* <NotificationIcon style={{ cursor: "pointer" }} /> */}
                 <div className="user" onClick={() => setOpenMenuModal(!openMenuModal)}>
-                    <img src={"/upload/" + currentUser.profilePhoto} alt="profile photo" />
+                    <img 
+                        src={currentUser.profilePhoto ? 
+                            "/upload/" + currentUser.profilePhoto : 
+                            (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")} 
+                        alt="profile photo" 
+                    />
                     {/* <span>{currentUser.name}</span> */}
                     {openMenuModal && <ProfileMenu />}
                     {/* <button>Sign Out</button> */}

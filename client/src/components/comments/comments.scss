@@ -25,6 +25,7 @@
                 background-color: transparent;
                 color: themed("textColor");
                 outline: none;
+                white-space: pre-wrap;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
 
@@ -58,6 +59,7 @@
 
                 p {
                     color: themed("textColorSoft");
+                    white-space: pre-wrap;
                     margin: 0;
                 }
             }

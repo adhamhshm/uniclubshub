@@ -10,7 +10,8 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
     const [updateInputs, setUpdateInputs] = useState({
-        name: "",
+        name: user.name,
+        bio: user.bio || "",
     });
 
     const uploadPhoto = async (file) => {
@@ -27,17 +28,26 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     };
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setUpdateInputs((prev) => ({
             ...prev,
-            [e.target.name]: e.target.value //need update []
-        }))
+            [name]: value
+        }));
     };
 
     // access the client
     const queryClient = useQueryClient()
     // Mutations
     const mutation = useMutation((updatedUserInfo) => {
-        return makeRequest.put("/users", updatedUserInfo);
+        if (user.role.includes("club")) {
+            return makeRequest.put("/users", updatedUserInfo);
+        }
+        else if (user.role.includes("participant")) {
+            return makeRequest.put("/participants", updatedUserInfo);
+        }
+        else {
+            return alert("Something went wrong. Please try again.");
+        }
     }, 
     {
         onSuccess: () => {
@@ -84,24 +94,57 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                     <input type="text" name="name" onChange={handleChange} />
                     <button onClick={handleUpdate}>Update</button> */}
                     <div className="files">
-                        <label htmlFor="coverPhoto">
-                            <span>Cover Photo</span>
-                            <div className="imageContainer">
-                                <img src={updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto): "/upload/" + user.coverPhoto} alt="cover photo" />
-                            </div>
-                        </label>
-                        <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
+                        {/* cover photo is only for club */}
+                        {user.role === "club" ? (
+                            <label htmlFor="coverPhoto">
+                                <span>Cover Photo</span>
+                                <div className="imageContainer">
+                                    <img src={updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto) : "/default/upload-cover.png"} alt="cover photo" />
+                                </div>
+                                <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
+                            </label>
+                            ) : null
+                        }
+                        {/* profile photo */}
                         <label htmlFor="profilePhoto">
                             <span>Profile Photo</span>
                             <div className="imageContainer">
-                                <img src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto): "/upload/" + user.profilePhoto} alt="cover photo" />
+                                <img src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto): "/default/upload-profile.png"} alt="cover photo" />
                             </div>
                         </label>
                         <input type="file" id="profilePhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />
                     </div>
+                    {/* name input whether club name or student name */}
                     <label>Name</label>
                     <input type="text" value={updateInputs.name} name="name" onChange={handleChange} />
-                    <button onClick={handleUpdate}>Update</button>
+                    {/* bio is only for club */}
+                    {user.role === "club" ? 
+                        (
+                            <>
+                                <label>Bio</label>
+                                <textarea type="text" rows={3} 
+                                placeholder="Write bio here... (not more than 300 characters)" 
+                                name="bio" 
+                                onChange={handleChange} 
+                                value={updateInputs.bio} 
+                                />
+                                <div className="char-count">{updateInputs.bio.length} / 300</div>
+                            </>
+                        ) : null
+                    }
+                    {/* button that will be disabled when bio exceeds 300 characters */}
+                    {user.role === "club" ?
+                        (
+                            <button 
+                                className={updateInputs.bio.length > 300 ? "disabled-button" : ""} 
+                                onClick={handleUpdate} 
+                            > 
+                                {updateInputs.bio.length > 300 ? "Bio exceeds 300 characters" : "Update"}
+                            </button>
+                        ) : (
+                            <button onClick={handleUpdate}>Update</button>
+                        )
+                    }
                 </form>
                 <CloseIcon className="close" style={{cursor: "pointer", width: "30px", height: "30px"}} onClick={() => setOpenUpdateBox(false)} />
             </div>

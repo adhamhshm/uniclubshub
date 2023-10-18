@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import multer from "multer";
 import usersRoute from "./routes/users.js";
+import participantsRoute from "./routes/participants.js";
 import postsRoute from "./routes/posts.js";
 import authRoute from "./routes/auth.js";
 import likesRoute from "./routes/likes.js";
@@ -25,6 +26,7 @@ app.use(cookieParser());
 
 // set up the endpoints
 app.use("/server/users", usersRoute);
+app.use("/server/participants", participantsRoute);
 app.use("/server/posts", postsRoute);
 app.use("/server/auth", authRoute);
 app.use("/server/likes", likesRoute);

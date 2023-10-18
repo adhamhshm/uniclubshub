@@ -47,9 +47,22 @@ export const addPost = (req, res) => {
             return res.status(403).json("Token is not valid.");
         };
 
-        const q = "INSERT INTO posts (`description`, `image`, `userId`, `createdAt`) VALUES (?)";
+        // Generate a random post ID based on current date, time, and a random number
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hour = String(now.getHours()).padStart(2, '0');
+        const minute = String(now.getMinutes()).padStart(2, '0');
+        const second = String(now.getSeconds()).padStart(2, '0');
+        const millisecond = String(now.getMilliseconds()).padStart(3, '0');
+        const random = Math.floor(Math.random() * 1000);
+        const postId = `${year}${month}${day}${hour}${minute}${second}${millisecond}_${random}`;
+
+        const q = "INSERT INTO posts (`id`, `description`, `image`, `userId`, `createdAt`) VALUES (?)";
 
         const values = [
+            postId,
             req.body.description,
             req.body.image,
             userInfo.id,
@@ -94,3 +107,5 @@ export const deletePost = (req, res) => {
         })
     })
 };
+
+

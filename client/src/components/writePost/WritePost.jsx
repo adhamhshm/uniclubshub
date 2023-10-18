@@ -48,17 +48,18 @@ const WritePost = () => {
         if ((!description || !imageFile) && (!description && !imageFile)) {
             return alert("Invalid request.")
         };
+
         mutation.mutate({ description, image: imageUrl });
         setDescription("");
         setImageFile(null);
     };
-
+    
     return (
         <div className="writePost">
             <div className="container">
                 <div className="top">
                     <div className="left">
-                        <img src={"/upload/" + currentUser.profilePhoto} alt="user" />
+                        <img src={currentUser.profilePhoto ? "/upload/" + currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
                         <textarea
                             type="text"
                             rows={2}

@@ -16,9 +16,9 @@
         .wrapper {
             margin: auto;
             width: 30%;
-            height: 60%;
+            height: fit-content;
             background-color: themed("bg");
-            padding: 50px;
+            padding: 20px;
             z-index: 999;
             display: flex;
             flex-direction: column;
@@ -31,7 +31,10 @@
             
             @include mobile {
                 width: 70%;
-                height: 50%;
+            }
+
+            @include tablet {
+                width: 70%;
             }
     
             h1 {
@@ -59,6 +62,7 @@
                     gap: 10px;
                     color: gray;
                     font-size: 14px;
+                    color: themed("textColor");
         
                     .imageContainer {
                         position: relative;
@@ -90,9 +94,32 @@
                     border: none;
                     margin-top: -20px;
                     border-bottom: 1px solid themed("border");
-                    color: gray;
                     outline: none;
                     background-color: transparent;
+                    color: themed("textColor");
+                }
+
+                textarea {
+                    resize: none;
+                    padding: 10px;
+                    margin-top: -10px;
+                    border-radius: 5px;
+                    border-bottom: 1px solid themed("border");
+                    color: themed("textColor");
+                    outline: none;
+                    background-color: transparent;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    white-space: pre-wrap;
+
+                }
+
+                .char-count {
+                    display: flex;
+                    align-items: right;
+                    justify-content: right;
+                    color: gray;
+                    margin-top: -20px;
+                    font-size: 15px;
                 }
         
                 button {
@@ -102,6 +129,11 @@
                     cursor: pointer;
                     color: white;
                     background-color: #938EEF;
+                }
+
+                .disabled-button {
+                    background-color: gray;
+                    cursor: not-allowed;
                 }
             }
     

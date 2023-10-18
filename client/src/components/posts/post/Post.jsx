@@ -86,17 +86,19 @@ const Post = ({ post }) => {
                 </div>
                 <div className="info">
                     <div className="item">
-                        {isLoading 
-                            ? "Loading..."
-                            : error 
-                            ? "Someting went wrong"
-                            : data === undefined
-                            ? "Likes"
-                            : data.includes(currentUser.id)
+                    {currentUser.role === "participant" ? (
+                        isLoading ? "Loading..." : 
+                        error ? "Something went wrong" : 
+                        data === undefined ? "Likes" : 
+                        (
+                            data.includes(currentUser.id)
                                 ? <FillLikeIcon style={{ color: "red" }} onClick={handleLike} />
                                 : <NoFillLikeIcon onClick={handleLike} />
-                        }
-
+                        )
+                    ) : (
+                        /* For users with a role other than "participant" (e.g., "club role") */
+                        <NoFillLikeIcon />
+                    )}
                         {data !== undefined && `${data.length} Likes`}   
                     </div>
                     <div className="item" onClick={() => {setCommentOpen(!commentOpen)}}>

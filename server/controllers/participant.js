@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 // get the user
 export const getUser = (req, res) => {
     const userId = req.params.userId;
-    const q = "SELECT * FROM users WHERE id = ?";
+    const q = "SELECT * FROM participants WHERE id = ?";
 
     db.query(q, [userId], (err, data) => {
         if (err) {
@@ -28,27 +28,19 @@ export const updateUser = (req, res) => {
 
     jwt.verify(token, "secretkey", (err, userInfo) => {
         if (err) {
-            console.log("Token not valid");
             return res.status(403).json("Token is not valid.");
         };
 
-        const q = "UPDATE users SET `name` = ?, `coverPhoto` = ?, `profilePhoto` = ?, `bio` = ? WHERE id = ?";
-        db.query(q, [req.body.name, req.body.coverPhoto, req.body.profilePhoto, req.body.bio, userInfo.id], (err, data) => {
+        const q = "UPDATE participants SET `name` = ?, `profilePhoto` = ? WHERE id = ?"
+        db.query(q, [req.body.name, req.body.profilePhoto, userInfo.id], (err, data) => {
             if (err) {
                 console.log("Error updating user: " + err.message);
                 return res.status(500).json(err);
             }
             if (data.affectedRows > 0) {
-                console.log("Updated successfully.");
                 return res.json("Updated successfully.");
             }
-            console.log("You can only update your profile.");
             return res.status(403).json("You can only update your profile.");
         })
     });
 };
-
-// for testing the route only
-// export const testUsersRoute = (req, res) => {
-//     res.send("This users route is working.");
-// };

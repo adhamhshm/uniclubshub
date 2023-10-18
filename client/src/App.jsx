@@ -1,18 +1,19 @@
 import "./globals.scss";
 
+import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import LeftBar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import Unauthorized from "./pages/unauthorized/Unauthorized";
-import { useContext } from "react";
+import ParticipantProfile from "./pages/participantProfile/ParticipantProfile";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
 
@@ -44,13 +45,12 @@ function App() {
             return <Navigate to="/login" />
         }
 
-        console.log(currentUser);
         // Check if the user has the required role to access the route
-        if (requiredRole && currentUser.role !== requiredRole) {
+        if (!currentUser && requiredRole && currentUser.role !== requiredRole) {
             // Redirect to a different route or show an unauthorized message
             return <Navigate to="/unauthorized" />;
         }
-
+        
         // children is the protected Layout
         return children;
     }
@@ -77,7 +77,7 @@ function App() {
         {
             path: "/",
             element: (
-                <ProtectedRoute  requiredRole="participant">
+                <ProtectedRoute requiredRole="participant">
                     <Layout />
                 </ProtectedRoute>
             ),
@@ -87,8 +87,8 @@ function App() {
                     element: <Home />
                 },
                 {
-                    path: "/",
-                    element: <Profile />
+                    path: "/profile/participant/:id",
+                    element: <ParticipantProfile />
                 }
             ]
         },

@@ -19,7 +19,13 @@ const Home = () => {
 
     return (
         <div className="home">
-            <WritePost />
+            {currentUser.role === "club" ? 
+                (
+                    <WritePost />
+                ) : (
+                    null
+                )
+            }
             <Posts />
         </div>
     )
