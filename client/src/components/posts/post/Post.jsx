@@ -24,6 +24,18 @@ const Post = ({ post }) => {
     const [showPostModal, setShowPostModal] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
+    // const { isLoading, error, data } = useQuery(["postDetails", post.id], async () => {
+    //     const [likeData, commentData] = await Promise.all([
+    //         makeRequest.get(`/likes?postId=${post.id}`).then((res) => res.data),
+    //         makeRequest.get(`/comments?postId=${post.id}`).then((res) => res.data)
+    //     ]);
+      
+    //     return {
+    //         likes: likeData,
+    //         comments: commentData
+    //     };
+    // });
+
     const { isLoading: likesLoading, error: likesError, data: likesData } = useQuery(["likes", post.id], () =>
         makeRequest.get(`/likes?postId=${post.id}`)
         .then((res) => res.data)
