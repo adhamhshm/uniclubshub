@@ -1,35 +1,58 @@
 import "./post.scss";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import moment from "moment";
-import Comments from "../../comments/Comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../../request";
 import { AuthContext } from "../../../context/authContext";
+import moment from "moment";
+
+import Comments from "../../comments/Comments";
+import ConfirmBox from "../confirmbox/ConfirmBox";
 
 import MoreIcon from '@mui/icons-material/MoreHoriz';
 import NoFillLikeIcon from '@mui/icons-material/FavoriteBorder';
 import FillLikeIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
-import ShareIcon from '@mui/icons-material/ShareOutlined';
 
 const Post = ({ post }) => {
 
+    // Access the client
+    const queryClient = useQueryClient();
+
     const [commentOpen, setCommentOpen] = useState(false);
     const [openMenu, setMenuOpen] = useState(false);
+    const [showPostModal, setShowPostModal] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
-    const { isLoading, error, data } = useQuery(["likes", post.id], () => 
-        makeRequest.get("/likes?postId=" + post.id)
-        .then((res) => {
-            return res.data;
-        })
+    // const { isLoading, error, data } = useQuery(["postDetails", post.id], async () => {
+    //     const [likeData, commentData] = await Promise.all([
+    //         makeRequest.get(`/likes?postId=${post.id}`).then((res) => res.data),
+    //         makeRequest.get(`/comments?postId=${post.id}`).then((res) => res.data)
+    //     ]);
+      
+    //     return {
+    //         likes: likeData,
+    //         comments: commentData
+    //     };
+    // });
+
+    const { isLoading: likesLoading, error: likesError, data: likesData } = useQuery(["likes", post.id], () =>
+        makeRequest.get(`/likes?postId=${post.id}`)
+        .then((res) => res.data)
+    );
+      
+    const { isLoading: commentsLoading, error: commentsError, data: commentsData } = useQuery(["comments", post.id], () =>
+        makeRequest.get(`/comments?postId=${post.id}`)
+        .then((res) => res.data)
     );
 
-    // access the client
-    const queryClient = useQueryClient();
-    // Mutations
-    const mutation = useMutation((liked) => {
+    const { isLoading: isRegisteredLoading, error: isRegisteredError, data: isRegisteredData } = useQuery(["registerEvents", post.id], () =>
+        makeRequest.get(`/register_events?postId=${post.id}`)
+        .then((res) => res.data)
+    );
+
+    // Like and unliked mutations
+    const likePostMutation = useMutation((liked) => {
         if (liked) {
             return makeRequest.delete("/likes?postId=" + post.id);
         }
@@ -44,7 +67,8 @@ const Post = ({ post }) => {
         },
     })
 
-    const deleteMutation = useMutation((postId) => {
+    // Delete post mutations
+    const deletePostMutation = useMutation((postId) => {
         if (postId) {
             return makeRequest.delete("/posts/" + postId);
         }
@@ -57,63 +81,141 @@ const Post = ({ post }) => {
     })
 
     const handleLike = () => {
-        mutation.mutate(data.includes(currentUser.id));
+        likePostMutation.mutate(likesData.includes(currentUser.id));
     };
 
     const handleDelete = () => {
-        deleteMutation.mutate(post.id);
-    }
+        deletePostMutation.mutate(post.id);
+    };
+
+    // Function to render description with clickable links
+    const renderDescription = (description) => {
+        // Use a regular expression to find URLs in the description
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+        // Split the description by URLs and render links
+        const parts = description.split(urlRegex);
+        return parts.map((part, index) => {
+            if (part.match(urlRegex)) {
+                // Render links
+                return (
+                    <a
+                        key={index}
+                        href={part}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="url-description"
+                    >
+                        {part}
+                    </a>
+                );
+            } else {
+                // Render non-link text
+                return <span key={index}>{part}</span>;
+            }
+        });
+    };
 
     return (
         <div className="post">
-           <div className="container">
-                <div className="user">
-                    <div className="userInfo">
-                        <img src={"/upload/" + post.profilePhoto} alt={post.name} />
-                        <div className="details">
+           <div className="post-container">
+                <div className="user-container">
+                    <div className="user-details">
+                        {/* Post owner profile photo */}
+                        <img src={post.profilePhoto ? "/upload/" + post.profilePhoto : "/default/default-club-image.png"} alt={post.name} />
+                        {/* Name of the owner and the date of post */}
+                        <div className="user-info">
                             <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
                                 <span className="username">{post.name}</span>
                             </Link>
                             <span className="date">{moment(post.createdAt).fromNow()}</span>
                         </div>
                     </div>
+                    {/* Icon can be clicked to open post menu */}
                     <MoreIcon style={{ cursor: "pointer" }} onClick={() => setMenuOpen(!openMenu)} />
                     {openMenu && post.userId === currentUser.id && <button onClick={handleDelete}>Delete</button>}
                 </div>
-                <div className="content">
-                    <p>{post.description}</p>
-                    {post.image && <img src={"../upload/" + post.image} alt="post" />}
+                {/* The content of the post */}
+                <div className="post-content-container">
+                    <div className="post-content-container-description">
+                        {renderDescription(post.description)}
+                    </div>
+                    {post.image && 
+                        <div className="post-content-container-image">
+                            {post.image && <img src={"../upload/" + post.image} alt="post" />}
+                        </div>
+                    }
                 </div>
-                <div className="info">
-                    <div className="item">
-                    {currentUser.role === "participant" ? (
-                        isLoading ? "Loading..." : 
-                        error ? "Something went wrong" : 
-                        data === undefined ? "Likes" : 
+                {/* Labels to interact with the post */}
+                <div className="post-labels">
+                    {/* Like functionality works only if the user is a participant */}
+                    <div className="label">
+                        {currentUser.role === "participant" ? (
+                            likesLoading ? "Loading likes..." : 
+                            likesError ? "Unable to find likes." : 
+                            (
+                                likesData.includes(currentUser.id)
+                                    ? <FillLikeIcon style={{ color: "red" }} onClick={handleLike} />
+                                    : <NoFillLikeIcon onClick={handleLike} />
+                            )
+                        ) : (
+                            <NoFillLikeIcon />
+                        )}
+                        {likesData !== undefined && `${likesData.length}`}   
+                    </div>
+                    {/* Comment label */}
+                    <div className="label" onClick={() => {setCommentOpen(!commentOpen)}}>
+                        <CommentIcon/>
+                        {commentsLoading ? "Loading comments..." :
+                         commentsError ? "Unable to find comments." :
+                         commentsData === undefined ? "Comment" : 
+                         commentsData.length === 0 ? "Comment" :
+                         `${commentsData.length} Comments`
+                        }
+                    </div>
+                    {/* The button to register for an event is only for participant */}
+                    {currentUser.role === "participant" ? 
                         (
-                            data.includes(currentUser.id)
-                                ? <FillLikeIcon style={{ color: "red" }} onClick={handleLike} />
-                                : <NoFillLikeIcon onClick={handleLike} />
+                            // Fetch registered event data by the participant
+                            <div className="label">
+                                {isRegisteredLoading ? "Loading info..." :
+                                 isRegisteredError ? "Cannot find info." : 
+                                 isRegisteredData.includes(currentUser.id) ?
+                                 (
+                                    // If already registered, button is disabled
+                                    <div className="register-button">
+                                        <button className="disabled-register-button">
+                                            Registered
+                                        </button>
+                                    </div>
+                                 ) : (
+                                    // Click the register button to confirm registration
+                                    <div className="register-button">
+                                        <button onClick={() => {setShowPostModal(true)}}>
+                                            Register
+                                        </button>
+                                    </div>
+                                 ) 
+                                }
+                            </div>
+                        ) : (
+                            null
                         )
-                    ) : (
-                        /* For users with a role other than "participant" (e.g., "club role") */
-                        <NoFillLikeIcon />
-                    )}
-                        {data !== undefined && `${data.length} Likes`}   
-                    </div>
-                    <div className="item" onClick={() => {setCommentOpen(!commentOpen)}}>
-                        <CommentIcon />
-                        Comment
-                    </div>
-                    <div className="item">
-                        <ShareIcon />
-                        Share
-                    </div>
+                    }
                 </div>
+                {/* Display the PostModal when showPostModal is true, to confirm event registration */}
+                {showPostModal && (
+                    <ConfirmBox
+                        postData={post}
+                        currentUser={currentUser}
+                        setShowPostModal={setShowPostModal}
+                    />
+                )}
+                {/* Display list of comments and comment functionality when the setCommentOpen is true */}
                 {commentOpen && <Comments postId={post.id} />}
            </div>
         </div>
     )
-}
+};
 
 export default Post;

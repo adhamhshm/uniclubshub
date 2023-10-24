@@ -63,10 +63,8 @@ const Login = () => {
                 <div className="left">
                     <h1>Let's Connect</h1>
                     <p>
-                        ConnectHub is a dynamic and innovative platform designed to foster a 
-                        thriving club culture within the university while streamlining club 
-                        management processes. Serving as a central hub for students, it promotes 
-                        clubs, enhances engagement, and simplifies administrative tasks.
+                        ConnectHub is a platform designed to foster a thriving club culture 
+                        within the university to promotes clubs and enhance students' engagement.
                     </p>
                 </div>
                 <div className="right">

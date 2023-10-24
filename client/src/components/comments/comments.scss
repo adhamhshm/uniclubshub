@@ -9,7 +9,7 @@
             object-fit: cover;
         }
 
-        .write {
+        .write-comment-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -29,6 +29,19 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
 
+            .send-icon {
+                color: themed("textColor");
+                display: flex;
+                justify-content: center;cursor: pointer;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .send-icon:hover {
+                background-color: #7e78fb;
+                color: #FFFFFF;
+            }
+
             button {
                 border: none;
                 color: white;
@@ -38,15 +51,19 @@
                 font-weight: bold;
                 border-radius: 20px;
             }
+
+            button:hover {
+                background-color: #7e78fb;
+            }
         }
 
-        .comment {
+        .comment-container {
             margin: 20px 0px;
             display: flex;
             justify-content: space-between;
             gap: 20px;
 
-            .info {
+            .comment-user-info {
                 flex: 5;
                 display: flex;
                 flex-direction: column;
@@ -61,14 +78,20 @@
                     color: themed("textColorSoft");
                     white-space: pre-wrap;
                     margin: 0;
+                    font-size: 14px;
+
                 }
             }
 
-            .date {
+            .comment-date {
                 flex: 1;
                 align-self: center;
                 color: grey;
                 font-size: 12px;
+
+                @include mobile {
+                    flex: 2;
+                }
             }
         }
     }

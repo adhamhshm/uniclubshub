@@ -24,38 +24,12 @@
                 font-size: 20px;
                 color: themed("logo");
             }
-
-            .search {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                border: 1px solid themed("border");
-                border-radius: 5px;
-                padding: 5px;
-
-                @include mobile {
-                    display: none;
-                }
-
-                @include tablet {
-                    display: none;
-                }
-
-                input {
-                    border: none;
-                    width: 20vh;
-                    background: transparent;
-                    color: themed("textColor");
-                    outline: none;
-
-                }
-            }
         }
 
         .right {
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: right;
 
             .user {
                 display: flex;

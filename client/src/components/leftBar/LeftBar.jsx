@@ -1,20 +1,26 @@
 import "./leftbar.scss";
 import { NavLink } from "react-router-dom";
 
+import HomeIcon from '@mui/icons-material/HomeOutlined';
+import SearchIcon from '@mui/icons-material/SearchOutlined';
+import ActivityIcon from '@mui/icons-material/FormatListBulletedOutlined';
+import ProfileIcon from '@mui/icons-material/PermIdentityOutlined';
+import EventIcon from '@mui/icons-material/FolderOpenOutlined';
+
 const LeftBar = ({ currentUser }) => {
 
     const clubUserLinks = [
-        { to: "/", text: "Home" },
-        { to: "/events", text: "Events" },
-        { to: "/activities", text: "Activities" },
-        { to: `/profile/${currentUser.id}`, text: "Profile" },
+        { to: "/", text: "Home", icon: <HomeIcon /> },
+        { to: "/events", text: "Events", icon: <EventIcon /> },
+        { to: "/activities", text: "Activities", icon: <ActivityIcon /> },
+        { to: `/profile/${currentUser.id}`, text: "Profile", icon: <ProfileIcon /> },
     ];
 
     const participantUserLinks = [
-        { to: "/", text: "Home" },
-        { to: "/explore", text: "Explore" },
-        { to: "/activities", text: "Activities" },
-        { to: `/profile/participant/${currentUser.id}`, text: "Profile" },
+        { to: "/", text: "Home", icon: <HomeIcon /> },
+        { to: "/explore", text: "Explore", icon: <SearchIcon /> },
+        { to: "/activities", text: "Activities", icon: <ActivityIcon /> },
+        { to: `/profile/participant/${currentUser.id}`, text: "Profile", icon: <ProfileIcon /> },
     ];
 
     // Render different navigation links based on the user's role
@@ -37,10 +43,11 @@ const LeftBar = ({ currentUser }) => {
                             <NavLink
                                 key={index}
                                 to={link.to}
-                                activeClassName="active"
+                                activeclassname ="active"
                                 style={{ textDecoration: "none", color: "inherit" }}
                                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                             >
+                                <span>{link.icon}</span>
                                 <span>{link.text}</span>
                             </NavLink>
                         ))}

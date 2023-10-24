@@ -9,16 +9,16 @@
     background-color: themed("bg");
     color: themed("textColor");
 
-        .container {
+        .post-container {
             padding: 20px;
 
-            .user {
+            .user-container {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 position: relative;
 
-                .userInfo {
+                .user-details {
                     display: flex;
                     gap: 20px;
 
@@ -29,7 +29,7 @@
                         object-fit: cover;
                     }
 
-                    .details {
+                    .user-info {
                         display: flex;
                         flex-direction: column;
 
@@ -57,32 +57,108 @@
                 }
             }
 
-            .content {
+            .post-content-container {
                 margin: 20px 0px;
+                display: flex;
+                flex-direction: row;
 
-                p {
+                .post-content-container-description {
+                    flex: 1;
+                    padding-right: 15px;
                     white-space: pre-wrap;
+                    font-size: 14px;
+
+                    .url-description {
+                        color: #4093f8;
+                    }
                 }
 
-                img {
-                    width: 100%;
-                    max-height: 400px;
-                    object-fit: cover;
-                    margin-top: 20px;
+                .post-content-container-image {
+                    flex: 1;
+                    display: flex;
+                    justify-content: center;
+
+                    img {
+                        width: 270px;
+                        height: 270px;
+                        object-fit: cover;
+                        margin-top: 20px;
+                        border-radius: 10px;
+                    }
+                }
+
+                .see-more-toggle {
+                    color: grey;
+                    cursor: pointer;
+                }
+
+                @include mobile {
+                    display: block;
+                    flex-direction: row;
                 }
             }
 
-            .info {
+            .post-labels {
                 display: flex;
                 align-items: center;
                 gap: 20px;
 
-                .item {
+                .label {
                     display: flex;
                     align-items: center;
                     gap: 10px;
                     cursor: pointer;
                     font-size: 14px;
+                    position: relative; // Add relative positioning to the parent as there is a tooltip with position absolute
+
+
+                    button {
+                        border: none;
+                        color: white;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        background-color: #938EEF;
+                        font-weight: bold;
+                        border-radius: 20px;
+
+                        @include mobile {
+                            font-size: 12px;
+                            padding: 10px 15px;
+                        }
+                    }
+
+                    button:hover {
+                        background-color: #7e78fb;
+                    }
+
+                    .disabled-register-button {
+                        background-color: grey;
+                    }
+
+                    .disabled-register-button:hover {
+                        background-color: gray;
+                        cursor: default;
+                    }
+
+                    // &:hover {
+                    //     .join-button-container .join-button-tooltip {
+                    //         display: block;
+                    //     }
+                    // }
+
+                    // .join-button-tooltip {
+                    //     display: none;
+                    //     position: absolute;  /* Set the position to absolute */
+                    //     background-color: #333;
+                    //     color: #fff;
+                    //     padding: 5px;
+                    //     border-radius: 5px;
+                    //     //right: auto;
+                    //     bottom: 100%;  /* Position it above the "Join" button */
+                    //     margin-bottom: 10px;  /* Add some spacing between the tooltip and the button */
+                    //     width: max-content;
+                    //     text-align: left;
+                    // }
                 }
             }
         }

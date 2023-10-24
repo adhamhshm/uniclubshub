@@ -1,12 +1,16 @@
 import "./updateprofile.scss";
 import { makeRequest } from "../../request";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useContext } from "react";
+import { AuthContext } from "../../context/authContext";
+
 import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
+    const { updateProfilePhotoData } = useContext(AuthContext);
     const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
     const [updateInputs, setUpdateInputs] = useState({
@@ -56,20 +60,13 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         },
     });
 
-    const setLocalProfileData = (profilePhotoUrl) => {
-        const objectJSON = JSON.parse(localStorage.getItem("user"));
-        if (objectJSON) {
-            objectJSON.profilePhoto = profilePhotoUrl
-            const updatedObjectJSON = JSON.stringify(objectJSON);
-            localStorage.setItem("user", updatedObjectJSON);
-        }
-        else {
-            console.log("The user item does not exist in localStorage.");
-        }
-    };
-
     const handleUpdate = async (e) => {
-        // e.preventDefault();
+        e.preventDefault();
+        if (updateInputs.bio.length > 300) {
+            // Do not proceed with the update if the bio exceeds 300 characters
+            return;
+        }
+
         let coverPhotoUrl;
         let profilePhotoUrl;
         
@@ -77,7 +74,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto) : user.profilePhoto;
         
         mutation.mutate({ ...updateInputs, coverPhoto: coverPhotoUrl, profilePhoto: profilePhotoUrl });
-        setLocalProfileData(profilePhotoUrl);
+        updateProfilePhotoData(profilePhotoUrl);
         setUpdateInputs("");
         setUpdatedCoverPhoto(null);
         setUpdatedProfilePhoto(null);

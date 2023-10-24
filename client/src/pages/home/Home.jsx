@@ -8,14 +8,31 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, authorizeToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!currentUser) {
-            navigate("/login");
-        }
-    }, [currentUser]);
+        // Create a flag to prevent repeated checks
+        let isMounted = true;
+
+        // Define an async function to check the token, and then navigate if it's invalid
+        const checkTokenAndNavigate = async () => {
+            if (isMounted) {
+                const isTokenValid = await authorizeToken();
+                if (!currentUser || !isTokenValid) {
+                    navigate("/login");
+                }
+            }
+        };
+
+        // Call the function to check the token
+        checkTokenAndNavigate();
+
+        // Cleanup function to set the flag to false when the component unmounts
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     return (
         <div className="home">

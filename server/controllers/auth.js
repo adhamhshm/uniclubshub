@@ -74,7 +74,6 @@ export const signin = (req, res) => {
 
 export const signup = (req, res) => {
 
-    console.log(req.body.role);
     if (req.body.role === "club" ) {
         // check if user exists
         const q = "SELECT * FROM users WHERE id = ?";
@@ -146,4 +145,20 @@ export const signout = (req, res) => {
         secure: true,
         sameSite: "none",
     }).status(200).json("User already signed out.");
+}
+
+export const authorizeToken = (req, res) => {
+    const token = req.cookies.accessToken; // Get the token from the request (assuming it's stored in a cookie)
+    if (!token) {
+        return res.status(401).json("Unauthorized: No token provided.");
+    }
+
+    jwt.verify(token, "secretkey", (err) => {
+        if (err) {
+            return res.status(401).json("Unauthorized: Invalid or expired token");
+        }
+
+        // Token is valid
+        res.status(200).json("Token is valid");
+    });
 }

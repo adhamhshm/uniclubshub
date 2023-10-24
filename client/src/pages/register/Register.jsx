@@ -103,10 +103,8 @@ const Register = () => {
                 <div className="right">
                     <h1>Let's Connect</h1>
                     <p>
-                        ConnectHub is a dynamic and innovative platform designed to foster a 
-                        thriving club culture within the university while streamlining club 
-                        management processes. Serving as a central hub for students, it promotes 
-                        clubs, enhances engagement, and simplifies administrative tasks.
+                        ConnectHub is a platform designed to foster a thriving club culture 
+                        within the university to promotes clubs and enhance students' engagement.
                     </p>
                 </div>
                 <div className="left">
@@ -119,7 +117,7 @@ const Register = () => {
                         <div className="button-div">
                             <button onClick={handleSignup}>Sign Up</button>
                         </div>
-                        <p><span>Have acount?</span> <Link to="/login">Sign In Here</Link></p>
+                        <p><span>Have account?</span> <Link to="/login">Sign In Here</Link></p>
                     </form>
                 </div>
             </div>

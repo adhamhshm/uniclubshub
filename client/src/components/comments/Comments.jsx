@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
+import SendIcon from '@mui/icons-material/Send';
 
 const Comments = ({ postId }) => {
 
@@ -43,8 +44,12 @@ const Comments = ({ postId }) => {
 
     return (
         <div className="comments">
-            <div className="write">
-                <img src={"../upload/" + currentUser.profilePhoto} alt="photo" />
+            <div className="write-comment-container">
+                <img src={currentUser.profilePhoto ? 
+                          "/upload/" + currentUser.profilePhoto : 
+                          (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
+                     alt="photo" 
+                />
                 <textarea 
                     type="text" 
                     rows={2} 
@@ -52,9 +57,9 @@ const Comments = ({ postId }) => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <button onClick={handleSend}>
-                    Send
-                </button>
+                <div className="send-icon">
+                    <SendIcon onClick={handleSend} />
+                </div>
             </div>
             {isLoading
                 ? "Loading..."
@@ -62,13 +67,16 @@ const Comments = ({ postId }) => {
                 ? "Something went wrong."
                 : data.map((comment) => {
                     return (
-                        <div className="comment">
-                            <img src={"/upload/" + comment.profilePhoto} alt="photo" />
-                            <div className="info">
+                        <div className="comment-container" key={comment.id}>
+                            <img src={comment.profilePhoto ? 
+                                     "/upload/" + comment.profilePhoto : 
+                                     (comment.userId.includes("C") ? "/default/default-club-image.png" : "/default/default-participant-image.png")}   
+                            />
+                            <div className="comment-user-info">
                                 <span>{comment.name}</span>
                                 <p>{comment.description}</p>
                             </div>
-                            <span className="date">{moment(comment.createdAt).fromNow()}</span>
+                            <span className="comment-date">{moment(comment.createdAt).fromNow()}</span>
                         </div>
                     )
                 })

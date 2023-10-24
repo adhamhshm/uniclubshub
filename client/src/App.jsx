@@ -12,15 +12,15 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import Unauthorized from "./pages/unauthorized/Unauthorized";
 import ParticipantProfile from "./pages/participantProfile/ParticipantProfile";
+import Explore from "./pages/explore/Explore";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
+
 
 function App() {
 
     const { currentUser } = useContext(AuthContext);
-
     const { darkMode } = useContext(DarkModeContext);
-
     const queryClient = new QueryClient();
 
     const Layout = () => {
@@ -89,6 +89,10 @@ function App() {
                 {
                     path: "/profile/participant/:id",
                     element: <ParticipantProfile />
+                },
+                {
+                    path: "/explore",
+                    element: <Explore />
                 }
             ]
         },

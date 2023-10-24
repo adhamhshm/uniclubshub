@@ -45,8 +45,8 @@ const WritePost = () => {
             imageUrl = await uploadPhoto();
         };
         
-        if ((!description || !imageFile) && (!description && !imageFile)) {
-            return alert("Invalid request.")
+        if (!description) {
+            return alert("Please write event description.")
         };
 
         mutation.mutate({ description, image: imageUrl });
@@ -55,28 +55,28 @@ const WritePost = () => {
     };
     
     return (
-        <div className="writePost">
-            <div className="container">
-                <div className="top">
-                    <div className="left">
+        <div className="writepost">
+            <div className="writepost-container">
+                <div className="writepost-container-top">
+                    <div className="top-left-part">
                         <img src={currentUser.profilePhoto ? "/upload/" + currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
                         <textarea
                             type="text"
                             rows={2}
-                            placeholder="Write a post..."
+                            placeholder="Post event here..."
                             onChange={(e) => {setDescription(e.target.value)}} 
                             value={description}
                         />
                     </div>
-                    <div className="right">
+                    <div className="top-right-part">
                         {imageFile && (
                             <img className="imageFile" src={URL.createObjectURL(imageFile)} alt="" />
                         )}
                     </div>
                 </div>
                 <hr />
-                <div className="bottom">
-                    <div className="left">
+                <div className="writepost-container-bottom">
+                    <div className="bottom-left-part">
                         <input
                             type="file"
                             id="file"
@@ -91,7 +91,7 @@ const WritePost = () => {
                             </div>
                         </label>
                     </div>
-                    <div className="right">
+                    <div className="bottom-right-part">
                         <button onClick={handlePost}>Post</button>
                     </div>
                 </div>

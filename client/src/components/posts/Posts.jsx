@@ -4,6 +4,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request.js";
 
+// the userId may come from the profile of the user
 const Posts = ({ userId }) => {
 
     const { isLoading, error, data } = useQuery(["posts"], () => 

@@ -1,12 +1,23 @@
 import "./profilemenu.scss";
 import axios from "axios";
-import React from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ProfileMenu = () => {
-
+const ProfileMenu = ({ setOpenMenuModal }) => {
 
     const navigate = useNavigate();
+
+    // Create a ref to hold a reference to the modal container
+    const modalRef = useRef(null);
+
+    // Function to handle clicks outside the modal
+    const handleOutsideClick = (event) => {
+        // Check if the modalRef exists and if the clicked element is outside the modal
+        if (modalRef.current && !modalRef.current.contains(event.target)) {
+            // If the click is outside, close the modal
+            setOpenMenuModal(false);
+        }
+    };
 
     const handleSignout = async () => {
         try {
@@ -20,8 +31,11 @@ const ProfileMenu = () => {
         }
     }
 
+    // Attach a 'mousedown' event listener to the document to call handleOutsideClick
+    document.addEventListener('mousedown', handleOutsideClick);
+
     return (
-        <div className="profileMenu">
+        <div className="profileMenu" ref={modalRef}>
             <div className="wrapper">
                 <div className="button-div">
                     <button onClick={handleSignout}>

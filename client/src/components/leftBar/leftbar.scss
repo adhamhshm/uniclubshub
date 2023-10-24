@@ -31,11 +31,6 @@
                     gap: 20px;
                     height: 80vh;
 
-                    img {
-                        width: 30px;
-                        height: 30px;
-                    }
-
                     span {
                         font-size: 20px;
                         display: block;
@@ -49,7 +44,6 @@
                     .active {
                         //background-color: #938EEF;
                         // color: #938EEF;
-                        color: $customActiveTextColor;
                         font-weight: 700;
                     }
                 }

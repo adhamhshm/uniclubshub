@@ -4,10 +4,9 @@ import "./navbar.scss";
 import HomeIcon from '@mui/icons-material/HomeRounded';
 import MoonIcon from '@mui/icons-material/Brightness4Rounded';
 import SunIcon from '@mui/icons-material/Brightness5Rounded';
-import SearchIcon from '@mui/icons-material/SearchRounded';
-import NotificationIcon from '@mui/icons-material/NotificationsRounded';
+
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import ProfileMenu from "../profileMenu/ProfileMenu";
@@ -30,10 +29,6 @@ const Navbar = () => {
                 ) : (
                     <MoonIcon style={{ cursor: "pointer" }} onClick={toggle} />
                 )}
-                {/* <div className="search">
-                    <SearchIcon />
-                    <input type="text" placeholder="Search here..." />
-                </div> */}
             </div>
             <div className="right">
                 {/* <NotificationIcon style={{ cursor: "pointer" }} /> */}
@@ -45,7 +40,7 @@ const Navbar = () => {
                         alt="profile photo" 
                     />
                     {/* <span>{currentUser.name}</span> */}
-                    {openMenuModal && <ProfileMenu />}
+                    {openMenuModal && <ProfileMenu setOpenMenuModal={setOpenMenuModal} />}
                     {/* <button>Sign Out</button> */}
                 </div>
             </div>

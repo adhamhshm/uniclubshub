@@ -36,7 +36,7 @@ const ParticipantProfile = () => {
         if (!isCurrentUser) {
             navigate("/unauthorized"); // Replace with the actual URL of your unauthorized page
         }
-    }, [isCurrentUser, navigate]);
+    }, [isCurrentUser]);
 
     // fetch user follow relations
     const { data: followRelationData } = useQuery(["follow_relation"], () => 
@@ -72,7 +72,7 @@ const ParticipantProfile = () => {
         <div className="participant-profile">
             <div className="participant-images">
                 {/* <img src={"/upload/" + data?.coverPhoto} alt="cover" className="cover" /> */}
-                <img src={"/upload/" + data?.profilePhoto} alt="profile" className="participant-profilePhoto" />
+                <img src={data?.profilePhoto ? "/upload/" + data?.profilePhoto : "/default/default-participant-image.png"} alt="profile" className="participant-profilePhoto" />
             </div>
             <div className="participant-profileContainer">
                 <div className="participant-userInfo">

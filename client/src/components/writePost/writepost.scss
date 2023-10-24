@@ -1,6 +1,6 @@
 @import "../../globals.scss";
 
-.writePost {
+.writepost {
 
     @include themify($theme) {
         box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
@@ -11,15 +11,15 @@
         color: themed("textColor");
         margin-bottom: 20px;
 
-        .container {
+        .writepost-container {
             padding: 20px;
 
-            .top {
+            .writepost-container-top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
         
-                .left {
+                .top-left-part {
                     display: flex;
                     // align-items: center;
                     flex: 7;
@@ -47,7 +47,7 @@
                     }
                 }
                     
-                .right {
+                .top-right-part {
                     flex: 1;
                     display: flex;
                     justify-content: flex-end;
@@ -68,11 +68,12 @@
                 background-color: themed("border");
             }
       
-            .bottom {
+            .writepost-container-bottom {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                .left {
+
+                .bottom-left-part {
                     display: flex;
                     align-items: center;
                     gap: 20px;
@@ -94,7 +95,7 @@
                     }
                 }
 
-                .right {
+                .bottom-right-part {
                     button {
                         border: none;
                         padding: 10px 20px;
@@ -103,6 +104,10 @@
                         background-color: #938EEF;
                         font-weight: bold;
                         border-radius: 20px;
+                    }
+
+                    button:hover {
+                        background-color: #7e78fb;
                     }
                 }
             }

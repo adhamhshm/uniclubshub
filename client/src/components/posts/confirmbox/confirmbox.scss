@@ -1,0 +1,139 @@
+@import "../../../globals.scss";
+
+.post-modal {
+        @include themify($theme) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        z-index: 999;
+        overflow-y: auto; /* Add scrollbars when content overflows the container */
+    
+        .post-modal-container {
+            width: 25%;
+            height: fit-content;
+            background-color: themed("bg");
+            padding: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-radius: 20px;
+            //top: 100px;
+            margin: auto; // to make the div center
+            justify-content: space-between;
+            font-size: 14px;
+            
+            @include mobile {
+                width: 70%;
+            }
+
+            @include tablet {
+                width: 70%;
+            }
+
+            h1 {
+                color: themed("textColor");
+                @include mobile {
+                    font-size: 20px;
+                }
+            }
+
+            .post-modal-wrapper {
+                display: flex;
+                flex-direction: column;
+
+                // .post-modal-name {
+                //     padding: 10px;
+                //     margin-bottom: -40px;
+                //     h2 {
+                //         color: themed("textColor");
+                //         //margin-bottom: -5px;
+                //         @include mobile {
+                //             font-size: 16px;
+                //         }
+                //     }
+                // }
+
+                // .post-modal-info {
+                //     display: flex;
+                //     flex-direction: row;
+
+                //     .post-modal-description {
+                //         flex: 1;
+                //         padding: 10px;
+                        
+                //         p {
+                //             white-space: pre-wrap;
+                //             font-size: 14px;
+                //         }
+                //     }
+        
+                //     .post-modal-image {
+                //         padding: 25px;
+                //         img {
+                //             width: 250px;
+                //             height: 250px;
+                //             object-fit: cover;
+                //             border-radius: 15px;
+                //             // margin-top: 20px;
+
+                //             @include mobile {
+                //                 width: 250px;
+                //                 height: 250px;
+                //             }
+                //         }
+
+                //         @include mobile {
+                //             display: flex;
+                //             justify-content: center;
+                //         }
+                //     }
+
+                //     @include mobile {
+                //         flex-direction: column;
+                //     }
+                // }
+
+                .modal-confirm-button {
+                    padding: 10px;
+                    display: flex;
+                    justify-content: center;
+                    border-top: 1px solid grey;
+
+                    button {
+                        border: none;
+                        color: white;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        background-color: #938EEF;
+                        font-weight: bold;
+                        border-radius: 20px;
+                        margin-bottom: -15px;
+                    }
+
+                    button:hover {
+                        background-color: #7e78fb;
+                    }
+                }
+            }
+
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+                color: themed("textColor");
+                width: 30px;
+                height: 30px;
+            }
+    
+        }
+    }
+}
