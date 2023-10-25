@@ -7,13 +7,13 @@ import { makeRequest } from "../../request.js";
 // the userId may come from the profile of the user
 const Posts = ({ userId }) => {
 
-    const { isLoading, error, data } = useQuery(["posts"], () => 
-        makeRequest.get("/posts?userId=" + userId)
-        .then((res) => {
-            const fetchedPosts = res.data;
-            return fetchedPosts;
+    const { isLoading, error, data } = useQuery(["posts"], () => {
+        return makeRequest.get("/posts?userId=" + userId)
+        .then((res) => res.data)
+        .catch((error) => {
+            throw error; // Propagate the error for proper error handling
         })
-    );
+    });
 
     return (
         <div className="posts">

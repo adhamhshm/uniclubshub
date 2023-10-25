@@ -116,10 +116,11 @@ export const addPost = (req, res) => {
         const random = Math.floor(Math.random() * 1000);
         const postId = `${year}${month}${day}${hour}${minute}${second}${millisecond}_${random}`;
 
-        const q = "INSERT INTO posts (`id`, `description`, `image`, `userId`, `createdAt`) VALUES (?)";
+        const q = "INSERT INTO posts (`id`, `title`, `description`, `image`, `userId`, `createdAt`) VALUES (?)";
 
         const values = [
             postId,
+            req.body.title,
             req.body.description,
             req.body.image,
             userInfo.id,

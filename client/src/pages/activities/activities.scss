@@ -1,0 +1,10 @@
+@import "../../globals.scss";
+
+.activities {
+    @include themify($theme) {
+        background-color: themed("bgSoft");
+        padding: 20px;
+        min-height: 100vh;
+        
+    }
+}

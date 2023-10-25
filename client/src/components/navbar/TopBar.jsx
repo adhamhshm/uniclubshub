@@ -1,4 +1,4 @@
-import "./navbar.scss";
+import "./topbar.scss";
 
 // reference: https://mui.com/material-ui/material-icons/
 import HomeIcon from '@mui/icons-material/HomeRounded';
@@ -11,7 +11,7 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import ProfileMenu from "../profileMenu/ProfileMenu";
 
-const Navbar = () => {
+const TopBar = () => {
 
     const { darkMode, toggle } = useContext(DarkModeContext);
     const { currentUser } = useContext(AuthContext);
@@ -48,4 +48,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar;
+export default TopBar;

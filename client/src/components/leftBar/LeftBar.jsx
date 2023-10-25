@@ -11,7 +11,7 @@ const LeftBar = ({ currentUser }) => {
 
     const clubUserLinks = [
         { to: "/", text: "Home", icon: <HomeIcon /> },
-        { to: "/events", text: "Events", icon: <EventIcon /> },
+        { to: "/event", text: "Event", icon: <EventIcon /> },
         { to: "/activities", text: "Activities", icon: <ActivityIcon /> },
         { to: `/profile/${currentUser.id}`, text: "Profile", icon: <ProfileIcon /> },
     ];

@@ -5,11 +5,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { AuthContext } from "../../context/authContext";
 
+import CloseIcon from '@mui/icons-material/CloseOutlined';
+
 const WritePost = () => {
 
     const { currentUser } = useContext(AuthContext);
     
     const [imageFile, setImageFile] = useState(null);
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
     const uploadPhoto = async () => {
@@ -28,7 +31,7 @@ const WritePost = () => {
     // access the client
     const queryClient = useQueryClient()
     // Mutations
-    const mutation = useMutation((newPost) => {
+    const addPostMutation = useMutation((newPost) => {
         return makeRequest.post("/posts", newPost);
     }, 
     {
@@ -45,11 +48,12 @@ const WritePost = () => {
             imageUrl = await uploadPhoto();
         };
         
-        if (!description) {
-            return alert("Please write event description.")
+        if (!description || !title) {
+            return alert("Please write event title and description.")
         };
 
-        mutation.mutate({ description, image: imageUrl });
+        addPostMutation.mutate({ title: title, description: description, image: imageUrl });
+        setTitle("");
         setDescription("");
         setImageFile(null);
     };
@@ -60,17 +64,28 @@ const WritePost = () => {
                 <div className="writepost-container-top">
                     <div className="top-left-part">
                         <img src={currentUser.profilePhoto ? "/upload/" + currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
-                        <textarea
-                            type="text"
-                            rows={2}
-                            placeholder="Post event here..."
-                            onChange={(e) => {setDescription(e.target.value)}} 
-                            value={description}
-                        />
+                        <div className="input-box">
+                            <input
+                                type="text"
+                                placeholder="Event title here..."
+                                onChange={(e) => {setTitle(e.target.value)}}
+                                value={title}
+                            />
+                            <textarea
+                                type="text"
+                                rows={3}
+                                placeholder="Event description here..."
+                                onChange={(e) => {setDescription(e.target.value)}} 
+                                value={description}
+                            />
+                        </div>
                     </div>
                     <div className="top-right-part">
                         {imageFile && (
-                            <img className="imageFile" src={URL.createObjectURL(imageFile)} alt="" />
+                            <div>
+                                <img className="imageFile" src={URL.createObjectURL(imageFile)} alt="" />
+                                <CloseIcon />
+                            </div>
                         )}
                     </div>
                 </div>

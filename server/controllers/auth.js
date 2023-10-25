@@ -1,6 +1,10 @@
 import { db } from "../connectDB.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 export const signin = (req, res) => {
 
@@ -22,7 +26,7 @@ export const signin = (req, res) => {
 
             // initialize web token
             // data[0] is the userInfo
-            const token = jwt.sign({ id: data[0].id }, "secretkey", {
+            const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
                 expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
@@ -55,7 +59,7 @@ export const signin = (req, res) => {
 
             // initialize web token
             // data[0] is the userInfo
-            const token = jwt.sign({ id: data[0].id }, "secretkey", {
+            const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
                 expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password

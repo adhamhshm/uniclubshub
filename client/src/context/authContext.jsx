@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { createContext } from "react";
+import { makeRequest } from "../request.js";
 
 export const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
     const login = async (signinInputs) => {
-        const res = await axios.post("http://localhost:8800/server/auth/signin", signinInputs, { withCredentials: true });
+        const res = await makeRequest.post("/auth/signin", signinInputs);
         setCurrentUser(res.data);
     };
 
@@ -36,7 +37,7 @@ export const AuthContextProvider = ({ children }) => {
     // fetch the token authorization from the server
     const authorizeToken = async () => {
         try {
-            const response = await axios.get("http://localhost:8800/server/auth/authorizeToken", { withCredentials: true });
+            const response = await makeRequest.get("/auth/authorizeToken");
             console.log(response.data); // Response will indicate if the token is valid
             return true;
         } catch (error) {

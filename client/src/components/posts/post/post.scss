@@ -34,7 +34,7 @@
                         flex-direction: column;
 
                         .username {
-                            font-weight: 500;
+                            font-weight: 700;
                         }
 
                         .date {
@@ -71,19 +71,27 @@
                     .url-description {
                         color: #4093f8;
                     }
+
+                    h3 {
+                        margin-top: 0;
+                    }
                 }
 
                 .post-content-container-image {
                     flex: 1;
-                    display: flex;
-                    justify-content: center;
+                    //display: flex;
+                    //justify-content: center;
 
                     img {
-                        width: 270px;
-                        height: 270px;
+                        width: 100%;
+                        height: auto;
                         object-fit: cover;
-                        margin-top: 20px;
                         border-radius: 10px;
+                        border: 1px solid grey;
+                    }
+
+                    @include mobile {
+                        padding-top: 10px;
                     }
                 }
 

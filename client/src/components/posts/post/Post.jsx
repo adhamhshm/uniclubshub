@@ -138,6 +138,7 @@ const Post = ({ post }) => {
                 {/* The content of the post */}
                 <div className="post-content-container">
                     <div className="post-content-container-description">
+                        <h3>{post.title}</h3>
                         {renderDescription(post.description)}
                     </div>
                     {post.image && 
