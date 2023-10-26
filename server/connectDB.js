@@ -11,5 +11,3 @@ export const db = mysql.createConnection({
     password: process.env.MYSQL_DB_PASSWORD,
     database: process.env.MYSQL_DB_NAME,
 });
-
-//Mysqlroot12345/
