@@ -1,5 +1,9 @@
 import { db } from "../connectDB.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 export const getFollowRelation = (req, res) => {
     const q = "SELECT followerUserId FROM follow_relations WHERE followedUserId = ?";
@@ -22,7 +26,7 @@ export const addFollowRelation = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         }
@@ -53,7 +57,7 @@ export const deleteFollowRelation = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         }

@@ -1,5 +1,5 @@
 import "./writepost.scss";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhotoOutlined';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 const WritePost = () => {
 
     const { currentUser } = useContext(AuthContext);
+    const inputRef = useRef();
     
     const [imageFile, setImageFile] = useState(null);
     const [title, setTitle] = useState("");
@@ -44,12 +45,14 @@ const WritePost = () => {
     const handlePost = async (e) => {
         e.preventDefault();
         let imageUrl = "";
-        if (imageFile) {
-            imageUrl = await uploadPhoto();
-        };
         
         if (!description || !title) {
-            return alert("Please write event title and description.")
+            alert("Please write event title and description.")
+            return;
+        };
+
+        if (imageFile) {
+            imageUrl = await uploadPhoto();
         };
 
         addPostMutation.mutate({ title: title, description: description, image: imageUrl });
@@ -57,6 +60,12 @@ const WritePost = () => {
         setDescription("");
         setImageFile(null);
     };
+
+    const clearImageFile = () => {
+        setImageFile(null)
+        // clear the image using useRef
+        inputRef.current.value = null;
+    }
     
     return (
         <div className="writepost">
@@ -73,7 +82,7 @@ const WritePost = () => {
                             />
                             <textarea
                                 type="text"
-                                rows={3}
+                                rows={7}
                                 placeholder="Event description here..."
                                 onChange={(e) => {setDescription(e.target.value)}} 
                                 value={description}
@@ -83,8 +92,12 @@ const WritePost = () => {
                     <div className="top-right-part">
                         {imageFile && (
                             <div>
-                                <img className="imageFile" src={URL.createObjectURL(imageFile)} alt="" />
-                                <CloseIcon />
+                                <img 
+                                    className="imageFile"  
+                                    key={URL.createObjectURL(imageFile) + Math.random()}
+                                    src={URL.createObjectURL(imageFile)} 
+                                    alt="" />
+                                <CloseIcon className="close-icon" onClick={clearImageFile} />
                             </div>
                         )}
                     </div>
@@ -98,6 +111,7 @@ const WritePost = () => {
                             name="file"
                             style={{ display: "none" }}
                             onChange={(e) => {setImageFile(e.target.files[0])}} 
+                            ref={inputRef}
                         />
                         <label htmlFor="file">
                             <div className="item">

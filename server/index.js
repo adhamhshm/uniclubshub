@@ -9,7 +9,7 @@ import authRoute from "./routes/auth.js";
 import likesRoute from "./routes/likes.js";
 import commentsRoute from "./routes/comments.js";
 import followRelationsRoute from "./routes/followRelations.js";
-import registerEventsRoute from "./routes/registerEvents.js";
+import eventsRoute from "./routes/events.js";
 
 // Create an instance of the express application. 
 const app = express();
@@ -33,7 +33,7 @@ app.use("/server/auth", authRoute);
 app.use("/server/likes", likesRoute);
 app.use("/server/comments", commentsRoute);
 app.use("/server/follow_relations", followRelationsRoute);
-app.use("/server/register_events", registerEventsRoute);
+app.use("/server/events", eventsRoute);
 
 // for storing image
 const storage = multer.diskStorage({

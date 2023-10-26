@@ -24,12 +24,12 @@ const PostModal = ({ postData, currentUser, setShowPostModal }) => {
 
     // Registering for an event mutation, need to refetch as once registered, cannot registere again
     const registerEventMutation = useMutation((registerConfirmation) => {
-        return makeRequest.post("/register_events/register", registerConfirmation);
+        return makeRequest.post("/events/register", registerConfirmation);
     },
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "registerEvents" })
+            queryClient.invalidateQueries({ queryKey: "events" })
         },
     });
 

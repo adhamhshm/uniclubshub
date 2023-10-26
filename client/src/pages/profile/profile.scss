@@ -4,6 +4,7 @@
     @include themify($theme) {
         background-color: themed("bgSoft");
         height: 100%;
+        color: themed("textColor");
 
         .images {
             width: 100%;
@@ -116,7 +117,7 @@
         }
 
         .profilePosts {
-            padding: 20px 70px;
+            padding: 20px;
 
             @include mobile {
                 padding: 10px;

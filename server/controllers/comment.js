@@ -1,6 +1,10 @@
 import { db } from "../connectDB.js";
 import jwt from "jsonwebtoken";
 import moment from "moment";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 export const getComments = (req, res) => {
     // const q = `SELECT c.*, u.id AS userId, name, profilePhoto FROM comments AS c JOIN users AS u ON (u.id = c.userId) WHERE c.postId = ?
@@ -29,7 +33,7 @@ export const addComment = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         }

@@ -5,8 +5,8 @@ import { useContext } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import TopBar from "./components/navbar/TopBar";
-import LeftBar from "./components/leftBar/LeftBar";
+import TopBar from "./components/topbar/TopBar";
+import LeftBar from "./components/leftbar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
@@ -14,9 +14,10 @@ import Unauthorized from "./pages/unauthorized/Unauthorized";
 import ParticipantProfile from "./pages/participantProfile/ParticipantProfile";
 import Explore from "./pages/explore/Explore";
 import Event from "./pages/event/Event";
+import Activities from "./pages/activities/Activities";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
-import Activities from "./pages/activities/Activities";
+
 
 
 function App() {

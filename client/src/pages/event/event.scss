@@ -5,6 +5,119 @@
         background-color: themed("bgSoft");
         padding: 20px;
         min-height: 100vh;
+        color: themed("textColor");
         
+        .event-container {
+            background-color: themed("bg");
+            box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+            padding: 20px;
+            border-radius: 20px;
+
+            h1 {
+                margin-top: 5px;
+            }
+
+            .event-selection {
+                display: flex;
+                position: relative;
+                gap: 10px;
+
+                #events {
+                    flex: 6;
+                }
+
+                #dates {
+                    flex: 1;
+                }
+
+                select {
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    background-color: transparent;
+                    color: themed("textColor");
+
+                    option {
+                        color: themed("textColor");
+                        background-color: themed("bgSoft");
+                    }
+                }
+
+                @include mobile {
+                    flex-direction: column;
+                }
+            }
+
+            .download-button-div {
+                padding: 20px 0 20px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: end;
+
+                @include mobile {
+                    span {
+                        display: none;
+                    }
+                }
+               
+
+                button {
+                    border: none;
+                    padding: 10px;
+                    padding-right: 15px;
+                    color: white;
+                    cursor: pointer;
+                    background-color: #938EEF;
+                    font-weight: bold;
+                    border-radius: 20px;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    @include mobile {
+                        height: 35px;
+                        padding-right: 10px;
+                    }
+                }
+
+                button:hover {
+                    background-color: #7e78fb;
+                }
+            }
+
+            .table-participant-list {
+                font-size: 14px;
+                width: 100%;
+                overflow-x: auto;
+
+                #participants {
+                    border-collapse: collapse;
+                    //word-break: break-word;
+                }
+
+                #participants td, #participants th {
+                    border: 1px solid #ddd;
+                    padding: 5px;
+                }
+
+                #participants tr:not(:first-child):hover {
+                    background-color: #d8d6f8;
+                    color: black;
+                }
+
+                #participants th {
+                    text-align: left;
+                    background-color: themed("bgSoft");
+                }
+
+                @include mobile {
+                    width: 80vw;
+                }
+            }
+        }
     }
 }

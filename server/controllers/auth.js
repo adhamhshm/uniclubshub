@@ -27,7 +27,7 @@ export const signin = (req, res) => {
             // initialize web token
             // data[0] is the userInfo
             const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
-                expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
+                //expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
             // remaining properties will be collected to the object named "others"
@@ -60,7 +60,7 @@ export const signin = (req, res) => {
             // initialize web token
             // data[0] is the userInfo
             const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
-                expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
+                //expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
             // remaining properties will be collected to the object named "others"

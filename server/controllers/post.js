@@ -1,6 +1,10 @@
 import moment from "moment";
 import { db } from "../connectDB.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // get posts that is relevant to user
 export const getPosts = (req, res) => {
@@ -12,7 +16,7 @@ export const getPosts = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         };
@@ -36,6 +40,41 @@ export const getPosts = (req, res) => {
     })
 };
 
+export const getPostsByYear = (req, res) => {
+    console.log("Enter getPostsByYear");
+    console.log(req.query.year)
+    console.log(req.query.userId)
+
+    const token = req.cookies.accessToken;
+    if (!token) {
+        return res.status(401).json("Not Signed In.");
+    };
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+        if (err) {
+            return res.status(403).json("Token is not valid.");
+        };
+
+        const q = `SELECT * FROM posts WHERE userId = ?
+                   AND YEAR(createdAt) = ?
+                   ORDER BY createdAt DESC`;
+
+        const values = [
+            req.query.userId,
+            req.query.year
+        ];
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                return console.log("Error fetching posts by year: " + res.status(500).json(err));
+            }
+            else {
+                return res.status(200).json(data);
+            }
+        })
+    })
+};
+
 // get all posts or searched posts
 export const getSearchedPosts = (req, res) => {
     console.log("Enter getSearchPosts");
@@ -46,7 +85,7 @@ export const getSearchedPosts = (req, res) => {
         return res.status(401).json("Not Signed In.");
     }
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         }
@@ -99,7 +138,7 @@ export const addPost = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         };
@@ -144,7 +183,7 @@ export const deletePost = (req, res) => {
         return res.status(401).json("Not Signed In.");
     };
 
-    jwt.verify(token, "secretkey", (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             return res.status(403).json("Token is not valid.");
         };

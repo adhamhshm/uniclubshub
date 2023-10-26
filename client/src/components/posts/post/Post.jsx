@@ -47,7 +47,7 @@ const Post = ({ post }) => {
     );
 
     const { isLoading: isRegisteredLoading, error: isRegisteredError, data: isRegisteredData } = useQuery(["registerEvents", post.id], () =>
-        makeRequest.get(`/register_events?postId=${post.id}`)
+        makeRequest.get(`/events?postId=${post.id}`)
         .then((res) => res.data)
     );
 
