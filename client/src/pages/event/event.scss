@@ -91,11 +91,11 @@
 
             .table-participant-list {
                 font-size: 14px;
-                width: 100%;
                 overflow-x: auto;
 
                 #participants {
                     border-collapse: collapse;
+                    width: 100%;
                     //word-break: break-word;
                 }
 
@@ -115,7 +115,7 @@
                 }
 
                 @include mobile {
-                    width: 80vw;
+                    width: 75vw;
                 }
             }
         }

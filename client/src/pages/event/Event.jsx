@@ -2,7 +2,7 @@ import "./event.scss";
 
 import { makeRequest } from "../../request";
 import { useContext, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 
 import SyncIcon from '@mui/icons-material/Sync';
@@ -52,6 +52,11 @@ const Event = () => {
     // Handle selected post to view participants
     const handlePostChange = (e) => {
         setSelectedPostId(e.target.value);
+        //queryClient.invalidateQueries(["participants", selectedPostId]);
+    };
+
+    // Refresh list
+    const refreshList = (e) => {
         queryClient.invalidateQueries(["participants", selectedPostId]);
     };
 
@@ -74,7 +79,7 @@ const Event = () => {
                     </select>
                 </div>
                 <div className="download-button-div">
-                    <button onClick={() => {alert(listData)}}>
+                    <button onClick={refreshList}>
                         <SyncIcon />
                         <span>Refresh List</span>
                     </button>
@@ -103,12 +108,12 @@ const Event = () => {
                                 </tr>
                                 : listData.length === 0 ?
                                 <tr>
-                                    <td colSpan="5">No registered participant yet.</td>
+                                    <td colSpan="5">No info at the moment.</td>
                                 </tr>
                                 : listData ?
                                 listData.map((participant, index) => (
                                     <tr key={participant.id}>
-                                        <td>{index + 1}</td> {/* Index should start from 1 */}
+                                        <td>{index + 1}</td>
                                         <td>{participant.name}</td>
                                         <td>{participant.id}</td>
                                         <td>{participant.email}</td>

@@ -31,20 +31,30 @@
                     gap: 20px;
                     height: 80vh;
 
-                    span {
-                        font-size: 20px;
-                        display: block;
-                        float: left;
-                        margin: auto 0 0 0;
-                        padding: 5px 10px;
-                        text-decoration: none;
-                        color: themed("textColor");
+                    .navlinks {
+                        display: flex;
+                        justify-items: center;
+                        align-items: center;
+                        span {
+                            font-size: 20px;
+                            display: flex;
+                            padding: 5px 10px;
+                            text-decoration: none;
+                            color: themed("textColor");
+                        }
+    
+                        img {
+                            width: 20px;
+                            height: 20px;
+                            filter: themed("filterColor");
+                        }
                     }
 
                     .active {
-                        //background-color: #938EEF;
-                        // color: #938EEF;
                         font-weight: 700;
+                        img {
+                            zoom: 130%;
+                        }
                     }
                 }
             }

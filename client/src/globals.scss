@@ -16,6 +16,7 @@ $theme: (
         bgSoft: #f6f3f3,
         textColorSoft: #555555,
         border: lightgray,
+        filterColor: invert(0),
     ),
     dark: (
         textColor: whitesmoke,
@@ -25,6 +26,7 @@ $theme: (
         bgSoft: #333333,
         textColorSoft: lightgray,
         border: #444444,
+        filterColor: invert(1),
     )
 );
 

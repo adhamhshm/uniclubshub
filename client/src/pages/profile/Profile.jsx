@@ -56,12 +56,21 @@ const Profile = () => {
 
     return (
         <div className="profile">
-            <div className="images">
-                <img src={"/upload/" + data?.coverPhoto} alt="cover" className="cover" />
-                <img src={data?.profilePhoto ? "/upload/" + data?.profilePhoto : "/default/default-club-image.png"} alt="profile" className="profilePhoto" />
+            <div className="images-container">
+                <img 
+                    className="cover-photo" 
+                    src={"/upload/" + data?.coverPhoto} 
+                    alt="cover" 
+                    
+                />
+                <img 
+                    className="profile-photo" 
+                    src={data?.profilePhoto ? "/upload/" + data?.profilePhoto : "/default/default-club-image.png"} 
+                    alt="profile" 
+                />
             </div>
-            <div className="profileContainer">
-                <div className="userInfo">
+            <div className="profile-info-container">
+                <div className="user-info">
                     <div className="center">
                         <div className="main-name">
                             <span>{data?.name}</span>
@@ -69,13 +78,11 @@ const Profile = () => {
                         <div className="bio">
                             <span>{data?.bio}</span>
                         </div>
-                        <div className="info">
-                            <div className="item">
-                                {userId.includes(currentUser.id) 
-                                    ? <button onClick={() => setOpenUpdateBox(true)}>Update</button>
-                                    : <button onClick={handleFollow} >{followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}</button>
-                                }
-                            </div>
+                        <div className="button-container">
+                            {userId.includes(currentUser.id) 
+                                ? <button onClick={() => setOpenUpdateBox(true)}>Update</button>
+                                : <button onClick={handleFollow} >{followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}</button>
+                            }
                         </div>
                     </div>
                     {/* <div className="right">
@@ -83,7 +90,7 @@ const Profile = () => {
                     </div> */}
                 </div>
             </div>
-            <div className="profilePosts">
+            <div className="profile-posts">
                 <Posts userId={userId} />
             </div>
             {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}

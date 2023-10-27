@@ -1,7 +1,6 @@
 import "./topbar.scss";
 
 // reference: https://mui.com/material-ui/material-icons/
-import HomeIcon from '@mui/icons-material/HomeRounded';
 import MoonIcon from '@mui/icons-material/Brightness4Rounded';
 import SunIcon from '@mui/icons-material/Brightness5Rounded';
 
@@ -21,7 +20,7 @@ const TopBar = () => {
         <div className="navbar">
             <div className="left">
                 <Link to="/" style={{ textDecoration: "none" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
-                    <span>ConnectHub</span>
+                    <span>UNICLUBSHUB</span>
                 </Link>
                 {/* render the icon based on the current theme */}
                 {darkMode ? (

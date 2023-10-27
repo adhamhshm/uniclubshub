@@ -6,18 +6,18 @@
         height: 100%;
         color: themed("textColor");
 
-        .images {
+        .images-container {
             width: 100%;
             height: 300px;
             position: relative;
 
-            .cover {
+            .cover-photo {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
 
-            .profilePhoto {
+            .profile-photo {
                 width: 200px;
                 height: 200px;
                 border-radius: 50%;
@@ -27,16 +27,25 @@
                 right: 0;
                 margin: auto;
                 top: 50px;
+
+                @include mobile {
+                    width: 100px;
+                    height: 100px;
+                    top: 10px;
+                }
+            }
+
+            @include mobile {
+                height: 120px;
             }
         }
 
-        .profileContainer {
+        .profile-info-container {
             
             margin-bottom: 10px;
 
-            .userInfo {
+            .user-info {
                 height: fit-content;
-                //border-radius: 20px;
                 border-bottom-left-radius: 20px;
                 border-bottom-right-radius: 20px;
                 background-color: themed("bg");
@@ -58,21 +67,27 @@
                         }
                     }
 
-                    .info {
+                    .bio {
+                        text-align: center;
+
+                        span {
+                            white-space: pre-wrap;
+                            font-size: 20px;
+                            font-weight: 300;
+                        }
+                    }
+
+                    .button-container {
                         display: flex;
-                        align-items: center;
                         justify-content: space-around;
                         width: 100%;
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        color: themed("textColorSoft");
 
-                        .item {
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-                            color: themed("textColorSoft");
-
-                            span {
-                                font-size: 12px;
-                            }
+                        span {
+                            font-size: 12px;
                         }
 
                         button {
@@ -87,16 +102,6 @@
                         
                         button:hover {
                             background-color: #7e78fb;
-                        }
-                    }
-
-                    .bio {
-                        text-align: center;
-
-                        span {
-                            white-space: pre-wrap;
-                            font-size: 20px;
-                            font-weight: 300;
                         }
                     }
                 }
@@ -116,7 +121,7 @@
             }
         }
 
-        .profilePosts {
+        .profile-posts {
             padding: 20px;
 
             @include mobile {

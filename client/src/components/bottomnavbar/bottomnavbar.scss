@@ -1,0 +1,54 @@
+@import "../../globals.scss";
+
+.bottom-navbar {
+    @include themify($theme) {
+        overflow: hidden;
+        background-color: themed("bg");
+        position: sticky;
+        bottom: 0;
+        width: 100%;
+        display: none;
+
+        .menu {
+            padding: 10px;
+
+            .menu-list {
+                display: flex;
+                justify-content: space-around;
+
+                .navlinks {
+                    display: flex;
+                    flex-direction: row;
+                    justify-items: center;
+                    align-items: center;
+                    span {
+                        font-size: 20px;
+                        display: flex;
+                        padding: 5px 10px;
+                        text-decoration: none;
+                        color: themed("textColor");
+                    }
+    
+                    img {
+                        width: 20px;
+                        height: 20px;
+                        filter: themed("filterColor");
+                    }
+                }
+
+                .active {
+                    background-color: #938EEF;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        @include mobile {
+            display: block;
+        }
+
+        @include tablet {
+            display: block;
+        }
+    }
+}

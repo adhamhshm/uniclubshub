@@ -96,7 +96,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                             <label htmlFor="coverPhoto">
                                 <span>Cover Photo</span>
                                 <div className="imageContainer">
-                                    <img src={updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto) : "/default/upload-cover.png"} alt="cover photo" />
+                                    <img src={updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto) : "/default/upload.png"} alt="cover photo" />
                                 </div>
                                 <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
                             </label>
@@ -106,7 +106,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                         <label htmlFor="profilePhoto">
                             <span>Profile Photo</span>
                             <div className="imageContainer">
-                                <img src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto): "/default/upload-profile.png"} alt="cover photo" />
+                                <img src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto): "/default/upload.png"} alt="cover photo" />
                             </div>
                         </label>
                         <input type="file" id="profilePhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />

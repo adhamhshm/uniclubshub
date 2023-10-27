@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import TopBar from "./components/topbar/TopBar";
+import BottomNavbar from "./components/bottomnavbar/BottomNavbar";
 import LeftBar from "./components/leftbar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
@@ -47,6 +48,7 @@ function App() {
                         </div>
                         <RightBar />
                     </div>
+                    <BottomNavbar currentUser={currentUser} />
                 </div>
             </QueryClientProvider>
         )

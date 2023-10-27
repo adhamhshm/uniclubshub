@@ -1,17 +1,15 @@
-import "./leftbar.scss";
+import "./bottomnavbar.scss";
 
 import { NavLink } from "react-router-dom";
 import { clubUserLinks, participantUserLinks } from "../../constants/navlinks";
 
-const LeftBar = ({ currentUser }) => {
-
+const BottomNavbar = ({ currentUser }) => {
     // Render different navigation links based on the user's role
     const userLinks = currentUser.role === 'club' ? clubUserLinks : participantUserLinks;
 
     return (
-        <div className="leftbar">
-            <div className="container">
-                <div className="menu">
+        <div className="bottom-navbar">
+            <div className="menu">
                     <div className="menu-list">
                         {/* links will be rendered based on the role */}
                         {userLinks.map((link, index) => (
@@ -24,14 +22,12 @@ const LeftBar = ({ currentUser }) => {
                                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                             >
                                 <span><img src={link.icon} alt={link.text} /></span>
-                                <span>{link.text}</span>
                             </NavLink>
                         ))}
                     </div>
                 </div>
-            </div>
         </div>
     )
-};
+}
 
-export default LeftBar;
+export default BottomNavbar;
