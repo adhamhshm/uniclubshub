@@ -71,8 +71,12 @@
                 input {
                     border: none;
                     border-bottom: 1px solid lightgray;
-                    padding: 15px 10px;
+                    padding: 10px;
                     outline: none;
+                }
+
+                .input-invalid::placeholder {
+                    color: red;
                 }
                 
                 .button-div {
@@ -98,6 +102,11 @@
                     a {
                         color: #000000;
                     }
+                }
+
+                .signup-error-message {
+                    color: red;
+                    font-size: 14px;
                 }
             }
         }

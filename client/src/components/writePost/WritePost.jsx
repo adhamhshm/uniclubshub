@@ -15,6 +15,7 @@ const WritePost = () => {
     const [imageFile, setImageFile] = useState(null);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [showInvalidMessage, setInvalidMessage] = useState(false);
 
     const uploadPhoto = async () => {
         try {
@@ -47,7 +48,15 @@ const WritePost = () => {
         let imageUrl = "";
         
         if (!description || !title) {
-            alert("Please write event title and description.")
+            // Show the invalid message
+            setInvalidMessage(true);
+
+            // Hide the message after 3 seconds
+            setTimeout(() => {
+                setInvalidMessage(false);
+            }, 3000);
+
+            // exit the function
             return;
         };
 
@@ -75,15 +84,17 @@ const WritePost = () => {
                         <img src={currentUser.profilePhoto ? "/upload/" + currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
                         <div className="input-box">
                             <input
+                                className={showInvalidMessage ? "input-invalid" : ""}
                                 type="text"
-                                placeholder="Event title here..."
+                                placeholder={showInvalidMessage ? "Please fill out this field." : "Event title here..."}
                                 onChange={(e) => {setTitle(e.target.value)}}
                                 value={title}
                             />
                             <textarea
+                                className={showInvalidMessage ? "input-invalid" : ""}
                                 type="text"
                                 rows={7}
-                                placeholder="Event description here..."
+                                placeholder={showInvalidMessage ? "Please fill out this field." : "Event description here..."}
                                 onChange={(e) => {setDescription(e.target.value)}} 
                                 value={description}
                             />

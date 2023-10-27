@@ -78,6 +78,14 @@ export const signin = (req, res) => {
 
 export const signup = (req, res) => {
 
+    // Regular expression for validating email format
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    // Check if the email follows the standard email format
+    if (!emailRegex.test(req.body.email)) {
+        return res.status(400).json("Invalid email format.");
+    }
+
     if (req.body.role === "club" ) {
         // check if user exists
         const q = "SELECT * FROM users WHERE id = ?";

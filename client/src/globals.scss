@@ -7,6 +7,18 @@ html, body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+@media (max-width: 600px) {
+    html, body {
+        padding-bottom: 20px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    html, body {
+        padding-bottom: 20px;
+    }
+}
+
 $theme: (
     light: (
         textColor: #000000,

@@ -1,19 +1,61 @@
 import "./register.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { makeRequest } from "../../request";
 import axios from "axios";
 
 const Register = () => {
 
     const navigate = useNavigate();
+    const [showEmptyInputMessage, setShowEmptyInputMessage] = useState(false);
+    const [failedSignupMessage, setFailedSignupMessage] = useState("");
 
     const [signupInputs, setSignupInputs] = useState({
         id: "",
         email: "",
         password: "",
+        confirmPassword: "",
         name: "",
         role: "",
     });
+
+    const inputFields = [
+        {
+            name: "id",
+            type: "text",
+            placeholder: showEmptyInputMessage ? "Id cannot be blank." : "Student/Club Id",
+            value: signupInputs.id,
+            required: true
+        },
+        {
+            name: "email",
+            type: "email",
+            placeholder: showEmptyInputMessage ? "Email cannot be blank." : "Email",
+            value: signupInputs.email,
+            required: true
+        },
+        {
+            name: "password",
+            type: "password",
+            placeholder: showEmptyInputMessage ? "Password cannot be blank." : "Password",
+            value: signupInputs.password,
+            required: true
+        },
+        {
+            name: "confirmPassword",
+            type: "password",
+            placeholder: showEmptyInputMessage ? "Password cannot be blank." : "Confirm Password",
+            value: signupInputs.confirmPassword,
+            required: true
+        },
+        {
+            name: "name",
+            type: "text",
+            placeholder: showEmptyInputMessage ? "Name cannot be blank." : "Name",
+            value: signupInputs.name,
+            required: true
+        },
+    ];
 
     const handleChange = (e) => {
         // setSignupInputs((prev) => ({
@@ -51,29 +93,33 @@ const Register = () => {
         }
     };
 
+    // Function to check if the form is filled out correctly.
     const validateForm = () => {
-        let errors = "";
-        if (!signupInputs.id) {
-            errors += "Id is empty.\n";
+        for (const field of inputFields) {
+            if (field.required && !signupInputs[field.name]) {
+                // Show an empty input message if any required field is empty.
+                setShowEmptyInputMessage(true);
+
+                // Hide the message after 3 seconds.
+                setTimeout(() => {
+                    setShowEmptyInputMessage(false);
+                }, 3000);
+
+                return false; // Return false to indicate the form is not filled correctly.
+            }
         }
-        if (!signupInputs.email) {
-            errors += "Email is empty.\n";
+
+        // Check if the password is at least 8 characters long
+        if (signupInputs.password.length < 8) {
+            setFailedSignupMessage("Password must be at least 8 characters long.");
+            return false;
         }
-        if (!signupInputs.password) {
-            errors += "Password is empty.\n";
+
+        // If password and confirm password not match
+        if (signupInputs.password !== signupInputs.confirmPassword) {
+            setFailedSignupMessage("Password does not match.");
+            return false;
         }
-        if (!signupInputs.name) {
-            errors += "Name is empty.\n";
-        }
-        if (errors) {
-            alert(errors);
-            return;
-        }
-    }
-    
-    const handleSignup = async (e) => {
-        e.preventDefault();
-        if (validateForm()) return;
 
         // Check if the first letter of the id is "c" and the length is equal to 5 characters
         if (signupInputs.id.length === 6 && signupInputs.id[0].toUpperCase() === "C") {
@@ -83,17 +129,42 @@ const Register = () => {
             // Assign the "participant"
             signupInputs.role = "participant";
         } else {
-            alert("Invalid Id.");
-            return true;
+            setFailedSignupMessage("Invalid Id.");
+            return false;
         }
 
+        // Regular expression for validating email format
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        // Check if the email follows the standard email format
+        if (!emailRegex.test(signupInputs.email)) {
+            setFailedSignupMessage("Invalid email format.");
+            return false;
+        }
+
+        return true; // Return true if the form is correctly filled out.
+    };
+    
+    const handleSignup = async (e) => {
+        e.preventDefault();
+
+        // If form validation is false
+        if (!validateForm()) {
+            return;
+        }
+
+        // if there is no other error, send data to the server
         try {
-            await axios.post("http://localhost:8800/server/auth/signup", signupInputs);
+            await makeRequest.post("/auth/signup", signupInputs);
             navigate("/login");
             alert("Successfully registered.");
         }
         catch (error) {
-            alert(error.response.data);
+            setFailedSignupMessage(error.response.data);
+            // Display the message for 10 seconds
+            setTimeout(() => {
+                setFailedSignupMessage("");
+            }, 10000); // 10 seconds in milliseconds
         }
     }
 
@@ -110,10 +181,24 @@ const Register = () => {
                 <div className="left">
                     <h1>Register</h1>
                     <form>
-                        <input type="text" placeholder="Student/Club Id" name="id" value={signupInputs.id} onChange={handleChange} />
-                        <input type="email" placeholder="Email" name="email" value={signupInputs.email} onChange={handleChange} />
-                        <input type="password" placeholder="Password" name="password" value={signupInputs.password} onChange={handleChange} />
-                        <input type="text" placeholder="Name" name="name" value={signupInputs.name} onChange={handleChange} />
+                        {inputFields.map((input) => (
+                            <input
+                                key={input.name}
+                                className={showEmptyInputMessage ? "input-invalid" : ""}
+                                type={input.type}
+                                placeholder={input.placeholder}
+                                name={input.name}
+                                onChange={handleChange}
+                                value={input.value}
+                                required={input.required}
+                                onFocus={() => {setFailedSignupMessage("")}}
+                            />
+                        ))}
+                        {failedSignupMessage && 
+                            <div className="signup-error-message">
+                                {failedSignupMessage}
+                            </div>
+                        }
                         <div className="button-div">
                             <button onClick={handleSignup}>Sign Up</button>
                         </div>

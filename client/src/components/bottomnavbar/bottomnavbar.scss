@@ -4,7 +4,7 @@
     @include themify($theme) {
         overflow: hidden;
         background-color: themed("bg");
-        position: sticky;
+        position: fixed;
         bottom: 0;
         width: 100%;
         display: none;

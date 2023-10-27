@@ -64,6 +64,9 @@
                         span {
                             font-size: 30px;
                             font-weight: 500;
+                            @include mobile {
+                                font-size: 18px;
+                            }
                         }
                     }
 
@@ -74,6 +77,9 @@
                             white-space: pre-wrap;
                             font-size: 20px;
                             font-weight: 300;
+                            @include mobile {
+                                font-size: 14px;
+                            }
                         }
                     }
 

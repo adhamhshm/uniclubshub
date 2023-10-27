@@ -2,6 +2,7 @@ import "./profilemenu.scss";
 import axios from "axios";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { makeRequest } from "../../request"
 
 const ProfileMenu = ({ setOpenMenuModal }) => {
 
@@ -21,7 +22,7 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
 
     const handleSignout = async () => {
         try {
-            await axios.post("http://localhost:8800/server/auth/signout", { }, { withCredentials: true });
+            await makeRequest.post("http://localhost:8800/server/auth/signout", {});
             localStorage.clear();
             window.location.reload(false);
             navigate("/login");

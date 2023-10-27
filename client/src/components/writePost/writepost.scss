@@ -60,6 +60,10 @@
                             color: themed("textColor");
                             white-space: pre-wrap;
                         }
+
+                        .input-invalid::placeholder {
+                            color: red;
+                        }
                     }
                 }
                     
