@@ -46,7 +46,7 @@ function App() {
                         <div style={{ flex: 6}}>
                             <Outlet />
                         </div>
-                        <RightBar />
+                        <RightBar currentUser={currentUser} />
                     </div>
                     <BottomNavbar currentUser={currentUser} />
                 </div>

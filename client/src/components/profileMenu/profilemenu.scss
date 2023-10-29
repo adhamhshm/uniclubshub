@@ -7,6 +7,9 @@
         right: 20px;
 
         .wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             background-color: themed("bg");
             width: fit-content;
             height: fit-content;
@@ -15,11 +18,20 @@
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+
+            .slider-div {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                padding: 10px;
+                font-weight: bold;
+            }
              
             .button-div {
                 justify-content: center;
-                align-items: center;
+                align-items: left;
                 display: flex;
+
                 button {
                     border: none;
                     padding: 10px 20px;
@@ -34,6 +46,10 @@
                     background-color: #a3413d;
                 }
             }
+        }
+
+        @include mobile {
+            
         }
     }
 };

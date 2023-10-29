@@ -3,82 +3,125 @@
 .explore {
     @include themify($theme) {
         background-color: themed("bgSoft");
-        padding: 20px;
+        padding: 90px 30px 30px 30px;
         min-height: 100vh;
         color: themed("textColor");
-       
-        .search-container {
+
+        .explore-top-container {
+            border-radius: 20px;
             background-color: themed("bg");
+            //background-color: red;
+            padding: 5px 0 0 0;
+            height: fit-content;
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
-            border-radius: 20px;
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            
 
-            .back-button-box {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 10px;
-                width: 15px;
-                height: 15px;
-                margin: auto;
-                border-radius: 50%;
-                
-                cursor: pointer;
-            }
-
-            .back-button-box:hover {
-                background-color: #7e78fb;
-                color: white;
-            }
-
-            .text-box {
-                width: 100%;
-                padding: 10px;
-                margin: auto;
+            .search-container {
+                border-bottom: 1px solid lightgray;
                 display: flex;
                 flex-direction: row;
-                align-items: center;
-                color: themed("textColor");
-
-                .search-icon {
-                    padding-right: 15px;
-                }
-
-                input {
-                    border: none;
-                    outline: none;
-                    padding: 10px;
-                    background-color: transparent;
-                    color: themed("textColor");
-                    width: 95%;
-                }
-            }
-
-            .search-button-box {
-                padding: 10px;
-            }
-
-            button {
-                border: none;
-                padding: 10px 20px;
-                color: white;
-                cursor: pointer;
-                background-color: #938EEF;
-                font-weight: bold;
-                border-radius: 20px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
+                //margin-bottom: 20px;
     
-            button:hover {
-                background-color: #7e78fb;
+                .back-button-box {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 10px;
+                    width: 15px;
+                    height: 15px;
+                    margin: auto;
+                    margin-left: 10px;
+                    border-radius: 50%;
+                    
+                    cursor: pointer;
+                }
+    
+                .back-button-box:hover {
+                    background-color: #7e78fb;
+                    color: white;
+                }
+    
+                .text-box {
+                    width: 100%;
+                    padding: 10px;
+                    margin: auto;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    color: themed("textColor");
+    
+                    .search-icon {
+                        padding-right: 15px;
+                    }
+    
+                    input {
+                        border: none;
+                        outline: none;
+                        padding: 10px;
+                        background-color: transparent;
+                        color: themed("textColor");
+                        width: 95%;
+                    }
+                }
+    
+                .search-button-box {
+                    padding: 10px;
+                }
+    
+                button {
+                    border: none;
+                    padding: 10px 20px;
+                    color: white;
+                    cursor: pointer;
+                    background-color: #938EEF;
+                    font-weight: bold;
+                    border-radius: 20px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+        
+                button:hover {
+                    background-color: #7e78fb;
+                }
             }
+
+            .tabs-container {
+                .tabs {
+                    display: flex;
+                    flex-direction: row;
+                    background-color: themed("bg");
+                    cursor: pointer;
+                    border-radius: 0 0 20px 20px;
+                    justify-content: space-around;
+        
+                    .tab {
+                        display: flex;
+                        justify-content: center;
+                        padding: 10px;
+                        color: themed("textColor");
+                        width: 30%;
+                    }
+        
+                    .active {
+                        background-size: contain;
+                        font-weight: 700;
+                        border-bottom: 5px solid #938EEF;
+                    }
+                }
+            }
+        }
+
+        .not-found-message {
+            padding: 20px;
+            background-color: themed("bg");
+            border-radius: 20px;
+            box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
         }
     }
 }

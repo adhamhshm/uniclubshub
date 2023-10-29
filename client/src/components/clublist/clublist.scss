@@ -1,0 +1,75 @@
+@import "../../globals.scss";
+
+.club-list {
+    @include themify($theme) {
+        .user-list-container {
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+            background-color: themed("bg");
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            span{
+                color: themed("textColor");
+            }
+
+            .user-list {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+
+                .user-info {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+                    span {
+                        margin: auto;
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: themed("textColor");
+                    }
+
+                }
+
+                .buttons {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    button {
+                        border: none;
+                        padding: 5px;
+                        color: white;
+                        cursor: pointer;
+                        font-weight: bold;
+                        border-radius: 20px;
+                        padding: 10px 20px;
+                        background-color: #938EEF;
+                    }
+
+                    button:hover {
+                        background-color: #7e78fb;
+                    }
+
+                    .icon {
+                        color: themed("textColor");
+                    }
+                }
+            }
+        }
+    }
+}

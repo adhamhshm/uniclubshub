@@ -3,7 +3,7 @@
 .activities {
     @include themify($theme) {
         background-color: themed("bgSoft");
-        padding: 20px;
+        padding: 90px 30px 30px 30px;
         min-height: 100vh;
         color: themed("textColor");
     }

@@ -26,7 +26,7 @@
                 left: 0;
                 right: 0;
                 margin: auto;
-                top: 50px;
+                top: 90px;
 
                 @include mobile {
                     width: 100px;
@@ -138,6 +138,10 @@
             @include tablet {
                 padding: 20px;
             }
+        }
+
+        @include mobile {
+            width: 100%;
         }
     }
 }

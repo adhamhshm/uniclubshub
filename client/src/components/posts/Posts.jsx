@@ -7,7 +7,7 @@ import { makeRequest } from "../../request.js";
 // the userId may come from the profile of the user
 const Posts = ({ userId }) => {
 
-    const { isLoading, error, data } = useQuery(["posts"], () => {
+    const { isLoading, error, data } = useQuery(["posts", userId], () => {
         return makeRequest.get("/posts?userId=" + userId)
         .then((res) => res.data)
         .catch((error) => {

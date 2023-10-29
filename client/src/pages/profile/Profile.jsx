@@ -17,7 +17,7 @@ const Profile = () => {
     const userId = useLocation().pathname.split("/")[2];
 
     // fetch user info
-    const { isLoading, error, data } = useQuery(["user"], () => 
+    const { isLoading, error, data } = useQuery(["user", userId], () => 
         makeRequest.get("/users/find/" + userId)
         .then((res) => {
             return res.data;
@@ -25,7 +25,7 @@ const Profile = () => {
     );
 
     // fetch user follow relations
-    const { data: followRelationData } = useQuery(["follow_relation"], () => 
+    const { data: followRelationData } = useQuery(["follow_relation", userId], () => 
         makeRequest.get("/follow_relations?followedUserId=" + userId)
         .then((res) => {
             return res.data;

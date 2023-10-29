@@ -1,58 +1,75 @@
 @import "../../globals.scss";
 
-.navbar {
+.topbar {
     @include themify($theme) {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 20px;
-        height: 50px;
-        border-bottom: 1px solid themed("border");
-        position: sticky;
-        top: 0;
+        overflow: hidden;
         background-color: themed("bg");
         color: themed("textColor");
-        z-index: 9999;
+        border-bottom: 1px solid themed("border");
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        // display: flex;
+        // align-items: center;
+        // padding: 20px;
+        // height: 50px;
+        // width: 100vw;
+        // border-bottom: 1px solid themed("border");
+        // position: sticky;
+        // top: 0;
+        // background-color: themed("bg");
+        // color: themed("textColor");
+        // z-index: 9999;
+        // overflow: hidden;
 
-        .left{
+        .topbar-container {
             display: flex;
-            align-items: center;
-            gap: 30px;
-
-            span {
-                font-weight: bold;
-                font-size: 20px;
-                color: themed("logo");
-            }
-        }
-
-        .right {
-            display: flex;
-            align-items: center;
-            justify-content: right;
-
-            .user {
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            padding-left: 30px;
+            
+            .left{
                 display: flex;
                 align-items: center;
-                gap: 10px;
-                font-weight: 500px;
-
-                img {
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    cursor: pointer;
-                }
+                gap: 30px;
+    
                 span {
-                    cursor: pointer;
-                    -webkit-user-select: none;
+                    font-weight: bold;
+                    font-size: 20px;
+                    color: themed("logo");
                 }
-
             }
-
-            @include tablet {
-                width: 200px;
+    
+            .right {
+                display: flex;
+                align-items: center;
+                justify-content: right;
+    
+                .user {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-weight: 500px;
+    
+                    img {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        cursor: pointer;
+                    }
+                    span {
+                        cursor: pointer;
+                        -webkit-user-select: none;
+                    }
+    
+                }
+    
+                @include tablet {
+                    width: 200px;
+                }
             }
         }
     }
