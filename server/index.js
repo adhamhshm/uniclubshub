@@ -1,5 +1,7 @@
 import cors from "cors";
+import fs from "fs";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import express from "express";
 import multer from "multer";
 import usersRoute from "./routes/users.js";
@@ -10,6 +12,10 @@ import likesRoute from "./routes/likes.js";
 import commentsRoute from "./routes/comments.js";
 import followRelationsRoute from "./routes/followRelations.js";
 import eventsRoute from "./routes/events.js";
+import imagesRoutes from "./routes/images.js";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Create an instance of the express application. 
 const app = express();
@@ -21,7 +27,7 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({
-    origin:"http://localhost:5173"
+    origin: process.env.INTERNAL_CLIENT_URL
 }));
 app.use(cookieParser());
 
@@ -34,26 +40,7 @@ app.use("/server/likes", likesRoute);
 app.use("/server/comments", commentsRoute);
 app.use("/server/follow_relations", followRelationsRoute);
 app.use("/server/events", eventsRoute);
-
-// for storing image
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "../client/public/upload")
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname)
-    }
-})
-  
-const upload = multer({ storage: storage })
-app.post("/server/upload", upload.single("file"), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded." });
-    }
-    const file = req.file;
-    console.log(req.file);
-    res.status(200).json(file.filename);
-})
+app.use("/server/images", imagesRoutes);
 
 // This line starts the web server and makes it listen on port 8800 
 // for incoming HTTP requests. When a request is received on this port, 

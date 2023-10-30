@@ -17,12 +17,6 @@ const ParticipantProfile = () => {
 
     const isCurrentUser = currentUser.id === userId;
 
-    // if user trying to look at another account, automatically navigate back to its own profile
-    // if (currentUser.id !== userId) {
-    //     window.location.reload();
-    //     navigate(`/profile/participant/${currentUser.id}`);
-    // };
-
     // fetch user info
     const { isLoading, error, data } = useQuery(["user"], () => 
         makeRequest.get("/participants/find/" + userId)

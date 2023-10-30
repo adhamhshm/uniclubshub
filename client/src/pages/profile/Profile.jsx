@@ -2,7 +2,7 @@ import "./profile.scss";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../request";
 import Posts from "../../components/posts/Posts";
 
@@ -13,16 +13,18 @@ const Profile = () => {
 
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const { currentUser } = useContext(AuthContext);
-    //const userId = currentUser.id;
     const userId = useLocation().pathname.split("/")[2];
+    const navigate = useNavigate();
 
     // fetch user info
-    const { isLoading, error, data } = useQuery(["user", userId], () => 
-        makeRequest.get("/users/find/" + userId)
-        .then((res) => {
-            return res.data;
-        })
-    );
+    const { isLoading, error, data } = useQuery(["user", userId], () => {
+        return makeRequest.get("/users/find/" + userId)
+        .then((res) => res.data )
+        .catch((error) => {
+            navigate("/unauthorized")
+            throw error; // Propagate the error for proper error handling
+        });
+    });
 
     // fetch user follow relations
     const { data: followRelationData } = useQuery(["follow_relation", userId], () => 
@@ -35,7 +37,7 @@ const Profile = () => {
     // access the client
     const queryClient = useQueryClient();
     // Mutations
-    const mutation = useMutation((following) => {
+    const followUserMutation = useMutation((following) => {
         if (following) {
             return makeRequest.delete("/follow_relations?userId=" + userId);
         }
@@ -51,7 +53,7 @@ const Profile = () => {
     })
 
     const handleFollow = () => {
-        mutation.mutate(followRelationData.includes(currentUser.id));
+        followUserMutation.mutate(followRelationData.includes(currentUser.id));
     };
 
     return (
@@ -79,9 +81,9 @@ const Profile = () => {
                             <span>{data?.bio}</span>
                         </div>
                         <div className="button-container">
-                            {userId.includes(currentUser.id) 
-                                ? <button onClick={() => setOpenUpdateBox(true)}>Update</button>
-                                : <button onClick={handleFollow} >{followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}</button>
+                            {userId.includes(currentUser.id) ? <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
+                            currentUser.role === "participant" ? <button onClick={handleFollow} >{followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}</button> :
+                            null
                             }
                         </div>
                     </div>

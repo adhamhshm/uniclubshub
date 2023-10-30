@@ -15,11 +15,14 @@ export const getUser = (req, res) => {
             console.log("Error fetching user: " + err.message);
             return res.status(500).json(err);
         }
-        else {
-            // should not return the password
-            const { password, ...userInfo } = data[0];
-            return res.json(userInfo);
+
+        if (data.length === 0) {
+            return res.status(404).json({ error: "User not found" });
         }
+
+        // should not return the password
+        const { password, ...userInfo } = data[0];
+        return res.json(userInfo);
     })
 
 };

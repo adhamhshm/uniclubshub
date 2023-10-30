@@ -3,7 +3,9 @@
 .participant-profile {
     @include themify($theme) {
         background-color: themed("bgSoft");
-        height: 100vh;
+        padding: 70px 0 0 0;
+        min-height: calc(100vh - 70px);
+        color: themed("textColor");
 
         .participant-images {
             width: 100%;
@@ -19,7 +21,7 @@
                 left: 0;
                 right: 0;
                 margin: auto;
-                top: 90px;
+                top: 50px;
             }
         }
 

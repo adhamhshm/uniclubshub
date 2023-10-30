@@ -2,8 +2,9 @@
 
 .profile {
     @include themify($theme) {
+        padding: 70px 0 0 0;
         background-color: themed("bgSoft");
-        height: 100%;
+        min-height: calc(100vh - 70px);
         color: themed("textColor");
 
         .images-container {
@@ -26,17 +27,16 @@
                 left: 0;
                 right: 0;
                 margin: auto;
-                top: 90px;
+                top: 50px;
 
                 @include mobile {
                     width: 100px;
                     height: 100px;
-                    top: 10px;
                 }
             }
 
             @include mobile {
-                height: 120px;
+                height: 190px;
             }
         }
 

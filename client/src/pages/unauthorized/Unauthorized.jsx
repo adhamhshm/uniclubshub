@@ -1,13 +1,13 @@
-import React from "react";
-import axios from "axios";
+import "./unauthorized.scss";
 import { useNavigate } from "react-router-dom";
+import { makeRequest } from "../../request";
 
 const Unauthorized = () => {
 
     const navigate = useNavigate();
     const handleSignout = async () => {
         try {
-            await axios.post("http://localhost:8800/server/auth/signout", { }, { withCredentials: true });
+            await makeRequest.post("/auth/signout", {});
             localStorage.clear();
             navigate("/login");
         }
@@ -17,10 +17,25 @@ const Unauthorized = () => {
     }
 
     return (
-        <div>
-            <button onClick={handleSignout}>
-                Unauthorized Page
-            </button>
+        <div className="unauthorized">
+            <div className="unauthorized-container">
+                <div className="title">
+                    <h2>
+                        Not Found / Unauthorized
+                    </h2>
+                    <p>
+                        You may have entered an incorrect URL.
+                    </p>
+                </div>
+                <div className="button-container">
+                    <button onClick={() => {navigate("/")}}>
+                        Back to Home
+                    </button>
+                    <button className="sign-out-button" onClick={handleSignout}>
+                        Sign Out
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

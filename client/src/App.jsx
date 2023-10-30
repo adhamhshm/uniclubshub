@@ -19,11 +19,9 @@ import Activities from "./pages/activities/Activities";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 
-
-
 function App() {
 
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
     
     const queryClient = new QueryClient({
@@ -43,7 +41,7 @@ function App() {
                     <TopBar />
                     <div style={{display: "flex"}}>
                         <LeftBar currentUser={currentUser} />
-                        <div style={{ flex: 6}}>
+                        <div style={{ flex: 6 }}>
                             <Outlet />
                         </div>
                         <RightBar currentUser={currentUser} />
@@ -55,14 +53,9 @@ function App() {
     };
 
     const ProtectedRoute = ({ children, requiredRole }) => {
-        if (!currentUser) {
+        const isTokenValid = authorizeToken();
+        if (!currentUser || !isTokenValid) {
             return <Navigate to="/login" />
-        }
-
-        // Check if the user has the required role to access the route
-        if (!currentUser && requiredRole && currentUser.role !== requiredRole) {
-            // Redirect to a different route or show an unauthorized message
-            return <Navigate to="/unauthorized" />;
         }
         
         // children is the protected Layout
@@ -131,7 +124,7 @@ function App() {
             element: <Register />
         },
         {
-            path: "/unauthorized",
+            path: "*",
             element: <Unauthorized />
         }
     ]);

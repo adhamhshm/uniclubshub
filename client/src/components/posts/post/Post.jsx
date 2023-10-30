@@ -86,6 +86,7 @@ const Post = ({ post }) => {
 
     const handleDelete = () => {
         deletePostMutation.mutate(post.id);
+        makeRequest.delete("/images/delete" , { data : { imageToBeDeleted: post.image }});
     };
 
     // Function to render description with clickable links

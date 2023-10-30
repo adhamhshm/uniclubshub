@@ -64,6 +64,14 @@
                         .input-invalid::placeholder {
                             color: red;
                         }
+
+                        .character-too-long-message {
+                            padding: 10px 0 0 10px;
+                            display: flex;
+                            font-size: 14px;
+                            color: red;
+                            font-weight: 500;
+                        }
                     }
                 }
                     
@@ -145,6 +153,15 @@
 
                     button:hover {
                         background-color: #7e78fb;
+                    }
+
+                    .disabled-button {
+                        background-color: gray;
+                        cursor: not-allowed;
+                    }
+
+                    .disabled-button:hover {
+                        background-color: gray;
                     }
                 }
             }

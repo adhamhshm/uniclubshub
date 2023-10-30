@@ -18,15 +18,21 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         bio: user.bio || "",
     });
 
-    const uploadPhoto = async (file) => {
+    const uploadPhoto = async (newImageFile, currentImageFilename) => {
         try {
+            // Create a new FormData object to construct the data to be sent
             const formData = new FormData();
-            formData.append("file", file);
-            // send the file to the server
-            const res = await makeRequest.post("/upload" , formData);
+            // Append the file to the FormData with the key "file"
+            formData.append("file", newImageFile);
+            // Append the current existing file name to the FormData with the key "filename"
+            formData.append("currentImageFilename", currentImageFilename);
+            // Send the file and its name to the server using a POST request
+            const res = await makeRequest.post("/images/upload" , formData);
+            // Return the response data from the server
             return res.data;
         } 
         catch(err) {
+            // Handle any errors that may occur during the upload process
             console.log("Error upload image: " + err.message)
         }
     };
@@ -42,7 +48,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     // access the client
     const queryClient = useQueryClient()
     // Mutations
-    const mutation = useMutation((updatedUserInfo) => {
+    const updateProfileMutation = useMutation((updatedUserInfo) => {
         if (user.role.includes("club")) {
             return makeRequest.put("/users", updatedUserInfo);
         }
@@ -70,10 +76,10 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         let coverPhotoUrl;
         let profilePhotoUrl;
         
-        coverPhotoUrl = updatedCoverPhoto ? await uploadPhoto(updatedCoverPhoto) : user.coverPhoto;
-        profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto) : user.profilePhoto;
+        coverPhotoUrl = updatedCoverPhoto ? await uploadPhoto(updatedCoverPhoto, user.coverPhoto) : user.coverPhoto;
+        profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto, user.profilePhoto) : user.profilePhoto;
         
-        mutation.mutate({ ...updateInputs, coverPhoto: coverPhotoUrl, profilePhoto: profilePhotoUrl });
+        updateProfileMutation.mutate({ ...updateInputs, coverPhoto: coverPhotoUrl, profilePhoto: profilePhotoUrl });
         updateProfilePhotoData(profilePhotoUrl);
         setUpdateInputs("");
         setUpdatedCoverPhoto(null);
@@ -86,10 +92,6 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
             <div className="wrapper">
                 <h1>Update Profile</h1>
                 <form>
-                    {/* <input type="file" onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
-                    <input type="file" onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />
-                    <input type="text" name="name" onChange={handleChange} />
-                    <button onClick={handleUpdate}>Update</button> */}
                     <div className="files">
                         {/* cover photo is only for club */}
                         {user.role === "club" ? (
@@ -120,7 +122,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                             <>
                                 <label>Bio</label>
                                 <textarea type="text" rows={3} 
-                                placeholder="Write bio here... (not more than 300 characters)" 
+                                placeholder="Write bio here..." 
                                 name="bio" 
                                 onChange={handleChange} 
                                 value={updateInputs.bio} 

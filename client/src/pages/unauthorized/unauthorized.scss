@@ -1,0 +1,59 @@
+@import "../../globals.scss";
+
+.unauthorized {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333333;
+    min-height: 100vh;
+    height: 100%;
+
+    .unauthorized-container {
+        width: 300px;
+        background-color: #222222;
+        color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+
+        .title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            padding: 0 0 10px 0;
+
+            button {
+                width: 50%;
+                border: none;
+                background-color: #938EEF;
+                font-weight: bold;
+                border-radius: 20px;
+                color: white;
+                padding: 10px 20px;
+                cursor: pointer;
+            }
+            
+            button:hover {
+                background-color: #7e78fb;
+            }
+
+            .sign-out-button {
+                background-color: #f0544f;
+            }
+
+            .sign-out-button:hover {
+                background-color: #a3413d;
+            }
+        }
+    }
+}

@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const WritePost = () => {
 
+    const MAX_DESCRIPTION_LENGTH = 5000;
     const { currentUser } = useContext(AuthContext);
     const inputRef = useRef();
     
@@ -17,12 +18,15 @@ const WritePost = () => {
     const [description, setDescription] = useState("");
     const [showInvalidMessage, setInvalidMessage] = useState(false);
 
+    // Function to check if description exceeds the character limit
+    const isDescriptionTooLong = description.length > MAX_DESCRIPTION_LENGTH;
+
     const uploadPhoto = async () => {
         try {
             const formData = new FormData();
             formData.append("file", imageFile);
             // send the file to the server
-            const res = await makeRequest.post("/upload" , formData);
+            const res = await makeRequest.post("/images/upload" , formData);
             return res.data;
         } 
         catch(err) {
@@ -46,6 +50,10 @@ const WritePost = () => {
     const handlePost = async (e) => {
         e.preventDefault();
         let imageUrl = "";
+
+        if (isDescriptionTooLong) {
+            return;
+        }
         
         if (!description || !title) {
             // Show the invalid message
@@ -98,6 +106,9 @@ const WritePost = () => {
                                 onChange={(e) => {setDescription(e.target.value)}} 
                                 value={description}
                             />
+                            { isDescriptionTooLong && <div className="character-too-long-message">
+                                <span>Description too long {description.length}/5000</span>
+                            </div>}
                         </div>
                     </div>
                     <div className="top-right-part">
@@ -132,7 +143,7 @@ const WritePost = () => {
                         </label>
                     </div>
                     <div className="bottom-right-part">
-                        <button onClick={handlePost}>Post</button>
+                        <button className={isDescriptionTooLong ? "disabled-button" : ""} onClick={handlePost}>Post</button>
                     </div>
                 </div>
             </div>

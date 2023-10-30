@@ -39,9 +39,9 @@ const ClubList = ({ currentUser, searchQuery }) => {
                                 <span>{clubUser.name}</span>
                             </Link>
                         </div>
-                        {/* <div className="buttons">
+                        <div className="buttons">
                             <button>Follow</button>
-                        </div> */}
+                        </div>
                     </div>
                     ))
                 }
