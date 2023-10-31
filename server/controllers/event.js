@@ -51,8 +51,6 @@ export const getIsRegistered = (req, res) => {
 };
 
 export const getEventParticipants = (req, res) => {
-    console.log("Getting participants");
-    console.log(req.query.postId);
     const token = req.cookies.accessToken;
     if (!token) {
         return res.status(401).json("Not Signed In.");

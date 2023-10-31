@@ -27,7 +27,7 @@ export const signin = (req, res) => {
             // initialize web token
             // data[0] is the userInfo
             const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
-                expiresIn: 10, // Set the token expiry time to 1 hour (3600 seconds)
+                expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
             // remaining properties will be collected to the object named "others"
@@ -60,7 +60,7 @@ export const signin = (req, res) => {
             // initialize web token
             // data[0] is the userInfo
             const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
-                //expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
+                expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
             // remaining properties will be collected to the object named "others"
@@ -162,12 +162,14 @@ export const signout = (req, res) => {
 export const authorizeToken = (req, res) => {
     const token = req.cookies.accessToken; // Get the token from the request (assuming it's stored in a cookie)
     if (!token) {
-        return res.status(401).json("Unauthorized: No token provided.");
+        console.log("Unauthorized token: No token provided.")
+        return res.status(401).json("Unauthorized token: No token provided.");
     }
 
-    jwt.verify(token, "secretkey", (err) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
-            return res.status(401).json("Unauthorized: Invalid or expired token");
+            console.log("Unauthorized token: Invalid or expired token.")
+            return res.status(401).json("Unauthorized token: Invalid or expired token.");
         }
 
         // Token is valid

@@ -44,9 +44,14 @@ const Explore = () => {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const tab = searchParams.get('tab');
+        const query = searchParams.get('query');
         if (tab && (tab === 'posts' || tab === 'clubs')) {
             // Set the active tab based on the URL parameter
             setActiveTab(tab);
+        }
+        if (query) {
+            setSearchQuery(query);
+            setSearchText(query); // This will set the input field
         }
     }, [location]);
 
@@ -54,11 +59,12 @@ const Explore = () => {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         // Update the URL with the tab parameter
-        navigate(`/explore?tab=${tab}`);
+        navigate(`/explore?tab=${tab}`, { state: { searchQuery } });
     };
 
     // Event handler to update the search query state when the button is clicked
     const handleSearch = () => {
+        navigate(`/explore?tab=${activeTab}&query=${searchText}`);
         setSearchQuery(searchText);
     };
 

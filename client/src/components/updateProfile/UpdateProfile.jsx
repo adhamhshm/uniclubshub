@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
+    const { authorizeToken } = useContext(AuthContext);
     const { updateProfilePhotoData } = useContext(AuthContext);
     const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
@@ -68,6 +69,12 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
+        //If token expired, exit the function
+        let isToken = await authorizeToken();
+        if (isToken === false) {
+            return;
+        };
+
         if (updateInputs.bio.length > 300) {
             // Do not proceed with the update if the bio exceeds 300 characters
             return;
@@ -94,21 +101,30 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 <form>
                     <div className="files">
                         {/* cover photo is only for club */}
-                        {user.role === "club" ? (
+                        {user.role === "club" && (
                             <label htmlFor="coverPhoto">
                                 <span>Cover Photo</span>
                                 <div className="imageContainer">
-                                    <img src={updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto) : "/default/upload.png"} alt="cover photo" />
+                                    <img
+                                        src={ updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto)
+                                            : "/upload/" + (user.coverPhoto || "/default/upload.png")
+                                        }
+                                        alt="cover photo"
+                                    />
                                 </div>
                                 <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
                             </label>
-                            ) : null
+                            )
                         }
                         {/* profile photo */}
                         <label htmlFor="profilePhoto">
                             <span>Profile Photo</span>
                             <div className="imageContainer">
-                                <img src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto): "/default/upload.png"} alt="cover photo" />
+                                <img
+                                    src={ updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
+                                        user.profilePhoto ? "/upload/" + user.profilePhoto : "/default/upload.png"}
+                                    alt="cover photo"
+                                />
                             </div>
                         </label>
                         <input type="file" id="profilePhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />
@@ -117,7 +133,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                     <label>Name</label>
                     <input type="text" value={updateInputs.name} name="name" onChange={handleChange} />
                     {/* bio is only for club */}
-                    {user.role === "club" ? 
+                    {user.role === "club" && 
                         (
                             <>
                                 <label>Bio</label>
@@ -129,7 +145,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                                 />
                                 <div className="char-count">{updateInputs.bio.length} / 300</div>
                             </>
-                        ) : null
+                        )
                     }
                     {/* button that will be disabled when bio exceeds 300 characters */}
                     {user.role === "club" ?

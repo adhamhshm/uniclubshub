@@ -8,51 +8,50 @@ dotenv.config();
 
 // get posts that is relevant to user
 export const getPosts = (req, res) => {
-    console.log("Enter getPosts");
     const userId = req.query.userId;
-
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized get posts: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized get posts: No token authenticated."});
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
-        };
-
-        const q = userId !== "undefined"
+            console.log("Unauthorized get posts: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized get posts: Invalid or expired token."});
+        }
+        else {
+            const q = userId !== "undefined"
                     ? `SELECT p.*, u.id AS userId, name, profilePhoto FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = ?
                        ORDER BY p.createdAt DESC`
                     : `SELECT p.*, u.id AS userId, name, profilePhoto FROM posts AS p JOIN users AS u ON (u.id = p.userId)
                        LEFT JOIN follow_relations AS r ON (p.userId = r.followedUserId) WHERE r.followerUserId = ? OR p.userId = ?
                        ORDER BY p.createdAt DESC`;
 
-        const values = userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
-        db.query(q, values, (err, data) => {
-            if (err) {
-                return console.log("Error fetching posts: " + res.status(500).json(err));
-            }
-            else {
-                return res.status(200).json(data);
-            }
-        })
+            const values = userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
+            db.query(q, values, (err, data) => {
+                if (err) {
+                    return console.log("Error fetching posts: " + res.status(500).json(err));
+                }
+                else {
+                    return res.status(200).json(data);
+                }
+            })
+        }
     })
 };
 
 export const getPostsByYear = (req, res) => {
-    console.log("Enter getPostsByYear");
-    console.log(req.query.year)
-    console.log(req.query.userId)
-
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized get posts by year: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized get posts by year: No token authenticated."});
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized get posts by year: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized get posts by year: Invalid or expired token."});
         };
 
         const q = `SELECT * FROM posts WHERE userId = ?
@@ -82,12 +81,14 @@ export const getSearchedPosts = (req, res) => {
 
     // Check if a valid token is present
     if (!token) {
-        return res.status(401).json("Not Signed In.");
-    }
+        console.log("Unauthorized get searched posts: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized get searched posts: No token authenticated."});
+    };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized get searched posts: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized get searched posts: Invalid or expired token."});
         }
 
         // Get the search input from the query parameters
@@ -135,12 +136,14 @@ export const getSearchedPosts = (req, res) => {
 export const addPost = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized add post: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized add post: No token authenticated."});
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized add post: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized add post: Invalid or expired token."});
         };
 
         // Generate a random post ID based on current date, time, and a random number
@@ -180,12 +183,13 @@ export const addPost = (req, res) => {
 export const deletePost = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized delete post: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
     };
-
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized delete post: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized delete post: Invalid or expired token."});
         };
 
         const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";

@@ -1,9 +1,7 @@
 import cors from "cors";
-import fs from "fs";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import express from "express";
-import multer from "multer";
 import usersRoute from "./routes/users.js";
 import participantsRoute from "./routes/participants.js";
 import postsRoute from "./routes/posts.js";
@@ -25,6 +23,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Credentials", true);
     next();
 });
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
     origin: process.env.INTERNAL_CLIENT_URL

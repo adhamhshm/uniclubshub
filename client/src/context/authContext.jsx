@@ -41,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
             console.log(response.data); // Response will indicate if the token is valid
             return true;
         } catch (error) {
-            console.error(error);
+            console.log(error);
             return false;
         }
     };

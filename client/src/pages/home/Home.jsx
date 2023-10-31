@@ -18,7 +18,9 @@ const Home = () => {
         }
     }, [authorizeToken]);
 
-    checkTokenAndNavigate();
+    useEffect(() => {
+        checkTokenAndNavigate();
+    }, [checkTokenAndNavigate]);
 
     return (
         <div className="home">

@@ -30,28 +30,31 @@ export const getUser = (req, res) => {
 export const updateUser = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized update user: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized update user: No token authenticated."});
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
-            console.log("Token not valid");
-            return res.status(403).json({ error: "Token is not valid."});
-        };
-
-        const q = "UPDATE users SET `name` = ?, `coverPhoto` = ?, `profilePhoto` = ?, `bio` = ? WHERE id = ?";
-        db.query(q, [req.body.name, req.body.coverPhoto, req.body.profilePhoto, req.body.bio, userInfo.id], (err, data) => {
-            if (err) {
-                console.log("Error updating user: " + err.message);
-                return res.status(500).json(err);
-            }
-            if (data.affectedRows > 0) {
-                console.log("Updated successfully.");
-                return res.json("Updated successfully.");
-            }
-            console.log("You can only update your profile.");
-            return res.status(403).json("You can only update your profile.");
-        })
+            console.log("Unauthorized update user: Invalid or expired token.")
+            return res.status(401).json("Unauthorized update user: Invalid or expired token.");
+        }
+        else {
+            console.log("Updating user...")
+            const q = "UPDATE users SET `name` = ?, `coverPhoto` = ?, `profilePhoto` = ?, `bio` = ? WHERE id = ?";
+            db.query(q, [req.body.name, req.body.coverPhoto, req.body.profilePhoto, req.body.bio, userInfo.id], (err, data) => {
+                if (err) {
+                    console.log("Error updating user: " + err.message);
+                    return res.status(500).json(err);
+                }
+                if (data.affectedRows > 0) {
+                    console.log("Updated successfully.");
+                    return res.json("Updated successfully.");
+                }
+                console.log("You can only update your profile.");
+                return res.status(403).json("You can only update your profile.");
+            })
+        }
     });
 };
 

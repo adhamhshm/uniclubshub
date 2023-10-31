@@ -1,7 +1,7 @@
 import "./globals.scss";
 
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -53,9 +53,18 @@ function App() {
     };
 
     const ProtectedRoute = ({ children, requiredRole }) => {
-        const isTokenValid = authorizeToken();
+        const checkTokenValidity = async () => {
+            const isTokenValid = await authorizeToken();
+            if (!currentUser || !isTokenValid) {
+                return false;
+            }
+            return true;
+        };
+    
+        const isTokenValid = checkTokenValidity();
+    
         if (!currentUser || !isTokenValid) {
-            return <Navigate to="/login" />
+            return <Navigate to="/login" />;
         }
         
         // children is the protected Layout

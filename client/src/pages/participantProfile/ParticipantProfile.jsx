@@ -66,7 +66,7 @@ const ParticipantProfile = () => {
         <div className="participant-profile">
             <div className="participant-images">
                 {/* <img src={"/upload/" + data?.coverPhoto} alt="cover" className="cover" /> */}
-                <img src={data?.profilePhoto ? "/upload/" + data?.profilePhoto : "/default/default-participant-image.png"} alt="profile" className="participant-profilePhoto" />
+                <img src={data?.profilePhoto ? data.profilePhoto : "/default/default-participant-image.png"} alt="profile" className="participant-profilePhoto" />
             </div>
             <div className="participant-profileContainer">
                 <div className="participant-userInfo">

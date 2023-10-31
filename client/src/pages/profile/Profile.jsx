@@ -12,7 +12,7 @@ import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 const Profile = () => {
 
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, authorizeToken } = useContext(AuthContext);
     const userId = useLocation().pathname.split("/")[2];
     const navigate = useNavigate();
 
