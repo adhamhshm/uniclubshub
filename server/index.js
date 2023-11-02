@@ -11,6 +11,8 @@ import commentsRoute from "./routes/comments.js";
 import followRelationsRoute from "./routes/followRelations.js";
 import eventsRoute from "./routes/events.js";
 import imagesRoutes from "./routes/images.js";
+import bodyParser from "body-parser";
+import fileUpload from "express-fileupload";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -29,6 +31,13 @@ app.use(cors({
     origin: process.env.INTERNAL_CLIENT_URL
 }));
 app.use(cookieParser());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(fileUpload({
+//     useTempFiles : true,
+//     tempFileDir : '/tmp/'
+// }));
+// app.use(express.static("public"));
+// app.use('/upload', express.static('upload'));
 
 // set up the endpoints
 app.use("/server/users", usersRoute);

@@ -46,7 +46,7 @@ const Comments = ({ postId }) => {
         <div className="comments">
             <div className="write-comment-container">
                 <img src={currentUser.profilePhoto ? 
-                          "/upload/" + currentUser.profilePhoto : 
+                          currentUser.profilePhoto : 
                           (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
                      alt="photo" 
                 />
@@ -69,7 +69,7 @@ const Comments = ({ postId }) => {
                     return (
                         <div className="comment-container" key={comment.id}>
                             <img src={comment.profilePhoto ? 
-                                     "/upload/" + comment.profilePhoto : 
+                                     comment.profilePhoto : 
                                      (comment.userId.includes("C") ? "/default/default-club-image.png" : "/default/default-participant-image.png")}   
                             />
                             <div className="comment-user-info">

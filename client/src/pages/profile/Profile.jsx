@@ -59,15 +59,15 @@ const Profile = () => {
     return (
         <div className="profile">
             <div className="images-container">
-                <img 
+                {/* <img 
                     className="cover-photo" 
                     src={"/upload/" + data?.coverPhoto} 
                     alt="cover" 
                     
-                />
+                /> */}
                 <img 
                     className="profile-photo" 
-                    src={data?.profilePhoto ? "/upload/" + data?.profilePhoto : "/default/default-club-image.png"} 
+                    src={data?.profilePhoto ? data?.profilePhoto : "/default/default-club-image.png"} 
                     alt="profile" 
                 />
             </div>

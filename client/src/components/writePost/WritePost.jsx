@@ -17,24 +17,37 @@ const WritePost = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [showInvalidMessage, setInvalidMessage] = useState(false);
-    const [showErrorImgUplaod, setShowErrorImgUplaod] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // Add loading state
+    const [showErrorImgUpload, setShowErrorImgUpload] = useState(false);
+    const [showWrongFileImgUpload, setShowWrongFileImgUpload] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Function to check if description exceeds the character limit
     const isDescriptionTooLong = description.length > MAX_DESCRIPTION_LENGTH;
 
     const uploadPhoto = async () => {
         try {
+            if (!imageFile.type.includes("image")) {
+                // Show the invalid message
+                setShowWrongFileImgUpload(true);
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    setShowWrongFileImgUpload(false);
+                }, 3000);
+                // exit the function
+                return;
+            }
             const formData = new FormData();
             formData.append("file", imageFile);
             // send the file to the server
-            //const res = await makeRequest.post("/images/upload" , formData);
-            //return res.data;
-            return await makeRequest.post("/images/uploadToCloudinary" , formData)
+            return await makeRequest.post("/images/upload" , formData )
             .then((res) => res.data )
             .catch((error) => {
                 setIsLoading(false)
-                throw error; // Propagate the error for proper error handling
+                setShowErrorImgUpload(true);
+                setTimeout(() => {
+                    setShowErrorImgUpload(false);
+                }, 10000); // 10 seconds
+                throw error;
             });
         } 
         catch(err) {
@@ -63,8 +76,6 @@ const WritePost = () => {
             return;
         };
 
-        let imageUrl = "";
-
         if (isDescriptionTooLong) {
             return;
         }
@@ -72,27 +83,22 @@ const WritePost = () => {
         if (!description || !title) {
             // Show the invalid message
             setInvalidMessage(true);
-
             // Hide the message after 3 seconds
             setTimeout(() => {
                 setInvalidMessage(false);
             }, 3000);
-
             // exit the function
             return;
         };
 
+        let imageUrl = "";
         if (imageFile) {
             try {
                 setIsLoading(true); // Set loading state
                 imageUrl = await uploadPhoto();
-                if (!imageUrl.length > 0) {
-                    setShowErrorImgUplaod(true);
-                    setTimeout(() => {
-                        setShowErrorImgUplaod(false);
-                    }, 3000);
+                if (!imageUrl) {
                     return;
-                }
+                } 
             }
             finally {
                 setIsLoading(false);
@@ -116,7 +122,7 @@ const WritePost = () => {
             <div className="writepost-container">
                 <div className="writepost-container-top">
                     <div className="top-left-part">
-                        <img src={currentUser.profilePhoto ? "/upload/" + currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
+                        <img src={currentUser.profilePhoto ? currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
                         <div className="input-box">
                             <input
                                 className={showInvalidMessage ? "input-invalid" : ""}
@@ -133,11 +139,14 @@ const WritePost = () => {
                                 onChange={(e) => {setDescription(e.target.value)}} 
                                 value={description}
                             />
-                            {isDescriptionTooLong && <div className="character-too-long-message">
+                            {isDescriptionTooLong && <div className="post-error-message">
                                 <span>Description too long {description.length}/5000</span>
                             </div>}
-                            {showErrorImgUplaod && <div className="character-too-long-message">
+                            {showErrorImgUpload && <div className="post-error-message">
                                 <span>Server returned unexpected error. Try again later.</span>
+                            </div>}
+                            {showWrongFileImgUpload && <div className="post-error-message">
+                                <span>Please upload a valid image file.</span>
                             </div>}
                         </div>
                     </div>
@@ -168,7 +177,7 @@ const WritePost = () => {
                         <label htmlFor="file">
                             <div className="item">
                                 <InsertPhotoIcon />
-                                <span>Add Image</span>
+                                <span>Add Image (preferably with a minimum scale of 400x400)</span>
                             </div>
                         </label>
                     </div>

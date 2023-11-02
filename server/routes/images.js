@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { deletePhoto, deletePhotoToCloudinary, uploadPhoto, uploadPhotoCloudinary } from "../controllers/image.js";
+import { deletePhoto, uploadPhoto} from "../controllers/image.js";
 
 const router = express.Router();
 
@@ -31,8 +31,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.post("/upload", upload.single("file"), uploadPhoto);
-router.post("/uploadToCloudinary", upload.single("file"), uploadPhotoCloudinary);
 router.delete("/delete", deletePhoto);
-router.delete("/deleteToCloudinary", deletePhotoToCloudinary);
 
 export default router;

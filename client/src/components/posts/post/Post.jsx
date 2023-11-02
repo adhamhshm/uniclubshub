@@ -84,9 +84,9 @@ const Post = ({ post }) => {
         likePostMutation.mutate(likesData.includes(currentUser.id));
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         deletePostMutation.mutate(post.id);
-        makeRequest.delete("/images/deleteToCloudinary" , { data : { imageToBeDeleted: post.image }});
+        await makeRequest.delete("/images/delete" , { data : { imageToBeDeleted: post.image }});
     };
 
     // Function to render description with clickable links
@@ -123,7 +123,7 @@ const Post = ({ post }) => {
                 <div className="user-container">
                     <div className="user-details">
                         {/* Post owner profile photo */}
-                        <img src={post.profilePhoto ? "/upload/" + post.profilePhoto : "/default/default-club-image.png"} alt={post.name} />
+                        <img src={post.profilePhoto ? post.profilePhoto : "/default/default-club-image.png"} alt={post.name} />
                         {/* Name of the owner and the date of post */}
                         <div className="user-info">
                             <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
@@ -144,7 +144,7 @@ const Post = ({ post }) => {
                     </div>
                     {post.image && 
                         <div className="post-content-container-image">
-                            {post.image && <img src={"../upload/" + post.image} alt="post" />}
+                            {post.image && <img src={post.image} alt="post" />}
                         </div>
                     }
                 </div>

@@ -34,7 +34,7 @@ const ClubList = ({ currentUser, searchQuery }) => {
                     clubListData.map((clubUser) => (
                     <div className="user-list" key={clubUser.id}>
                         <div className="user-info">
-                            <img src={"/upload/" + clubUser.profilePhoto} alt={clubUser.name} />
+                            <img src={clubUser.profilePhoto ? clubUser.profilePhoto : "/default/default-club-image.png"} alt={clubUser.name} />
                             <Link to={`/profile/${clubUser.id}`} style={{ textDecoration: "none"}}>
                                 <span>{clubUser.name}</span>
                             </Link>

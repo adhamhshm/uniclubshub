@@ -41,8 +41,8 @@ export const updateUser = (req, res) => {
         }
         else {
             console.log("Updating user...")
-            const q = "UPDATE users SET `name` = ?, `coverPhoto` = ?, `profilePhoto` = ?, `bio` = ? WHERE id = ?";
-            db.query(q, [req.body.name, req.body.coverPhoto, req.body.profilePhoto, req.body.bio, userInfo.id], (err, data) => {
+            const q = "UPDATE users SET `name` = ?, `profilePhoto` = ?, `bio` = ? WHERE id = ?";
+            db.query(q, [req.body.name, req.body.profilePhoto, req.body.bio, userInfo.id], (err, data) => {
                 if (err) {
                     console.log("Error updating user: " + err.message);
                     return res.status(500).json(err);

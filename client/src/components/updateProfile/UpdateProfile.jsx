@@ -4,15 +4,16 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import Loading from "../loading/loading";
 
 import CloseIcon from '@mui/icons-material/CloseOutlined';
-
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
     const { authorizeToken } = useContext(AuthContext);
     const { updateProfilePhotoData } = useContext(AuthContext);
-    const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); // Add loading state
+    //const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
     const [updateInputs, setUpdateInputs] = useState({
         name: user.name,
@@ -28,9 +29,11 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
             // Append the current existing file name to the FormData with the key "filename"
             formData.append("currentImageFilename", currentImageFilename);
             // Send the file and its name to the server using a POST request
-            const res = await makeRequest.post("/images/upload" , formData);
-            // Return the response data from the server
-            return res.data;
+            return await makeRequest.post("/images/upload" , formData )
+            .then((res) => res.data )
+            .catch((error) => {
+                throw error; // Propagate the error for proper error handling
+            });
         } 
         catch(err) {
             // Handle any errors that may occur during the upload process
@@ -80,16 +83,34 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
             return;
         }
 
-        let coverPhotoUrl;
-        let profilePhotoUrl;
+        //let coverPhotoUrl;
+        let profilePhotoUrl = "";
         
-        coverPhotoUrl = updatedCoverPhoto ? await uploadPhoto(updatedCoverPhoto, user.coverPhoto) : user.coverPhoto;
-        profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto, user.profilePhoto) : user.profilePhoto;
+        //coverPhotoUrl = updatedCoverPhoto ? await uploadPhoto(updatedCoverPhoto, user.coverPhoto) : user.coverPhoto;
+        //profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto, user.profilePhoto) : user.profilePhoto;
+
+        if (updatedProfilePhoto) {
+            try {
+                setIsLoading(true); // Set loading state
+                profilePhotoUrl = await uploadPhoto(updatedProfilePhoto, user.profilePhoto)
+                // if (!imageUrl.length > 0 || imageUrl === undefined) {
+                //     alert("Hello")
+                //     setShowErrorImgUpload(true);
+                //     setTimeout(() => {
+                //         setShowErrorImgUpload(false);
+                //     }, 3000);
+                //     return;
+                // }
+            }
+            finally {
+                setIsLoading(false);
+            }
+        };
         
-        updateProfileMutation.mutate({ ...updateInputs, coverPhoto: coverPhotoUrl, profilePhoto: profilePhotoUrl });
+        updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
         updateProfilePhotoData(profilePhotoUrl);
         setUpdateInputs("");
-        setUpdatedCoverPhoto(null);
+        //setUpdatedCoverPhoto(null);
         setUpdatedProfilePhoto(null);
         setOpenUpdateBox(false);
     };
@@ -101,7 +122,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 <form>
                     <div className="files">
                         {/* cover photo is only for club */}
-                        {user.role === "club" && (
+                        {/* {user.role === "club" && (
                             <label htmlFor="coverPhoto">
                                 <span>Cover Photo</span>
                                 <div className="imageContainer">
@@ -115,14 +136,14 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                                 <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
                             </label>
                             )
-                        }
+                        } */}
                         {/* profile photo */}
                         <label htmlFor="profilePhoto">
                             <span>Profile Photo</span>
                             <div className="imageContainer">
                                 <img
                                     src={ updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
-                                        user.profilePhoto ? "/upload/" + user.profilePhoto : "/default/upload.png"}
+                                        user.profilePhoto ? user.profilePhoto : "/default/upload.png"}
                                     alt="cover photo"
                                 />
                             </div>
@@ -163,6 +184,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 </form>
                 <CloseIcon className="close" style={{cursor: "pointer", width: "30px", height: "30px"}} onClick={() => setOpenUpdateBox(false)} />
             </div>
+            {isLoading && <Loading />}
         </div>
     )
 };
