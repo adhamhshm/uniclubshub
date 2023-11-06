@@ -58,11 +58,21 @@
                         font-weight: bold;
                         border-radius: 20px;
                         padding: 10px 20px;
-                        background-color: #938EEF;
+                        background-color: themed("mainButtonColor");
                     }
 
                     button:hover {
-                        background-color: #7e78fb;
+                        background-color: themed("mainButtonColorHover");
+                    }
+
+                    .following-button {
+                        border: 2px solid themed("mainButtonColor"); /* You can adjust the border width as needed */
+                        background-color: transparent;
+                        color: themed("textColor");
+                    }
+
+                    .following-button:hover {
+                        color: white;
                     }
 
                     .icon {

@@ -15,7 +15,7 @@
             padding: 20px;
             border-radius: 20px;
 
-            h1 {
+            h2 {
                 margin-top: 5px;
             }
 
@@ -74,7 +74,7 @@
                     padding-right: 15px;
                     color: white;
                     cursor: pointer;
-                    background-color: #938EEF;
+                    background-color: themed("mainButtonColor");
                     font-weight: bold;
                     border-radius: 20px;
                     display: flex;
@@ -88,7 +88,7 @@
                 }
 
                 button:hover {
-                    background-color: #7e78fb;
+                    background-color: themed("mainButtonColorHover");
                 }
             }
 

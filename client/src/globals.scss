@@ -24,11 +24,14 @@ $theme: (
         textColor: #000000,
         activeTextColor: #938EEF,
         bg: white,
-        logo: darkblue,
+        logo: #755597,
         bgSoft: #f6f3f3,
         textColorSoft: #555555,
         border: lightgray,
         filterColor: invert(0),
+        activitiesHighlight: (rgba(234, 234, 234, 0.8)),
+        mainButtonColor: #80669d,
+        mainButtonColorHover: #a881af,
     ),
     dark: (
         textColor: whitesmoke,
@@ -39,6 +42,9 @@ $theme: (
         textColorSoft: lightgray,
         border: #444444,
         filterColor: invert(1),
+        activitiesHighlight: (rgba(50, 50, 50, 0.8)),
+        mainButtonColor: #80669d,
+        mainButtonColorHover: #a881af,
     )
 );
 

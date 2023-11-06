@@ -2,6 +2,7 @@
 
 .register {
     height: 100vh;
+    margin-bottom: -50px;
     background-color: rgb(193, 190, 255);
     display: flex;
     align-items: center;
@@ -86,7 +87,7 @@
                         width: 100%;
                         padding: 10px 20px;
                         border: none;
-                        background-color: #938EEF;
+                        background-color: #80669d;
                         color: white;
                         font-weight: bold;
                         cursor: pointer;
@@ -94,7 +95,7 @@
                     }
 
                     button:hover {
-                        background-color: #7e78fb;
+                        background-color: #a881af;
                     }
                 }
 

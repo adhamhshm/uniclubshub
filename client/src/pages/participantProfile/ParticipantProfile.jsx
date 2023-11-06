@@ -10,7 +10,7 @@ import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 const ParticipantProfile = () => {
 
     const navigate = useNavigate();
-
+    const queryClient = useQueryClient();
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const { currentUser } = useContext(AuthContext);
     const userId = useLocation().pathname.split("/")[3];
@@ -40,8 +40,6 @@ const ParticipantProfile = () => {
         })
     );
 
-    // access the client
-    const queryClient = useQueryClient();
     // Mutations
     const mutation = useMutation((following) => {
         if (following) {
@@ -64,26 +62,26 @@ const ParticipantProfile = () => {
 
     return (
         <div className="participant-profile">
-            <div className="participant-images">
-                {/* <img src={"/upload/" + data?.coverPhoto} alt="cover" className="cover" /> */}
-                <img src={data?.profilePhoto ? data.profilePhoto : "/default/default-participant-image.png"} alt="profile" className="participant-profilePhoto" />
-            </div>
-            <div className="participant-profileContainer">
-                <div className="participant-userInfo">
-                    <div className="participant-center">
+            <div className="participant-profile-container">
+                <div className="participant-images">
+                    <img 
+                        src={data?.profilePhoto ? data.profilePhoto : "/default/default-participant-image.png"} 
+                        alt="profile" 
+                        className="participant-profile-photo" 
+                    />
+                </div>
+                <div className="participant-details">
+                    <div className="participant-name">
                         <span>{data?.name}</span>
-                        <div className="participant-bio">
-                            <span>Test</span>
-                        </div>
-                        <div className="participant-info">
-                            <div className="participant-item">
-                                {userId.includes(currentUser.id) 
-                                    ? <button onClick={() => setOpenUpdateBox(true)}>Update</button>
-                                    : null
-                                }
-                            </div>
-                        </div>
                     </div>
+                    <div className="participant-bio">
+                        <span>Student ID: {data?.id}</span>
+                        <span>Email: {data?.email}</span>
+                        <span>Phone: {data?.phoneNumber}</span>
+                    </div>
+                </div>
+                <div className="participant-button">
+                    {userId.includes(currentUser.id) && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
                 </div>
             </div>
             {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}

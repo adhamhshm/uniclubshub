@@ -35,6 +35,8 @@
                         display: flex;
                         justify-items: center;
                         align-items: center;
+                        border-radius: 10px;
+                        padding: 5px;
                         span {
                             font-size: 20px;
                             display: flex;
@@ -51,9 +53,14 @@
                     }
 
                     .active {
+                        background-color: themed("mainButtonColor");
                         font-weight: 700;
+                        span {
+                            color: white;
+                        }
                         img {
                             zoom: 130%;
+                            filter: invert(1);
                         }
                     }
                 }

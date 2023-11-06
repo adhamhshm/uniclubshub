@@ -105,7 +105,10 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
             finally {
                 setIsLoading(false);
             }
-        };
+        }
+        else {
+            profilePhotoUrl = user.profilePhoto;
+        }
         
         updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
         updateProfilePhotoData(profilePhotoUrl);

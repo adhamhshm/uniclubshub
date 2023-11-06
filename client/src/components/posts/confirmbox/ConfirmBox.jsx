@@ -33,10 +33,26 @@ const PostModal = ({ postData, currentUser, setShowPostModal }) => {
         },
     });
 
+    // Adding info to activities
+    const addActivitiesMutation = useMutation((activityInfo) => {
+        return makeRequest.post("/activities", activityInfo);
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: "activities" })
+        },
+    })
+
     const handleConfirm = () => {
         registerEventMutation.mutate({ postId: postData.id, participantId: currentUser.id });
         setShowPostModal(false);
+        addActivityInfo();
     };
+
+    const addActivityInfo = async () => {
+        addActivitiesMutation.mutate({ receiverUserId: postData.userId, postId: postData.id, senderUserId: currentUser.id, activityType: "register" });
+    }
 
     // Attach a 'mousedown' event listener to the document to call handleOutsideClick
     document.addEventListener('mousedown', handleOutsideClick);

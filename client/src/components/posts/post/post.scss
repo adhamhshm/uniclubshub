@@ -125,7 +125,7 @@
                         color: white;
                         padding: 10px 20px;
                         cursor: pointer;
-                        background-color: #938EEF;
+                        background-color: themed("mainButtonColor");
                         font-weight: bold;
                         border-radius: 20px;
 
@@ -136,7 +136,7 @@
                     }
 
                     button:hover {
-                        background-color: #7e78fb;
+                        background-color: themed("mainButtonColorHover");
                     }
 
                     .disabled-register-button {

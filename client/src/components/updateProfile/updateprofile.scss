@@ -129,11 +129,11 @@
                     cursor: pointer;
                     color: white;
                     font-weight: bold;
-                    background-color: #938EEF;
+                    background-color: themed("mainButtonColor");
                 }
 
                 button:hover {
-                    background-color: #7e78fb;
+                    background-color: themed("mainButtonColorHover");
                 }
 
                 .disabled-button {

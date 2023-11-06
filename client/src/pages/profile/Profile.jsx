@@ -15,6 +15,7 @@ const Profile = () => {
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const userId = useLocation().pathname.split("/")[2];
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     // fetch user info
     const { isLoading, error, data } = useQuery(["user", userId], () => {
@@ -34,8 +35,6 @@ const Profile = () => {
         })
     );
 
-    // access the client
-    const queryClient = useQueryClient();
     // Mutations
     const followUserMutation = useMutation((following) => {
         if (following) {
@@ -58,38 +57,36 @@ const Profile = () => {
 
     return (
         <div className="profile">
-            <div className="images-container">
-                {/* <img 
-                    className="cover-photo" 
-                    src={"/upload/" + data?.coverPhoto} 
-                    alt="cover" 
-                    
-                /> */}
-                <img 
-                    className="profile-photo" 
-                    src={data?.profilePhoto ? data?.profilePhoto : "/default/default-club-image.png"} 
-                    alt="profile" 
-                />
-            </div>
-            <div className="profile-info-container">
-                <div className="user-info">
-                    <div className="center">
-                        <div className="main-name">
-                            <span>{data?.name}</span>
-                        </div>
-                        <div className="bio">
-                            <span>{data?.bio}</span>
-                        </div>
-                        <div className="button-container">
-                            {userId.includes(currentUser.id) ? <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
-                            currentUser.role === "participant" ? <button onClick={handleFollow} >{followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}</button> :
-                            null
-                            }
-                        </div>
+            <div className="profile-container">
+                <div className="images">
+                    <img 
+                        src={data?.profilePhoto ? data.profilePhoto : "/default/default-club-image.png"} 
+                        alt="profile" 
+                        className="profile-photo" 
+                    />
+                </div>
+                <div className="details">
+                    <div className="name">
+                        <span>{data?.name}</span>
                     </div>
-                    {/* <div className="right">
-                        <MoreIcon />
-                    </div> */}
+                    <div className="engagement-number">
+                        <span>10 Followers</span>
+                        <span> | </span>
+                        <span>10 Posts</span>
+                    </div>
+                    <div className="bio">
+                        <span>{data?.bio}</span>
+                        <span>Email: {data?.email}</span>
+                    </div>
+                </div>
+                <div className="button">
+                    {userId.includes(currentUser.id) ? 
+                     <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
+                     currentUser.role === "participant" &&
+                     <button className={followRelationData?.includes(currentUser.id) ? "following-button" : ""} onClick={handleFollow}> 
+                        {followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}
+                     </button>
+                    }
                 </div>
             </div>
             <div className="profile-posts">

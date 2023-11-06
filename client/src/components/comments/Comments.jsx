@@ -7,23 +7,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import SendIcon from '@mui/icons-material/Send';
 
-const Comments = ({ postId }) => {
+const Comments = ({ post }) => {
 
     const { currentUser } = useContext(AuthContext);
     const [description, setDescription] = useState("");
+    // access the client
+    const queryClient = useQueryClient()
 
     const { isLoading, error, data } = useQuery(["comments"], () => 
-        makeRequest.get("/comments?postId=" + postId)
+        makeRequest.get("/comments?postId=" + post.id)
         .then((res) => {
             const fetchedComments = res.data;
             return fetchedComments;
         })
     )
 
-    // access the client
-    const queryClient = useQueryClient()
-    // Mutations
-    const mutation = useMutation((newComment) => {
+    // Adding comment mutations
+    const addCommentMutation = useMutation((newComment) => {
         return makeRequest.post("/comments", newComment);
     }, 
     {
@@ -33,14 +33,31 @@ const Comments = ({ postId }) => {
         },
     })
 
+    // Adding info to activities
+    const addActivitiesMutation = useMutation((activityInfo) => {
+        return makeRequest.post("/activities", activityInfo);
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: "activities" })
+        },
+    })
+
     const handleSend = async (e) => {
         e.preventDefault();
         if (!description) {
             return alert("Invalid request.")
         };
-        mutation.mutate({ description, postId });
+        addCommentMutation.mutate({ description, postId: post.id });
         setDescription("");
+        addActivityInfo();
+        
     };
+
+    const addActivityInfo = async () => {
+        addActivitiesMutation.mutate({ receiverUserId: post.userId, postId: post.id, senderUserId: currentUser.id, activityType: "comment" });
+    }
 
     return (
         <div className="comments">
@@ -48,7 +65,7 @@ const Comments = ({ postId }) => {
                 <img src={currentUser.profilePhoto ? 
                           currentUser.profilePhoto : 
                           (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
-                     alt="photo" 
+                     alt="photo"
                 />
                 <textarea 
                     type="text" 

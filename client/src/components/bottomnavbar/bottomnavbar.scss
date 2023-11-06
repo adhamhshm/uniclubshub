@@ -37,8 +37,11 @@
                 }
 
                 .active {
-                    background-color: #938EEF;
+                    background-color: themed("mainButtonColor");
                     border-radius: 10px;
+                    img {
+                        filter: invert(1);
+                    }
                 }
             }
         }

@@ -3,102 +3,100 @@
 .participant-profile {
     @include themify($theme) {
         background-color: themed("bgSoft");
-        padding: 70px 0 0 0;
+        //padding: 70px 0 0 0;
+        padding: 90px 30px 30px 30px;
         min-height: calc(100vh - 70px);
         color: themed("textColor");
 
-        .participant-images {
-            width: 100%;
-            height: 300px;
-            position: relative;
+        .participant-profile-container {
+            display: flex;
+            background-color: themed("bg");
+            background-color: themed("bg");
+            box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+            -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+            border-radius: 20px;
+            padding: 20px;
 
-            .participant-profilePhoto {
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                object-fit: cover;
-                position: absolute;
-                left: 0;
-                right: 0;
-                margin: auto;
-                top: 50px;
+            .participant-images {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 15px;
+    
+                .participant-profile-photo {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    // position: absolute;
+                    // left: 0;
+                    // right: 0;
+                    // margin: auto;
+                    // top: 50px;
+                }
             }
-        }
-
-        .participant-profileContainer {
-            margin-bottom: 10px;
-
-            .participant-userInfo {
+    
+            .participant-details {
                 height: fit-content;
-                // box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
-                // -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
-                // -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
-                // border-radius: 20px;
-                border-bottom-left-radius: 20px;
-                border-bottom-right-radius: 20px;
-                background-color: themed("bg");
+                flex: 5;
+                padding-left: 20px;
                 color: themed("textColor");
-                padding: 20px;
-
-                .participant-center {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+    
+                .participant-name {
+                    span {
+                        font-weight: 700;
+                        font-size: 20px;
+                    }
+                }
+    
+                .participant-bio {
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
                     gap: 10px;
-
+    
+                    label {
+                        font-weight: 600;
+                        font-size: 16px;
+                    }
+    
                     span {
-                        font-size: 30px;
-                        font-weight: 500;
+                        font-size: 16px;
                     }
+                }
+            }
 
-                    .participant-info {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-around;
-                        width: 100%;
+            .participant-button {
+                flex: 1;
+                button {
+                    border: none;
+                    background-color: themed("mainButtonColor");
+                    font-weight: bold;
+                    border-radius: 20px;
+                    color: white;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                }
 
-                        .participant-item {
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-                            color: themed("textColorSoft");
-
-                            span {
-                                font-size: 12px;
-                            }
-                        }
-
-                        button {
-                            border: none;
-                            background-color: #938EEF;
-                            font-weight: bold;
-                            border-radius: 20px;
-                            color: white;
-                            padding: 10px 20px;
-                            cursor: pointer;
-                        }
-
-                        button:hover {
-                            background-color: #7e78fb;
-                        }
-                    }
-
-                    .participant-bio {
-                        span {
-                            font-size: 20px;
-                            font-weight: 300;
-                        }
-                    }
+                button:hover {
+                    background-color: themed("mainButtonColorHover");
                 }
 
                 @include mobile {
-                    flex-direction: column;
-                    padding: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
 
             @include mobile {
-                margin-bottom: 10px;
+                flex-direction: column;
+                gap: 20px;
             }
         }
     }

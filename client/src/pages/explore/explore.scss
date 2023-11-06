@@ -40,7 +40,7 @@
                 }
     
                 .back-button-box:hover {
-                    background-color: #7e78fb;
+                    background-color: themed("mainButtonColorHover");
                     color: white;
                 }
     
@@ -76,7 +76,7 @@
                     padding: 10px 20px;
                     color: white;
                     cursor: pointer;
-                    background-color: #938EEF;
+                    background-color: themed("mainButtonColor");
                     font-weight: bold;
                     border-radius: 20px;
                     display: flex;
@@ -85,7 +85,7 @@
                 }
         
                 button:hover {
-                    background-color: #7e78fb;
+                    background-color: themed("mainButtonColorHover");
                 }
             }
 
@@ -109,7 +109,7 @@
                     .active {
                         background-size: contain;
                         font-weight: 700;
-                        border-bottom: 5px solid #938EEF;
+                        border-bottom: 5px solid #80669d;
                     }
                 }
             }

@@ -32,11 +32,9 @@
             
             .left{
                 display: flex;
-                align-items: center;
-                gap: 30px;
     
                 span {
-                    font-weight: bold;
+                    font-weight: 900;
                     font-size: 20px;
                     color: themed("logo");
                 }

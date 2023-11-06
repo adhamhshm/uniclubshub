@@ -89,17 +89,15 @@ export const getUserList = (req, res) => {
             });
         }
         else {
-            console.log(req.query.userId)
-            const q = `SELECT id, name, profilePhoto FROM users
-                       WHERE id NOT IN ( 
-                       SELECT followedUserId FROM follow_relations WHERE followerUserId = ? )`;
+
+            const q = `SELECT id, name, profilePhoto FROM users`;
 
             db.query(q, [req.query.userId], (err, data) => {
                 if (err) {
                     console.log("Error fetching user list: " + err.message);
                     return res.status(500).json(err);
                 } else {
-                    console.log("Fetched user list successfully.");
+                    //console.log("Fetched user list successfully.");
                     return res.json(data);
                 }
             });

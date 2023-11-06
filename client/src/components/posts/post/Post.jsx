@@ -51,12 +51,14 @@ const Post = ({ post }) => {
         .then((res) => res.data)
     );
 
-    // Like and unliked mutations
+    // Like and unliked mutation
     const likePostMutation = useMutation((liked) => {
         if (liked) {
+            deleteLikeActivityInfo();
             return makeRequest.delete("/likes?postId=" + post.id);
         }
         else {
+            addLikeActivityInfo();
             return makeRequest.post("/likes", { postId: post.id });
         }
     }, 
@@ -67,7 +69,7 @@ const Post = ({ post }) => {
         },
     })
 
-    // Delete post mutations
+    // Delete post mutation
     const deletePostMutation = useMutation((postId) => {
         if (postId) {
             return makeRequest.delete("/posts/" + postId);
@@ -80,6 +82,17 @@ const Post = ({ post }) => {
         },
     })
 
+    // Adding info to activities mutation
+    const addActivitiesMutation = useMutation((activityInfo) => {
+        return makeRequest.post("/activities", activityInfo);
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: "activities" })
+        },
+    })
+
     const handleLike = () => {
         likePostMutation.mutate(likesData.includes(currentUser.id));
     };
@@ -87,6 +100,14 @@ const Post = ({ post }) => {
     const handleDelete = async () => {
         deletePostMutation.mutate(post.id);
         await makeRequest.delete("/images/delete" , { data : { imageToBeDeleted: post.image }});
+    };
+
+    const addLikeActivityInfo = async () => {
+        addActivitiesMutation.mutate({ receiverUserId: post.userId, postId: post.id, senderUserId: currentUser.id, activityType: "like" });
+    };
+
+    const deleteLikeActivityInfo = async () => {
+        await makeRequest.delete("/activities" , { data : { postId: post.id, senderUserId: currentUser.id, activityType: "like" }});
     };
 
     // Function to render description with clickable links
@@ -214,7 +235,7 @@ const Post = ({ post }) => {
                     />
                 )}
                 {/* Display list of comments and comment functionality when the setCommentOpen is true */}
-                {commentOpen && <Comments postId={post.id} />}
+                {commentOpen && <Comments post={post} />}
            </div>
         </div>
     )

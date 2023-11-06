@@ -11,7 +11,9 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 const WritePost = () => {
 
     const MAX_DESCRIPTION_LENGTH = 5000;
+    const MAX_TITLE_LENGTH = 100;
     const inputRef = useRef();
+    const queryClient = useQueryClient();
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const [imageFile, setImageFile] = useState(null);
     const [title, setTitle] = useState("");
@@ -21,8 +23,9 @@ const WritePost = () => {
     const [showWrongFileImgUpload, setShowWrongFileImgUpload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Function to check if description exceeds the character limit
+    // Function to check if description or title exceeds the character limit
     const isDescriptionTooLong = description.length > MAX_DESCRIPTION_LENGTH;
+    const isTitleTooLong = title.length > MAX_TITLE_LENGTH;
 
     const uploadPhoto = async () => {
         try {
@@ -50,13 +53,11 @@ const WritePost = () => {
                 throw error;
             });
         } 
-        catch(err) {
-            console.log("Error upload image: " + err.message)
+        catch(error) {
+            console.log("Error upload image: " + error.message)
         }
     };
 
-    // access the client
-    const queryClient = useQueryClient()
     // Mutations
     const addPostMutation = useMutation((newPost) => {
         return makeRequest.post("/posts", newPost);
@@ -76,10 +77,6 @@ const WritePost = () => {
             return;
         };
 
-        if (isDescriptionTooLong) {
-            return;
-        }
-        
         if (!description || !title) {
             // Show the invalid message
             setInvalidMessage(true);
@@ -90,6 +87,10 @@ const WritePost = () => {
             // exit the function
             return;
         };
+
+        if (isDescriptionTooLong) {
+            return;
+        }
 
         let imageUrl = "";
         if (imageFile) {
@@ -139,8 +140,11 @@ const WritePost = () => {
                                 onChange={(e) => {setDescription(e.target.value)}} 
                                 value={description}
                             />
+                            {isTitleTooLong && <div className="post-error-message">
+                                <span>Title too long {title.length}/{MAX_TITLE_LENGTH}</span>
+                            </div>}
                             {isDescriptionTooLong && <div className="post-error-message">
-                                <span>Description too long {description.length}/5000</span>
+                                <span>Description too long {description.length}/{MAX_DESCRIPTION_LENGTH}</span>
                             </div>}
                             {showErrorImgUpload && <div className="post-error-message">
                                 <span>Server returned unexpected error. Try again later.</span>
@@ -177,7 +181,7 @@ const WritePost = () => {
                         <label htmlFor="file">
                             <div className="item">
                                 <InsertPhotoIcon />
-                                <span>Add Image (preferably with a minimum scale of 400x400)</span>
+                                <span>Add Image</span>
                             </div>
                         </label>
                     </div>

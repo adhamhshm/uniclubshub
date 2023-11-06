@@ -11,6 +11,7 @@ import commentsRoute from "./routes/comments.js";
 import followRelationsRoute from "./routes/followRelations.js";
 import eventsRoute from "./routes/events.js";
 import imagesRoutes from "./routes/images.js";
+import activitiesRoutes from "./routes/activities.js";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 
@@ -49,6 +50,7 @@ app.use("/server/comments", commentsRoute);
 app.use("/server/follow_relations", followRelationsRoute);
 app.use("/server/events", eventsRoute);
 app.use("/server/images", imagesRoutes);
+app.use("/server/activities", activitiesRoutes);
 
 // This line starts the web server and makes it listen on port 8800 
 // for incoming HTTP requests. When a request is received on this port, 

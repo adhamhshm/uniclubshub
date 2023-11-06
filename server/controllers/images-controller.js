@@ -125,10 +125,10 @@ export const uploadPhoto = async (req, res) => {
     const existingImagePath = "../client/public/upload/" + currentImageFilename;
     // Check if the existing image file exists and delete it
     if (fs.existsSync(existingImagePath)) {
-        fs.unlink(existingImagePath, (err) => {
-            if (err) {
-                console.error("Error deleting existing image in file system:", err);
-                return res.status(400).json(err);
+        fs.unlink(existingImagePath, (error) => {
+            if (error) {
+                console.log("Error deleting existing image in file system:" + error.message);
+                res.status(400).json({ message: "Error deleting existing image in file system: " + error.message });
             } else {
                 console.log("Existing image deleted in file system.");
             }
@@ -170,7 +170,7 @@ export const uploadPhoto = async (req, res) => {
     } 
     catch (error) {
         console.log("Error uploading image: " + error.message);
-        res.status(500).json({ message: "Error uploading image: " + error.message });
+        res.status(400).json({ message: "Error uploading image: " + error.message });
     }
 };
 

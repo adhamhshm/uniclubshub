@@ -76,7 +76,6 @@ export const getPostsByYear = (req, res) => {
 
 // get all posts or searched posts
 export const getSearchedPosts = (req, res) => {
-    console.log("Enter getSearchPosts");
     const token = req.cookies.accessToken;
 
     // Check if a valid token is present
@@ -93,7 +92,6 @@ export const getSearchedPosts = (req, res) => {
 
         // Get the search input from the query parameters
         const searchInput = req.query.searchQuery;
-        console.log(req.query.searchQuery);
 
         if (searchInput) {
             // If there is a search input, build the SQL query for searching posts

@@ -19,6 +19,19 @@ export const getFollowRelation = (req, res) => {
     });
 };
 
+export const getFollowRelationOfParticipant = (req, res) => {
+    const q = "SELECT followedUserId FROM follow_relations WHERE followerUserId = ?";
+    db.query(q, [req.query.followerUserId], (err, data) => {
+        if (err) {
+            console.error("Error retrieving follow relation: " + err.message);
+            return res.status(500).json(err);
+        }
+        else {
+            return res.status(200).json(data);
+        }
+    });
+}
+
 export const addFollowRelation = (req, res) => {
 
     const token = req.cookies.accessToken;
@@ -32,7 +45,6 @@ export const addFollowRelation = (req, res) => {
         }
 
         const q = "INSERT INTO follow_relations (`followerUserId`, `followedUserId`) VALUES (?)";
-
         const values = [
             userInfo.id,
             req.body.userId
