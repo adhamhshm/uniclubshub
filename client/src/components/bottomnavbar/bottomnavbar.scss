@@ -21,6 +21,7 @@
                     flex-direction: row;
                     justify-items: center;
                     align-items: center;
+                    position: relative;
                     span {
                         font-size: 20px;
                         display: flex;
@@ -33,6 +34,16 @@
                         width: 20px;
                         height: 20px;
                         filter: themed("filterColor");
+                    }
+
+                    .notification-dot {
+                        background-color: themed("textColor");
+                        height: 7px;
+                        width: 7px;
+                        border-radius: 50%;
+                        top: 1px;
+                        right: 1px;
+                        position: absolute;
                     }
                 }
 

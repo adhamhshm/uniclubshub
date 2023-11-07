@@ -6,7 +6,7 @@ import { useCallback, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const Home = ({ socket, user }) => {
 
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Home = () => {
     return (
         <div className="home">
             {currentUser.role === "club" && <WritePost />}
-            <Posts />
+            <Posts socket={socket} user={currentUser} />
         </div>
     )
 }

@@ -7,7 +7,7 @@ import { makeRequest } from "../../../request";
 import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 
-const PostModal = ({ postData, currentUser, setShowPostModal }) => {
+const PostModal = ({ postData, currentUser, setShowPostModal, socket }) => {
 
     // Create a ref to hold a reference to the modal container
     const modalRef = useRef(null);
@@ -45,6 +45,7 @@ const PostModal = ({ postData, currentUser, setShowPostModal }) => {
     })
 
     const handleConfirm = () => {
+        handleNotification("register");
         registerEventMutation.mutate({ postId: postData.id, participantId: currentUser.id });
         setShowPostModal(false);
         addActivityInfo();
@@ -52,7 +53,16 @@ const PostModal = ({ postData, currentUser, setShowPostModal }) => {
 
     const addActivityInfo = async () => {
         addActivitiesMutation.mutate({ receiverUserId: postData.userId, postId: postData.id, senderUserId: currentUser.id, activityType: "register" });
-    }
+    };
+
+    const handleNotification = (activityType) => {
+        // Send the notification data to the server
+        socket?.emit("sendNotification" , {
+            senderUserId: currentUser.id,
+            receiverUserId: postData.userId,
+            activityType,
+        })
+    };
 
     // Attach a 'mousedown' event listener to the document to call handleOutsideClick
     document.addEventListener('mousedown', handleOutsideClick);

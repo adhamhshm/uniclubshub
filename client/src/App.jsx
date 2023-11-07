@@ -1,7 +1,7 @@
 import "./globals.scss";
 
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -18,11 +18,13 @@ import Event from "./pages/event/Event";
 import Activities from "./pages/activities/Activities";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
+import { io } from "socket.io-client";
 
 function App() {
 
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
+    const [socket, setSocket] = useState(null);
     
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -34,19 +36,28 @@ function App() {
         },
     });
 
+    useEffect(() => {
+        setSocket(io("http://localhost:8800"));
+        console.log(socket) 
+    }, []);
+
+    useEffect(() => {
+        socket?.emit("newUser", currentUser?.id);
+    }, [socket, currentUser?.id]);
+
     const Layout = () => {
         return (
             <QueryClientProvider client={queryClient} >
                 <div className={`theme-${darkMode ? "dark" : "light" }`}>
                     <TopBar />
                     <div style={{display: "flex"}}>
-                        <LeftBar currentUser={currentUser} />
+                        <LeftBar currentUser={currentUser} socket={socket} />
                         <div style={{ flex: 6 }}>
                             <Outlet />
                         </div>
                         <RightBar currentUser={currentUser} />
                     </div>
-                    <BottomNavbar currentUser={currentUser} />
+                    <BottomNavbar currentUser={currentUser} socket={socket} />
                 </div>
             </QueryClientProvider>
         )
@@ -82,7 +93,7 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <Home />
+                    element: <Home socket={socket} user={currentUser} />
                 },
                 {
                     path: "/profile/:id",

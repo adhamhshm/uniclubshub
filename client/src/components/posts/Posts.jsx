@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request.js";
 
 // the userId may come from the profile of the user
-const Posts = ({ userId }) => {
+const Posts = ({ userId, socket, user }) => {
 
     const { isLoading, error, data } = useQuery(["posts", userId], () => {
         return makeRequest.get("/posts?userId=" + userId)
@@ -23,7 +23,7 @@ const Posts = ({ userId }) => {
                 : (
                     data.map((post) => {
                         return (
-                            <Post post={post} key={post.id} />
+                            <Post post={post} key={post.id} socket={socket} user={user} />
                         )
                     })
                 )

@@ -14,8 +14,9 @@ import NoFillLikeIcon from '@mui/icons-material/FavoriteBorder';
 import FillLikeIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
 
-const Post = ({ post }) => {
+const Post = ({ post, socket, user }) => {
 
+    console.log(user)
     // Access the client
     const queryClient = useQueryClient();
 
@@ -23,18 +24,6 @@ const Post = ({ post }) => {
     const [openMenu, setMenuOpen] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
     const { currentUser } = useContext(AuthContext);
-
-    // const { isLoading, error, data } = useQuery(["postDetails", post.id], async () => {
-    //     const [likeData, commentData] = await Promise.all([
-    //         makeRequest.get(`/likes?postId=${post.id}`).then((res) => res.data),
-    //         makeRequest.get(`/comments?postId=${post.id}`).then((res) => res.data)
-    //     ]);
-      
-    //     return {
-    //         likes: likeData,
-    //         comments: commentData
-    //     };
-    // });
 
     const { isLoading: likesLoading, error: likesError, data: likesData } = useQuery(["likes", post.id], () =>
         makeRequest.get(`/likes?postId=${post.id}`)
@@ -52,14 +41,15 @@ const Post = ({ post }) => {
     );
 
     // Like and unliked mutation
-    const likePostMutation = useMutation((liked) => {
+    const likePostMutation = useMutation(async (liked) => {
         if (liked) {
             deleteLikeActivityInfo();
             return makeRequest.delete("/likes?postId=" + post.id);
         }
         else {
+            handleNotification("like");
             addLikeActivityInfo();
-            return makeRequest.post("/likes", { postId: post.id });
+            return await makeRequest.post("/likes", { postId: post.id });
         }
     }, 
     {
@@ -136,6 +126,15 @@ const Post = ({ post }) => {
                 return <span key={index}>{part}</span>;
             }
         });
+    };
+
+    const handleNotification = (activityType) => {
+        // Send the notification data to the server
+        socket?.emit("sendNotification" , {
+            senderUserId: user.id,
+            receiverUserId: post.userId,
+            activityType,
+        })
     };
 
     return (
@@ -232,10 +231,11 @@ const Post = ({ post }) => {
                         postData={post}
                         currentUser={currentUser}
                         setShowPostModal={setShowPostModal}
+                        socket={socket}
                     />
                 )}
                 {/* Display list of comments and comment functionality when the setCommentOpen is true */}
-                {commentOpen && <Comments post={post} />}
+                {commentOpen && <Comments post={post} socket={socket} user={user} />}
            </div>
         </div>
     )
