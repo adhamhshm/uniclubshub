@@ -7,7 +7,7 @@ import { makeRequest } from "../../../request";
 import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 
-const PostModal = ({ postData, currentUser, setShowPostModal, socket }) => {
+const ConfirmBox = ({ postData, currentUser, setShowPostModal, socket }) => {
 
     // Create a ref to hold a reference to the modal container
     const modalRef = useRef(null);
@@ -42,7 +42,7 @@ const PostModal = ({ postData, currentUser, setShowPostModal, socket }) => {
             // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: "activities" })
         },
-    })
+    });
 
     const handleConfirm = () => {
         handleNotification("register");
@@ -105,4 +105,4 @@ const PostModal = ({ postData, currentUser, setShowPostModal, socket }) => {
     );
 };
 
-export default PostModal;
+export default ConfirmBox;

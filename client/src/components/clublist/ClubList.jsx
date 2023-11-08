@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
 
-const ClubList = ({ currentUser, searchQuery }) => {
+const ClubList = ({ currentUser, searchQuery, socket }) => {
 
     // Extract the current user's ID 
     const userId = currentUser.id;
@@ -44,14 +44,29 @@ const ClubList = ({ currentUser, searchQuery }) => {
         })
     });
 
+    // Adding info to activities
+    const addActivitiesMutation = useMutation((activityInfo) => {
+        return makeRequest.post("/activities", activityInfo);
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: "activities" })
+        },
+    });
+
     // Define a mutation for following/unfollowing clubs
     const followUserMutation = useMutation((followClubData) => {
+        const clubUserId = followClubData.clubUserId;
         if (followClubData.isFollowing) {
             // If already following, unfollow
+            removeFollowActivityInfo(clubUserId);
             return makeRequest.delete("/follow_relations?userId=" + followClubData.clubUserId);
         }
         else {
+            handleNotification("follow", clubUserId);
             // If not following, follow
+            addFollowActivityInfo(clubUserId);
             return makeRequest.post("/follow_relations", { userId: followClubData.clubUserId });
         }
     }, 
@@ -60,11 +75,28 @@ const ClubList = ({ currentUser, searchQuery }) => {
             // Invalidate and refetch the followRelationOfParticipant query
             queryClient.invalidateQueries({ queryKey: "followRelationOfParticipant" })
         },
-    })
+    });
+
+    const addFollowActivityInfo = async (receiverClubUserId) => {
+        addActivitiesMutation.mutate({ receiverUserId: receiverClubUserId, postId: "n/a", senderUserId: currentUser.id, activityType: "follow" });
+    };
+
+    const removeFollowActivityInfo = async (receiverClubUserId) => {
+        await makeRequest.delete("/activities/unfollow" , { data : { receiverUserId: receiverClubUserId, senderUserId: currentUser.id, activityType: "follow" }});
+    };
 
     // Function to handle club follow/unfollow
     const handleFollow = (isFollowing, clubUserId) => {
         followUserMutation.mutate({ isFollowing, clubUserId });
+    };
+
+    const handleNotification = (activityType, receiverClubUserId) => {
+        // Send the notification data to the server
+        socket?.emit("sendNotification" , {
+            senderUserId: currentUser.id,
+            receiverUserId: receiverClubUserId,
+            activityType,
+        })
     };
 
     return (

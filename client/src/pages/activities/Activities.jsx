@@ -16,6 +16,8 @@ const Activities = () => {
         })
     });
 
+    console.log(activitiesData);
+
     return (
         <div className="activities">
             <div className="activities-container">
@@ -46,7 +48,7 @@ const Activities = () => {
                                             <span>
                                                 {activity.participantName}
                                                 <span>{activity.activityDescription}</span>
-                                                {activity.postTitle}
+                                                {activity.activityType !== "follow" ? activity.postTitle : ""}
                                             </span>
                                         </div>
                                     </div>

@@ -19,10 +19,11 @@ export const getActivitiesClubUser = (req, res) => {
             return res.status(403).json({error : "Unauthorized get club user activities: Invalid or expired token."});
         }
 
-        const q = `SELECT a.*, p.name AS participantName, p.profilePhoto AS participantProfilePhoto, ps.title AS postTitle
+        const q = `SELECT a.*, p.name AS participantName, p.profilePhoto AS participantProfilePhoto, 
+                   COALESCE(ps.title, 'n/a') AS postTitle, COALESCE(a.postId, 'n/a') AS postId
                    FROM activities AS a
                    JOIN participants AS p ON a.senderUserId = p.id
-                   JOIN posts AS ps ON a.postId = ps.id
+                   LEFT JOIN posts AS ps ON a.postId = ps.id
                    WHERE a.receiverUserId = ?
                    ORDER BY a.id DESC`;
 
@@ -91,7 +92,7 @@ export const addActivities = (req, res) => {
     })
 };
 
-export const deleteActivities = (req, res) => {
+export const removeLikeActivities = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized delete post: No token authenticated.")
@@ -107,6 +108,41 @@ export const deleteActivities = (req, res) => {
 
         const values = [
             req.body.postId,
+            req.body.senderUserId,
+            req.body.activityType,
+        ]
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.log("Error deleting activities: " + err.message);
+                return res.status(500).json(err);
+            }
+            else if (data.affectedRows > 0) {
+                return res.status(200).json("Activity has been deleted.");
+            }
+            else {
+                return res.status(403).json("Not authorized to delete activities.");
+            }
+        })
+    })
+};
+
+export const removeFollowActivities = (req, res) => {
+    const token = req.cookies.accessToken;
+    if (!token) {
+        console.log("Unauthorized delete post: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
+    };
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+        if (err) {
+            console.log("Unauthorized delete post: Invalid or expired token.")
+            return res.status(403).json({error : "Unauthorized delete post: Invalid or expired token."});
+        };
+
+        const q = "DELETE FROM activities WHERE `receiverUserId` = ? AND `senderUserId` = ? AND `activityType` = ?";
+
+        const values = [
+            req.body.receiverUserId,
             req.body.senderUserId,
             req.body.activityType,
         ]

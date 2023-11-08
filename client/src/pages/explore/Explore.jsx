@@ -10,7 +10,7 @@ import ClubList from "../../components/clublist/ClubList";
 
 import BackIcon from '@mui/icons-material/KeyboardBackspace';
 
-const Explore = () => {
+const Explore = ({ socket }) => {
 
     // Get the current location and navigate objects from React Router
     const location = useLocation();
@@ -122,7 +122,7 @@ const Explore = () => {
                     </div>
                 </div>
             </div>
-            {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} />}
+            {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} socket={socket} />}
             {activeTab === "posts" && <div className="posts">
                 {isLoading 
                     ? ( "Loading..." ) 
@@ -131,7 +131,9 @@ const Explore = () => {
                     (
                         data.map((post) => {
                             return (
-                                <Post post={post} key={post.id} />
+                                <div key={post.id} >
+                                    <Post post={post} socket={socket} />
+                                </div>
                             )
                         })
                     ) : (

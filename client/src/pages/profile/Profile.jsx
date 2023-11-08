@@ -9,7 +9,7 @@ import Posts from "../../components/posts/Posts";
 import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 
 
-const Profile = () => {
+const Profile = ({ socket }) => {
 
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const { currentUser, authorizeToken } = useContext(AuthContext);
@@ -35,12 +35,26 @@ const Profile = () => {
         })
     );
 
+    // Adding info to activities
+    const addActivitiesMutation = useMutation((activityInfo) => {
+        return makeRequest.post("/activities", activityInfo);
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: "activities" })
+        },
+    });
+
     // Mutations
     const followUserMutation = useMutation((following) => {
         if (following) {
+            removeFollowActivityInfo();
             return makeRequest.delete("/follow_relations?userId=" + userId);
         }
         else {
+            handleNotification("follow");
+            addFollowActivityInfo();
             return makeRequest.post("/follow_relations", { userId });
         }
     }, 
@@ -49,10 +63,27 @@ const Profile = () => {
             // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: "follow_relation" })
         },
-    })
+    });
+
+    const addFollowActivityInfo = async () => {
+        addActivitiesMutation.mutate({ receiverUserId: userId, postId: "n/a", senderUserId: currentUser.id, activityType: "follow" });
+    };
+
+    const removeFollowActivityInfo = async () => {
+        await makeRequest.delete("/activities/unfollow" , { data : { receiverUserId: userId, senderUserId: currentUser.id, activityType: "follow" }});
+    };
 
     const handleFollow = () => {
         followUserMutation.mutate(followRelationData.includes(currentUser.id));
+    };
+
+    const handleNotification = (activityType) => {
+        // Send the notification data to the server
+        socket?.emit("sendNotification" , {
+            senderUserId: currentUser.id,
+            receiverUserId: userId,
+            activityType,
+        })
     };
 
     return (
@@ -90,7 +121,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="profile-posts">
-                <Posts userId={userId} />
+                <Posts userId={userId} socket={socket} />
             </div>
             {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}
         </div>

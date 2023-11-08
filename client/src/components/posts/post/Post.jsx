@@ -14,9 +14,8 @@ import NoFillLikeIcon from '@mui/icons-material/FavoriteBorder';
 import FillLikeIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
 
-const Post = ({ post, socket, user }) => {
+const Post = ({ post, socket }) => {
 
-    console.log(user)
     // Access the client
     const queryClient = useQueryClient();
 
@@ -97,7 +96,7 @@ const Post = ({ post, socket, user }) => {
     };
 
     const deleteLikeActivityInfo = async () => {
-        await makeRequest.delete("/activities" , { data : { postId: post.id, senderUserId: currentUser.id, activityType: "like" }});
+        await makeRequest.delete("/activities/unlike" , { data : { postId: post.id, senderUserId: currentUser.id, activityType: "like" }});
     };
 
     // Function to render description with clickable links
@@ -131,7 +130,7 @@ const Post = ({ post, socket, user }) => {
     const handleNotification = (activityType) => {
         // Send the notification data to the server
         socket?.emit("sendNotification" , {
-            senderUserId: user.id,
+            senderUserId: currentUser.id,
             receiverUserId: post.userId,
             activityType,
         })
@@ -235,7 +234,7 @@ const Post = ({ post, socket, user }) => {
                     />
                 )}
                 {/* Display list of comments and comment functionality when the setCommentOpen is true */}
-                {commentOpen && <Comments post={post} socket={socket} user={user} />}
+                {commentOpen && <Comments post={post} socket={socket} />}
            </div>
         </div>
     )

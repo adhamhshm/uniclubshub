@@ -93,11 +93,11 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <Home socket={socket} user={currentUser} />
+                    element: <Home socket={socket} currentUser={currentUser} />
                 },
                 {
                     path: "/profile/:id",
-                    element: <Profile />
+                    element: <Profile socket={socket} />
                 },
                 {
                     path: "/event",
@@ -119,7 +119,7 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <Home />
+                    element: <Home socket={socket} currentUser={currentUser} />
                 },
                 {
                     path: "/profile/participant/:id",
@@ -127,7 +127,7 @@ function App() {
                 },
                 {
                     path: "/explore",
-                    element: <Explore />
+                    element: <Explore socket={socket} />
                 },
                 {
                     path: "/activities",

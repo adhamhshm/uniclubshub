@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import SendIcon from '@mui/icons-material/Send';
 
-const Comments = ({ post, socket, user }) => {
+const Comments = ({ post, socket }) => {
 
     const { currentUser } = useContext(AuthContext);
     const [description, setDescription] = useState("");
@@ -63,7 +63,7 @@ const Comments = ({ post, socket, user }) => {
     const handleNotification = (activityType) => {
         // Send the notification data to the server
         socket?.emit("sendNotification" , {
-            senderUserId: user.id,
+            senderUserId: currentUser.id,
             receiverUserId: post.userId,
             activityType,
         })
@@ -72,9 +72,9 @@ const Comments = ({ post, socket, user }) => {
     return (
         <div className="comments">
             <div className="write-comment-container">
-                <img src={currentUser?.profilePhoto ? 
-                          currentUser?.profilePhoto : 
-                          (currentUser?.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
+                <img src={currentUser.profilePhoto ? 
+                          currentUser.profilePhoto : 
+                          (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
                      alt="photo"
                 />
                 <textarea 
@@ -95,13 +95,13 @@ const Comments = ({ post, socket, user }) => {
                 : data.map((comment) => {
                     return (
                         <div className="comment-container" key={comment?.id}>
-                            <img src={comment?.profilePhoto ? 
-                                     comment?.profilePhoto : 
-                                     (comment?.userId.includes("C") ? "/default/default-club-image.png" : "/default/default-participant-image.png")}   
+                            <img src={comment.profilePhoto ? 
+                                     comment.profilePhoto : 
+                                     (comment.userId.includes("C") ? "/default/default-club-image.png" : "/default/default-participant-image.png")}   
                             />
                             <div className="comment-user-info">
-                                <span>{comment?.name}</span>
-                                <p>{comment?.description}</p>
+                                <span>{comment.name}</span>
+                                <p>{comment.description}</p>
                             </div>
                             <span className="comment-date">{moment(comment?.createdAt).fromNow()}</span>
                         </div>
