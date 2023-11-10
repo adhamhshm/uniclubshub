@@ -38,6 +38,8 @@ export const signin = (req, res) => {
                 // means it cannot be accessed or modified via JavaScript on the client-side. 
                 // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
                 httpOnly: true,
+                sameSite: "strict",
+                secure: true, // Only send the cookie over HTTPS
             }).status(200).json(others);
         })
     }
@@ -66,11 +68,13 @@ export const signin = (req, res) => {
             // remaining properties will be collected to the object named "others"
             // "password": Contains the value of the password property from data[0].
             // "others": Contains an object that includes all the other properties from data[0] (those that are not password).
-            const { password, ...others } = data[0];
+            const { name, email, password, phoneNumber, ...others } = data[0];
             res.cookie("accessToken", token, {
                 // means it cannot be accessed or modified via JavaScript on the client-side. 
                 // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
                 httpOnly: true,
+                sameSite: "strict",
+                secure: true, // Only send the cookie over HTTPS
             }).status(200).json(others);
         })
     }
@@ -166,12 +170,19 @@ export const authorizeToken = (req, res) => {
         return res.status(401).json("Unauthorized token: No token provided.");
     }
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+    
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized token: Invalid or expired token.")
             return res.status(401).json("Unauthorized token: Invalid or expired token.");
         }
+        console.log("In server for checking " + userInfo.id)
+        console.log("From client for checking " + req.query.currentUserId)
 
+        if(userInfo.id !== req.query.currentUserId) {
+            console.log("ID mismatched: You may had sent an invalid ID to the server")
+            return res.status(401).json("Unauthorized ID: Invalid ID.");
+        }
         // Token is valid
         res.status(200).json("Token is valid");
     });

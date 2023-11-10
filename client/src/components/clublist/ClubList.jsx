@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const ClubList = ({ currentUser, searchQuery, socket }) => {
 
     // Extract the current user's ID 
-    const userId = currentUser.id;
+    const userId = currentUser?.id;
     // Initialize the query client
     const queryClient = useQueryClient();
     // Define a function to get data from the query cache
@@ -78,11 +78,11 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
     });
 
     const addFollowActivityInfo = async (receiverClubUserId) => {
-        addActivitiesMutation.mutate({ receiverUserId: receiverClubUserId, postId: "n/a", senderUserId: currentUser.id, activityType: "follow" });
+        addActivitiesMutation.mutate({ receiverUserId: receiverClubUserId, postId: "n/a", senderUserId: currentUser?.id, activityType: "follow" });
     };
 
     const removeFollowActivityInfo = async (receiverClubUserId) => {
-        await makeRequest.delete("/activities/unfollow" , { data : { receiverUserId: receiverClubUserId, senderUserId: currentUser.id, activityType: "follow" }});
+        await makeRequest.delete("/activities/unfollow" , { data : { receiverUserId: receiverClubUserId, senderUserId: currentUser?.id, activityType: "follow" }});
     };
 
     // Function to handle club follow/unfollow

@@ -32,34 +32,6 @@ const ParticipantProfile = () => {
         }
     }, [isCurrentUser]);
 
-    // fetch user follow relations
-    const { data: followRelationData } = useQuery(["follow_relation"], () => 
-        makeRequest.get("/follow_relations?followedUserId=" + userId)
-        .then((res) => {
-            return res.data;
-        })
-    );
-
-    // Mutations
-    const mutation = useMutation((following) => {
-        if (following) {
-            return makeRequest.delete("/follow_relations?userId=" + userId);
-        }
-        else {
-            return makeRequest.post("/follow_relations", { userId });
-        }
-    }, 
-    {
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "follow_relation" })
-        },
-    })
-
-    const handleFollow = () => {
-        mutation.mutate(followRelationData.includes(currentUser.username));
-    };
-
     return (
         <div className="participant-profile">
             <div className="participant-profile-container">
@@ -81,7 +53,7 @@ const ParticipantProfile = () => {
                     </div>
                 </div>
                 <div className="participant-button">
-                    {userId.includes(currentUser.id) && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
+                    {userId === currentUser.id && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
                 </div>
             </div>
             {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}

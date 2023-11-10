@@ -124,10 +124,9 @@ const Explore = ({ socket }) => {
             </div>
             {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} socket={socket} />}
             {activeTab === "posts" && <div className="posts">
-                {isLoading 
-                    ? ( "Loading..." ) 
-                    : error ? ( "Something went wrong...") 
-                    : data.length !== 0 ? 
+                {isLoading ? ( "Loading..." ) : 
+                 error ? ( "Something went wrong...") : 
+                 data.length !== 0 ? 
                     (
                         data.map((post) => {
                             return (

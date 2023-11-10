@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { createContext } from "react";
 import { makeRequest } from "../request.js";
@@ -37,7 +36,7 @@ export const AuthContextProvider = ({ children }) => {
     // fetch the token authorization from the server
     const authorizeToken = async () => {
         try {
-            const response = await makeRequest.get("/auth/authorizeToken");
+            const response = await makeRequest.get("/auth/authorizeToken?currentUserId=" + currentUser?.id);
             console.log(response.data); // Response will indicate if the token is valid
             return true;
         } catch (error) {

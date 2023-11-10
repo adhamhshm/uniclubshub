@@ -17,8 +17,7 @@ const Comments = ({ post, socket }) => {
     const { isLoading, error, data } = useQuery(["comments"], () => 
         makeRequest.get("/comments?postId=" + post.id)
         .then((res) => {
-            const fetchedComments = res.data;
-            return fetchedComments;
+            return res.data;
         })
     )
 
@@ -52,21 +51,49 @@ const Comments = ({ post, socket }) => {
         handleNotification("comment");
         addCommentMutation.mutate({ description, postId: post.id });
         setDescription("");
-        addActivityInfo();
-        
     };
 
-    const addActivityInfo = async () => {
-        addActivitiesMutation.mutate({ receiverUserId: post.userId, postId: post.id, senderUserId: currentUser.id, activityType: "comment" });
+    const addActivityInfo = async (receiverUserId, postId, senderUserId, activityType) => {
+        addActivitiesMutation.mutate({ receiverUserId, postId, senderUserId, activityType });
     };
+
+
+    const getCommenters = () => {
+        // Array to hold unique commenter IDs
+        const uniqueUsers = [];
+        // Iterating through comments to find unique commenters
+        data.forEach(comment => {
+            // Checks if the commenter is unique and isn't the post owner or the current user
+            if (!uniqueUsers.includes(comment.userId) && comment.userId !== currentUser.id && comment.userId !== post.userId) {
+                // Add the unique commenter ID to the array
+                uniqueUsers.push(comment.userId);
+            }
+        })
+        return uniqueUsers;
+    }
 
     const handleNotification = (activityType) => {
-        // Send the notification data to the server
-        socket?.emit("sendNotification" , {
-            senderUserId: currentUser.id,
-            receiverUserId: post.userId,
-            activityType,
-        })
+        // Send the notification to the owner of post
+        if (currentUser.id !== post.userId) {
+            socket?.emit("sendNotification" , {
+                senderUserId: currentUser.id,
+                receiverUserId: post.userId,
+                activityType,
+            });
+            addActivityInfo(post.userId, post.id, currentUser.id, "comment");
+        }
+
+        // Retrieve an array of unique commenters
+        const commenters = getCommenters();
+        // Send the notification to each unique commenter
+        commenters.forEach(commenter => {
+            socket?.emit("sendNotification", {
+                senderUserId: currentUser.id,
+                receiverUserId: commenter,
+                activityType,
+            });
+            addActivityInfo(commenter, post.id, currentUser.id, "comment");
+        });
     };
 
     return (

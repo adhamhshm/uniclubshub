@@ -10,7 +10,7 @@ const BottomNavbar = ({ currentUser, socket }) => {
     const queryClient = useQueryClient();
     const [notifications, setNotifications] = useState([]);
     // Render different navigation links based on the user's role
-    const userLinks = currentUser.role === 'club' ? clubUserLinks : participantUserLinks;
+    const userLinks = currentUser?.role === 'club' ? clubUserLinks : participantUserLinks;
 
     useEffect(() => {
         socket?.on("getNotifications", data => { 
@@ -26,14 +26,14 @@ const BottomNavbar = ({ currentUser, socket }) => {
                             <NavLink
                                 className="navlinks"
                                 key={index}
-                                to={link.to.replace(':id', currentUser.id)}
+                                to={link.to.replace(':id', currentUser?.id)}
                                 activeclassname ="active"
                                 style={{ textDecoration: "none", color: "inherit" }}
                                 onClick={() => {
                                     window.scrollTo({ top: 0, behavior: "smooth" });
                                     if (link.text === "Activities") {
                                         setNotifications([]);
-                                        queryClient.invalidateQueries(["activities", currentUser.id]);
+                                        queryClient.invalidateQueries(["activities", currentUser?.id]);
                                     }
                                 }}
                             >

@@ -9,35 +9,42 @@ dotenv.config();
 export const getActivitiesClubUser = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        console.log("Unauthorized get club user activities: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized get club user activities: No token authenticated."});
+        console.log("Unauthorized get account activities: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized get account activities: No token authenticated."});
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized get club user activities: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized get club user activities: Invalid or expired token."});
+            return res.status(403).json({ error : "Unauthorized get account activities: Invalid or expired token." });
         }
 
-        const q = `SELECT a.*, p.name AS participantName, p.profilePhoto AS participantProfilePhoto, 
+        const q = `SELECT a.*, p.name AS senderName, p.profilePhoto AS senderProfilePhoto, 
                    COALESCE(ps.title, 'n/a') AS postTitle, COALESCE(a.postId, 'n/a') AS postId
                    FROM activities AS a
                    JOIN participants AS p ON a.senderUserId = p.id
                    LEFT JOIN posts AS ps ON a.postId = ps.id
                    WHERE a.receiverUserId = ?
-                   ORDER BY a.id DESC`;
+                   UNION
+                   SELECT a.*, u.name AS senderName, u.profilePhoto AS senderProfilePhoto, 
+                   COALESCE(ps.title, 'n/a') AS postTitle, COALESCE(a.postId, 'n/a') AS postId
+                   FROM activities AS a
+                   JOIN users AS u ON a.senderUserId = u.id
+                   LEFT JOIN posts AS ps ON a.postId = ps.id
+                   WHERE a.receiverUserId = ?
+                   ORDER BY id DESC`;
 
-        const values = [req.query.userId];
+        const values = [req.query.userId, req.query.userId];
         db.query(q, values, (err, data) => {
             if (err) {
                 console.log("Error fetching club user activities: " + err.message);
                 return res.status(500).json({ error : "Error fetching club user activities." });
             }
             else {
-                return res.status(200).json(data);
+                    return res.status(200).json(data);
             }
-        })
-    })
+        });
+    });
 };
 
 export const addActivities = (req, res) => {
@@ -47,15 +54,20 @@ export const addActivities = (req, res) => {
         return res.status(401).json({ error : "Unauthorized add activities: No token authenticated."});
     };
 
+
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+        
         if (err) {
             console.log("Unauthorized add activities: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized add activities: Invalid or expired token."});
+            return res.status(403).json({ error : "Unauthorized add activities: Invalid or expired token." });
         };
 
         let activityDescription = "";
         const hasReadValue = "no";
-        if (req.body.activityType === "comment") {
+        if (req.body.activityType === "comment" && req.body.receiverUserId.length === 10) {
+            activityDescription = " commented on a post you commented: ";
+        }
+        else if (req.body.activityType === "comment") {
             activityDescription = " commented on your post: ";
         }
         else if (req.body.activityType === "register") {
@@ -73,7 +85,7 @@ export const addActivities = (req, res) => {
         const values = [
             req.body.receiverUserId,
             req.body.postId,
-            req.body.senderUserId,
+            userInfo.id,
             activityDescription,
             req.body.activityType,
             hasReadValue
@@ -98,17 +110,17 @@ export const removeLikeActivities = (req, res) => {
         console.log("Unauthorized delete post: No token authenticated.")
         return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
     };
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized delete post: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized delete post: Invalid or expired token."});
+            return res.status(403).json({ error : "Unauthorized delete post: Invalid or expired token." });
         };
 
         const q = "DELETE FROM activities WHERE `postId` = ? AND `senderUserId` = ? AND `activityType` = ?";
 
         const values = [
             req.body.postId,
-            req.body.senderUserId,
+            userInfo.id,
             req.body.activityType,
         ]
 
@@ -118,10 +130,10 @@ export const removeLikeActivities = (req, res) => {
                 return res.status(500).json(err);
             }
             else if (data.affectedRows > 0) {
-                return res.status(200).json("Activity has been deleted.");
+                return res.status(200).json({ message : "Activity has been deleted."});
             }
             else {
-                return res.status(403).json("Not authorized to delete activities.");
+                return res.status(403).json({ error: "Not authorized to delete activities."});
             }
         })
     })
@@ -133,17 +145,17 @@ export const removeFollowActivities = (req, res) => {
         console.log("Unauthorized delete post: No token authenticated.")
         return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
     };
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized delete post: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized delete post: Invalid or expired token."});
+            return res.status(403).json({ error : "Unauthorized delete post: Invalid or expired token." });
         };
 
         const q = "DELETE FROM activities WHERE `receiverUserId` = ? AND `senderUserId` = ? AND `activityType` = ?";
 
         const values = [
             req.body.receiverUserId,
-            req.body.senderUserId,
+            userInfo.id,
             req.body.activityType,
         ]
 
@@ -153,12 +165,46 @@ export const removeFollowActivities = (req, res) => {
                 return res.status(500).json(err);
             }
             else if (data.affectedRows > 0) {
-                return res.status(200).json("Activity has been deleted.");
+                return res.status(200).json({ message : "Activity has been deleted."});
             }
             else {
-                return res.status(403).json("Not authorized to delete activities.");
+                return res.status(403).json({ error: "Not authorized to delete activities."});
             }
         })
     })
 };
+
+export const markAsRead = (req, res) => {
+    console.log("markkkk")
+
+    const token = req.cookies.accessToken;
+    if (!token) {
+        console.log("Unauthorized delete post: No token authenticated.")
+        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
+    };
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+        if (err) {
+            console.log("Unauthorized delete post: Invalid or expired token.")
+            return res.status(403).json({ error : "Unauthorized delete post: Invalid or expired token." });
+        }
+        const q = "UPDATE activities SET `hasRead` = ? WHERE id = ?";
+        const values = [
+            req.body.hasRead,
+            req.body.activityId,
+        ]
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.log("Error mark as read: " + err.message);
+                return res.status(500).json(err);
+            }
+            if (data.affectedRows > 0) {
+                console.log("Activities mark as read.");
+                return res.json("Activities mark as read.");
+            }
+            console.log("There is problem to mark as read.");
+            return res.status(403).json("There is problem to mark as read.");
+        })
+    });
+}
 

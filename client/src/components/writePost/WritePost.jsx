@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const WritePost = () => {
 
+    // Declare and initialize constants, states, and references
     const MAX_DESCRIPTION_LENGTH = 5000;
     const MAX_TITLE_LENGTH = 100;
     const inputRef = useRef();
@@ -23,10 +24,11 @@ const WritePost = () => {
     const [showWrongFileImgUpload, setShowWrongFileImgUpload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Function to check if description or title exceeds the character limit
+    // Variable to check if description or title exceeds the character limit
     const isDescriptionTooLong = description.length > MAX_DESCRIPTION_LENGTH;
     const isTitleTooLong = title.length > MAX_TITLE_LENGTH;
 
+    // Function to upload the selected photo to the server
     const uploadPhoto = async () => {
         try {
             if (!imageFile.type.includes("image")) {
@@ -58,7 +60,7 @@ const WritePost = () => {
         }
     };
 
-    // Mutations
+    // Mutation for adding a new post
     const addPostMutation = useMutation((newPost) => {
         return makeRequest.post("/posts", newPost);
     }, 
@@ -69,6 +71,7 @@ const WritePost = () => {
         },
     });
 
+    // Function to handle the post submission
     const handlePost = async (e) => {
         e.preventDefault();
         // If token expired, exit the function
@@ -112,6 +115,7 @@ const WritePost = () => {
         clearImageFile();
     };
 
+    // Function to clear the uploaded image file
     const clearImageFile = () => {
         setImageFile(null)
         // clear the image using useRef
@@ -123,7 +127,7 @@ const WritePost = () => {
             <div className="writepost-container">
                 <div className="writepost-container-top">
                     <div className="top-left-part">
-                        <img src={currentUser.profilePhoto ? currentUser.profilePhoto : "/default/default-club-image.png"} alt="user" />
+                        <img src={currentUser?.profilePhoto ? currentUser?.profilePhoto : "/default/default-club-image.png"} alt="user" />
                         <div className="input-box">
                             <input
                                 className={showInvalidMessage ? "input-invalid" : ""}

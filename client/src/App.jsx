@@ -1,7 +1,7 @@
 import "./globals.scss";
 
-import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { createBrowserRouter, RouterProvider, Outlet, Navigate, useNavigate } from "react-router-dom";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -36,9 +36,10 @@ function App() {
         },
     });
 
+    
+
     useEffect(() => {
         setSocket(io("http://localhost:8800"));
-        console.log(socket) 
     }, []);
 
     useEffect(() => {
@@ -63,20 +64,26 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children, requiredRole }) => {
-        const checkTokenValidity = async () => {
+    const ProtectedRoute = ({ children }) => {
+
+        const navigate = useNavigate();
+        
+        const checkToken = useCallback(async () => {
             const isTokenValid = await authorizeToken();
-            if (!currentUser || !isTokenValid) {
-                return false;
+            if (isTokenValid === false) {
+                console.log("hello")
+                localStorage.clear();
+                navigate("/login");
             }
-            return true;
-        };
+        }, [authorizeToken]);
     
-        const isTokenValid = checkTokenValidity();
-    
-        if (!currentUser || !isTokenValid) {
-            return <Navigate to="/login" />;
-        }
+        useEffect(() => {
+            checkToken();
+        }, [children]);
+        
+        // if (!currentUser) {
+        //     return <Navigate to="/login" />;
+        // }
         
         // children is the protected Layout
         return children;
@@ -93,7 +100,7 @@ function App() {
             children: [
                 {
                     path: "/",
-                    element: <Home socket={socket} currentUser={currentUser} />
+                    element: <Home socket={socket} currentUser={currentUser}/>
                 },
                 {
                     path: "/profile/:id",

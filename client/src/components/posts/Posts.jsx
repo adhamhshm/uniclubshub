@@ -17,16 +17,19 @@ const Posts = ({ userId, socket }) => {
 
     return (
         <div className="posts">
-            {isLoading 
-                ? ( "Loading..." ) 
-                : error ? ( "Something went wrong...") 
-                : (
-                    data.map((post) => {
-                        return (
-                            <Post post={post} key={post.id} socket={socket} />
-                        )
-                    })
-                )
+            {isLoading ? ( "Loading..." ) : 
+             error ? ( "Something went wrong...") : 
+             data.length !== 0 ? (
+                data.map((post) => {
+                    return (
+                        <Post post={post} key={post.id} socket={socket} />
+                    )
+                })
+            ) : (
+                <div className="no-posts-container">
+                    No post found. 
+                </div>
+            )
             }
         </div>
     )

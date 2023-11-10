@@ -21,9 +21,9 @@ const TopBar = () => {
                 <div className="right">
                     <div className="user" onClick={() => setOpenMenuModal(!openMenuModal)}>
                         <img 
-                            src={currentUser.profilePhoto ? 
-                                currentUser.profilePhoto : 
-                                (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")} 
+                            src={currentUser?.profilePhoto ? 
+                                currentUser?.profilePhoto : 
+                                (currentUser?.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")} 
                             alt="profile photo" 
                         />
                         {openMenuModal && <ProfileMenu setOpenMenuModal={setOpenMenuModal} />}

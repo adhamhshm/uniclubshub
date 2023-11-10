@@ -12,7 +12,7 @@ import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 const Profile = ({ socket }) => {
 
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
-    const { currentUser, authorizeToken } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
     const userId = useLocation().pathname.split("/")[2];
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -111,11 +111,11 @@ const Profile = ({ socket }) => {
                     </div>
                 </div>
                 <div className="button">
-                    {userId.includes(currentUser.id) ? 
+                    {userId === currentUser?.id ? 
                      <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
-                     currentUser.role === "participant" &&
-                     <button className={followRelationData?.includes(currentUser.id) ? "following-button" : ""} onClick={handleFollow}> 
-                        {followRelationData?.includes(currentUser.id) ? "Following" : "Follow"}
+                     currentUser?.role === "participant" &&
+                     <button className={followRelationData?.includes(currentUser?.id) ? "following-button" : ""} onClick={handleFollow}> 
+                        {followRelationData?.includes(currentUser?.id) ? "Following" : "Follow"}
                      </button>
                     }
                 </div>
