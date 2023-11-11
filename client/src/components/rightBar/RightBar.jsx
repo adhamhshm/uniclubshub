@@ -6,7 +6,7 @@ const RightBar = ({ currentUser }) => {
     return (
         <div className="rightbar">
             <div className="rightbar-container">
-                <ClubList currentUser={currentUser} searchQuery={""} />
+                Right Bar
             </div>
         </div>
     )

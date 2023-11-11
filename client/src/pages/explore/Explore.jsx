@@ -126,8 +126,13 @@ const Explore = ({ socket }) => {
             {activeTab === "posts" && <div className="posts">
                 {isLoading ? ( "Loading..." ) : 
                  error ? ( "Something went wrong...") : 
-                 data.length !== 0 ? 
+                 data.length === 0 && searchQuery === ""  ? 
                     (
+                        <div className="not-found-message">
+                           No posts. 
+                        </div>
+                    ) :
+                    data.length !== 0 ?  (
                         data.map((post) => {
                             return (
                                 <div key={post.id} >
@@ -137,7 +142,7 @@ const Explore = ({ socket }) => {
                         })
                     ) : (
                         <div className="not-found-message">
-                           Sorry, we cannot find "{searchQuery}". 
+                            "{searchQuery}" not found. 
                         </div>
                     )
                 }

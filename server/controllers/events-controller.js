@@ -9,13 +9,14 @@ export const registerEventPost = (req, res) => {
     console.log("Registering...")
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized register for event: No token authenticated.")
+        return res.status(401).json("No session authenticated.");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
-            console.error("JWT verification error:", err);
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized register for event: Invalid or expired token.")
+            return res.status(401).json("Session had expired.");
         };
 
         const q = "INSERT INTO events (`postId`, `participantId`) VALUES (?)";
@@ -27,7 +28,8 @@ export const registerEventPost = (req, res) => {
 
         db.query(q, [values], (err, data) => {
             if (err) {
-                return console.log("Error inserting registration confirmation: " + err.message + res.status(500).json(err));
+                console.log("Error inserting event registration: " + err.message);
+                return res.status(500).json("Error inserting event registration.");
             }
             else {
                 return res.status(200).json("Registration successful.");
@@ -41,8 +43,8 @@ export const getIsRegistered = (req, res) => {
 
     db.query(q, [req.query.postId], (err, data) => {
         if (err) {
-            console.error("Error retrieving likes: " + err.message);
-            return res.status(500).json(err);
+            console.log("Error retrieving likes: " + err.message);
+            return res.status(500).json("Error retrieving likes.");
         }
         else {
             return res.status(200).json(data.map(like => like.participantId));
@@ -53,12 +55,14 @@ export const getIsRegistered = (req, res) => {
 export const getEventParticipants = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
-        return res.status(401).json("Not Signed In.");
+        console.log("Unauthorized get event's participants: No token authenticated.")
+        return res.status(401).json("No session authenticated.");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
-            return res.status(403).json("Token is not valid.");
+            console.log("Unauthorized get event's participants: Invalid or expired token.")
+            return res.status(401).json("Session had expired.");
         };
 
         const q = `SELECT participants.id, participants.name, participants.email, participants.phoneNumber FROM participants
@@ -67,7 +71,8 @@ export const getEventParticipants = (req, res) => {
 
         db.query(q, [req.query.postId], (err, data) => {
             if (err) {
-                return console.log("Error listing the participants: " + err.message + res.status(500).json(err));
+                console.log("Error listing the participants: " + err.message);
+                return res.status(500).json("Error listing the participants.");
             }
             else {
                 return res.status(200).json(data);

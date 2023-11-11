@@ -12,13 +12,13 @@ export const getPosts = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get posts: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized get posts: No token authenticated."});
+        return res.status(401).json("No session authenticated.");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized get posts: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized get posts: Invalid or expired token."});
+            return res.status(403).json("Session had expired.");
         }
         else {
             const q = userId !== "undefined"
@@ -31,7 +31,8 @@ export const getPosts = (req, res) => {
             const values = userId !== "undefined" ? [userId] : [userInfo.id, userInfo.id];
             db.query(q, values, (err, data) => {
                 if (err) {
-                    return console.log("Error fetching posts: " + res.status(500).json(err));
+                    console.log("Error fetching posts: " + err.message);
+                    return res.status(500).json("Error fetching posts.");
                 }
                 else {
                     return res.status(200).json(data);
@@ -41,17 +42,46 @@ export const getPosts = (req, res) => {
     })
 };
 
+// get posts that is relevant to user
+export const getSinglePost = (req, res) => {
+    console.log("Nak satu post "+ req.params.id)
+    const token = req.cookies.accessToken;
+    if (!token) {
+        console.log("Unauthorized get posts: No token authenticated.")
+        return res.status(401).json("No session authenticated.");
+    };
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+        if (err) {
+            console.log("Unauthorized get posts: Invalid or expired token.")
+            return res.status(403).json("Session had expired.");
+        }
+        const q = `SELECT * FROM posts WHERE id = ?`;
+
+        const values = [req.params.id];
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.log("Error fetching single post: " + err.message);
+                return res.status(500).json("Error fetching single post.");
+            }
+            else {
+                return res.status(200).json(data);
+            }
+        })
+    })
+};
+
 export const getPostsByYear = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get posts by year: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized get posts by year: No token authenticated."});
+        return res.status(401).json("No session authenticated");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized get posts by year: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized get posts by year: Invalid or expired token."});
+            return res.status(403).json("Session had expired.");
         };
 
         const q = `SELECT * FROM posts WHERE userId = ?
@@ -65,7 +95,8 @@ export const getPostsByYear = (req, res) => {
 
         db.query(q, values, (err, data) => {
             if (err) {
-                return console.log("Error fetching posts by year: " + res.status(500).json(err));
+                console.log("Error fetching posts by year: " + err.message)
+                return res.status(500).json("Error fetching posts by year.");
             }
             else {
                 return res.status(200).json(data);
@@ -81,13 +112,13 @@ export const getSearchedPosts = (req, res) => {
     // Check if a valid token is present
     if (!token) {
         console.log("Unauthorized get searched posts: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized get searched posts: No token authenticated."});
+        return res.status(401).json("No session authenticated.");
     };
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
             console.log("Unauthorized get searched posts: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized get searched posts: Invalid or expired token."});
+            return res.status(403).json("Session had expired.");
         }
 
         // Get the search input from the query parameters
@@ -104,8 +135,8 @@ export const getSearchedPosts = (req, res) => {
 
             db.query(q, [searchValue, searchValue], (err, data) => {
                 if (err) {
-                    console.log("Error fetching searched posts: " + err);
-                    return res.status(500).json("Error fetching searched posts");
+                    console.log("Error fetching searched posts: " + err.message);
+                    return res.status(500).json("Error fetching searched posts.");
                 } 
                 else {
                     console.log("Done fetching searched posts");
@@ -135,13 +166,13 @@ export const addPost = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized add post: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized add post: No token authenticated."});
+        return res.status(401).json("No token authenticated.");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized add post: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized add post: Invalid or expired token."});
+            return res.status(403).json("Session had expired.");
         };
 
         // Generate a random post ID based on current date, time, and a random number
@@ -169,7 +200,8 @@ export const addPost = (req, res) => {
 
         db.query(q, [values], (err, data) => {
             if (err) {
-                return console.log("Error adding post: " + err.message + res.status(500).json(err));
+                console.log("Error adding post: " + err.message);
+                return res.status(500).json("Error adding post.");
             }
             else {
                 return res.status(200).json("Post has been created.");
@@ -182,19 +214,20 @@ export const deletePost = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized delete post: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
+        return res.status(401).json("No session authenticated.");
     };
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized delete post: Invalid or expired token.")
-            return res.status(403).json({error : "Unauthorized delete post: Invalid or expired token."});
+            return res.status(403).json("Session had expired.");
         };
 
         const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";
 
         db.query(q, [req.params.id, userInfo.id], (err, data) => {
             if (err) {
-                return console.log("Error adding post: " + err.message + res.status(500).json(err));
+                console.log("Error deleting post: " + err.message);
+                return res.status(500).json("Error deleting post.");
             }
             else if (data.affectedRows > 0) {
                 return res.status(200).json("Post has been deleted.");

@@ -10,27 +10,26 @@ import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 const ParticipantProfile = () => {
 
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const { currentUser } = useContext(AuthContext);
     const userId = useLocation().pathname.split("/")[3];
 
-    const isCurrentUser = currentUser.id === userId;
+    const isCurrentUser = currentUser?.id === userId;
 
     // fetch user info
-    const { isLoading, error, data } = useQuery(["user"], () => 
+    const { isLoading, error, data } = useQuery(["user", userId], () => 
         makeRequest.get("/participants/find/" + userId)
         .then((res) => {
             return res.data;
         })
     );
 
-    useEffect(() => {
-        // If the user is not authorized to access this profile, navigate to an error page
-        if (!isCurrentUser) {
-            navigate("/unauthorized"); // Replace with the actual URL of your unauthorized page
-        }
-    }, [isCurrentUser]);
+    // useEffect(() => {
+    //     // If the user is not authorized to access this profile, navigate to an error page
+    //     if (!isCurrentUser) {
+    //         navigate("/unauthorized"); // Replace with the actual URL of your unauthorized page
+    //     }
+    // }, [isCurrentUser]);
 
     return (
         <div className="participant-profile">
@@ -53,7 +52,7 @@ const ParticipantProfile = () => {
                     </div>
                 </div>
                 <div className="participant-button">
-                    {userId === currentUser.id && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
+                    {userId === currentUser?.id && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
                 </div>
             </div>
             {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}

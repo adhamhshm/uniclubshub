@@ -1,8 +1,9 @@
 import "./activities.scss";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { makeRequest } from "../../request";
+import { Link } from "react-router-dom";
 
 const Activities = () => {
 
@@ -39,6 +40,7 @@ const Activities = () => {
             });
             setFinishedReading(true); // Update the state after all activities have been processed
         }
+
     }, [activitiesData, finishedReading]); // Monitor changes in activitiesData and finishedReading
 
     return (
@@ -76,7 +78,9 @@ const Activities = () => {
                                         <span>
                                             {activity.senderName}
                                             <span>{activity.activityDescription}</span>
-                                            {activity.activityType !== "follow" ? activity.postTitle : ""}
+                                            <Link to={`/postview/${activity.postId}`} style={{ textDecoration: "none"}}>
+                                                <span>{activity.activityType !== "follow" ? activity.postTitle : ""}</span>
+                                            </Link>
                                         </span>
                                     </div>
                                 </div>

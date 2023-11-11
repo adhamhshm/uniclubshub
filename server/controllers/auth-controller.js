@@ -21,7 +21,7 @@ export const signin = (req, res) => {
             // check the hashed password
             const checkedPassword = bcrypt.compareSync(req.body.password, data[0].password);
             if (!checkedPassword) {
-                return res.status(400).json("Wrong password or id.");
+                return res.status(400).json("Wrong password or ID.");
             }
 
             // initialize web token
@@ -47,7 +47,8 @@ export const signin = (req, res) => {
         const q = "SELECT * FROM participants WHERE id = ?";
         db.query(q, [req.body.id], (err, data) => {
             if (err) {
-                return console.log("Error signing in user: " + res.status(500).json(err));
+                console.log("Error signing in user: " + err.message)
+                return res.status(500).json("Error signing in user.");
             }
             if (data.length === 0) {
                 return res.status(404).json("User not found.");
@@ -68,7 +69,7 @@ export const signin = (req, res) => {
             // remaining properties will be collected to the object named "others"
             // "password": Contains the value of the password property from data[0].
             // "others": Contains an object that includes all the other properties from data[0] (those that are not password).
-            const { name, email, password, phoneNumber, ...others } = data[0];
+            const { password, ...others } = data[0];
             res.cookie("accessToken", token, {
                 // means it cannot be accessed or modified via JavaScript on the client-side. 
                 // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
@@ -95,7 +96,8 @@ export const signup = (req, res) => {
         const q = "SELECT * FROM users WHERE id = ?";
         db.query(q, [req.body.id], (err, data) => {
             if (err) {
-                return console.log("Error finding user: " + res.status(500).json(err));
+                console.log("Error finding user: " + err.message);
+                return res.status(500).json("Error findind user.");
             }
             if (data.length) {
                 return res.status(409).json("User already exists.");
@@ -114,7 +116,8 @@ export const signup = (req, res) => {
             const q = "INSERT INTO users (`id`, `email`, `password`, `name`, `role`) VALUE (?)";
             db.query(q, [values], (err, data) => {
                 if (err) {
-                    return console.log("Error creating user: " + res.status(500).json(err));
+                    console.log("Error creating user: " + err.message)
+                    return res.status(500).json("Error creating user.");
                 }
                 else {
                     return res.status(200).json("User have been created.")
@@ -127,7 +130,8 @@ export const signup = (req, res) => {
         const q = "SELECT * FROM participants WHERE id = ?";
         db.query(q, [req.body.id], (err, data) => {
             if (err) {
-                return console.log("Error finding user: " + res.status(500).json(err));
+                console.log("Error finding user: " + err.message);
+                return res.status(500).json("Error findind user.");
             }
             if (data.length) {
                 return res.status(409).json("User already exists.");
@@ -146,7 +150,8 @@ export const signup = (req, res) => {
             const q = "INSERT INTO participants (`id`, `email`, `password`, `name`, `role`) VALUE (?)";
             db.query(q, [values], (err, data) => {
                 if (err) {
-                    return console.log("Error creating user: " + res.status(500).json(err));
+                    console.log("Error creating user: " + err.message)
+                    return res.status(500).json("Error creating user.");
                 }
                 else {
                     return res.status(200).json("User have been created.")
@@ -158,8 +163,9 @@ export const signup = (req, res) => {
 
 export const signout = (req, res) => {
     res.clearCookie("accessToken", {
-        secure: true,
-        sameSite: "none",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: true, 
     }).status(200).json("User already signed out.");
 }
 
@@ -167,23 +173,23 @@ export const authorizeToken = (req, res) => {
     const token = req.cookies.accessToken; // Get the token from the request (assuming it's stored in a cookie)
     if (!token) {
         console.log("Unauthorized token: No token provided.")
-        return res.status(401).json("Unauthorized token: No token provided.");
+        return res.status(401).json("No session authenticated.");
     }
 
     
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized token: Invalid or expired token.")
-            return res.status(401).json("Unauthorized token: Invalid or expired token.");
+            return res.status(401).json("Session had expired.");
         }
-        console.log("In server for checking " + userInfo.id)
-        console.log("From client for checking " + req.query.currentUserId)
+        // console.log("In server for checking " + userInfo.id)
+        // console.log("From client for checking " + req.query.currentUserId)
 
         if(userInfo.id !== req.query.currentUserId) {
-            console.log("ID mismatched: You may had sent an invalid ID to the server")
-            return res.status(401).json("Unauthorized ID: Invalid ID.");
+            console.log("ID mismatched: You may had sent an unauthorized ID to the server")
+            return res.status(401).json("Unauthorized ID.");
         }
         // Token is valid
-        res.status(200).json("Token is valid");
+        res.status(200).json("Authorization approved.");
     });
 }

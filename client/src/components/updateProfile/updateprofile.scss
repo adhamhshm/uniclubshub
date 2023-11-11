@@ -7,14 +7,13 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: #00000080;
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 999;
     
         .wrapper {
-            margin-top: 50px;
             width: 30%;
             height: fit-content;
             background-color: themed("bg");
@@ -52,13 +51,13 @@
     
                 .files {
                     display: flex;
+                    flex-direction: column;
                     flex-wrap: wrap;
-                    gap: 50px;
+                    gap: 10px;
                 }
 
                 label {
                     display: flex;
-                    flex-direction: column;
                     gap: 10px;
                     color: gray;
                     font-size: 14px;
@@ -120,6 +119,10 @@
                     color: gray;
                     margin-top: -20px;
                     font-size: 15px;
+                }
+
+                .error-message {
+                    color: red;
                 }
         
                 button {

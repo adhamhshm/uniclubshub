@@ -20,7 +20,7 @@ const WritePost = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [showInvalidMessage, setInvalidMessage] = useState(false);
-    const [showErrorImgUpload, setShowErrorImgUpload] = useState(false);
+    // const [showErrorImgUpload, setShowErrorImgUpload] = useState(false);
     const [showWrongFileImgUpload, setShowWrongFileImgUpload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -47,11 +47,12 @@ const WritePost = () => {
             return await makeRequest.post("/images/upload" , formData )
             .then((res) => res.data )
             .catch((error) => {
-                setIsLoading(false)
-                setShowErrorImgUpload(true);
-                setTimeout(() => {
-                    setShowErrorImgUpload(false);
-                }, 10000); // 10 seconds
+                setIsLoading(false);
+                alert(error.response.data);
+                // setShowErrorImgUpload(true);
+                // setTimeout(() => {
+                //     setShowErrorImgUpload(false);
+                // }, 10000); // 10 seconds
                 throw error;
             });
         } 
@@ -62,7 +63,11 @@ const WritePost = () => {
 
     // Mutation for adding a new post
     const addPostMutation = useMutation((newPost) => {
-        return makeRequest.post("/posts", newPost);
+        return makeRequest.post("/posts", newPost)
+        .catch((error) => {
+            alert(error.response.data);
+            throw error;
+        });
     }, 
     {
         onSuccess: () => {
@@ -74,11 +79,6 @@ const WritePost = () => {
     // Function to handle the post submission
     const handlePost = async (e) => {
         e.preventDefault();
-        // If token expired, exit the function
-        let isToken = await authorizeToken();
-        if (isToken === false) {
-            return;
-        };
 
         if (!description || !title) {
             // Show the invalid message
@@ -150,9 +150,9 @@ const WritePost = () => {
                             {isDescriptionTooLong && <div className="post-error-message">
                                 <span>Description too long {description.length}/{MAX_DESCRIPTION_LENGTH}</span>
                             </div>}
-                            {showErrorImgUpload && <div className="post-error-message">
+                            {/* {showErrorImgUpload && <div className="post-error-message">
                                 <span>Server returned unexpected error. Try again later.</span>
-                            </div>}
+                            </div>} */}
                             {showWrongFileImgUpload && <div className="post-error-message">
                                 <span>Please upload a valid image file.</span>
                             </div>}

@@ -102,31 +102,35 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
     return (
         <div className="club-list">
             <div className="user-list-container">
-                {clubListLoading ? "Loading clubs..." : 
-                    clubListError ? "Cannot fetch the club list." : 
-                    !clubListData || clubListData.length === 0 ? `There are no clubs with "${searchQuery}".` :
-                    clubListData.map((clubUser) => {
-                        // Check if the clubUser is being followed
-                        const isFollowing = followRelationData?.some(item => item.followedUserId === String(clubUser.id));
-                        return (
-                            <div className="user-list" key={clubUser.id}>
-                                <div className="user-info">
-                                    <img src={clubUser.profilePhoto ? clubUser.profilePhoto : "/default/default-club-image.png"} alt={clubUser.name} />
-                                    <Link to={`/profile/${clubUser.id}`} style={{ textDecoration: "none"}}>
-                                        <span>{clubUser.name}</span>
-                                    </Link>
+                {clubListLoading ? ( "Loading clubs..." ) : 
+                    clubListError ? ( "Cannot fetch the club list." ) : 
+                    !clubListData || clubListData.length === 0 && searchQuery === "" ? ( "No clubs." ) :
+                    clubListData.length !== 0 ? (
+                        clubListData.map((clubUser) => {
+                            // Check if the clubUser is being followed
+                            const isFollowing = followRelationData?.some(item => item.followedUserId === String(clubUser.id));
+                            return (
+                                <div className="user-list" key={clubUser.id}>
+                                    <div className="user-info">
+                                        <img src={clubUser.profilePhoto ? clubUser.profilePhoto : "/default/default-club-image.png"} alt={clubUser.name} />
+                                        <Link to={`/profile/${clubUser.id}`} style={{ textDecoration: "none"}}>
+                                            <span>{clubUser.name}</span>
+                                        </Link>
+                                    </div>
+                                    <div className="buttons">
+                                        <button 
+                                            className={isFollowing ? "following-button" : ""} 
+                                            onClick={() => {handleFollow(isFollowing, clubUser.id)}}
+                                        >
+                                            {isFollowing ? "Following" : "Follow"}
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="buttons">
-                                    <button 
-                                        className={isFollowing ? "following-button" : ""} 
-                                        onClick={() => {handleFollow(isFollowing, clubUser.id)}}
-                                    >
-                                        {isFollowing ? "Following" : "Follow"}
-                                    </button>
-                                </div>
-                            </div>
-                        );
-                    })
+                            );
+                        })
+                    ) : (
+                        ( `"${searchQuery}" not found.` )
+                    )
                 }
             </div>
         </div>

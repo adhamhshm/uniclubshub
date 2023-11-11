@@ -10,14 +10,16 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
-    const { authorizeToken } = useContext(AuthContext);
+    const queryClient = useQueryClient()
     const { updateProfilePhotoData } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false); // Add loading state
-    //const [updatedCoverPhoto, setUpdatedCoverPhoto] = useState(null);
+    const [errorEmailMessage, setErrorEmailMessage] = useState(false);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
     const [updateInputs, setUpdateInputs] = useState({
         name: user.name,
         bio: user.bio || "",
+        email: user.email,
+        phoneNumber: user.phoneNumber,
     });
 
     const uploadPhoto = async (newImageFile, currentImageFilename) => {
@@ -41,23 +43,21 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUpdateInputs((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    // access the client
-    const queryClient = useQueryClient()
     // Mutations
     const updateProfileMutation = useMutation((updatedUserInfo) => {
         if (user.role.includes("club")) {
-            return makeRequest.put("/users", updatedUserInfo);
+            return makeRequest.put("/users", updatedUserInfo)
+            .catch((error) => {
+                alert(error.response.data)
+                throw error;
+            });
         }
         else if (user.role.includes("participant")) {
-            return makeRequest.put("/participants", updatedUserInfo);
+            return makeRequest.put("/participants", updatedUserInfo)
+            .catch((error) => {
+                alert(error.response.data)
+                throw error;
+            });
         }
         else {
             return alert("Something went wrong. Please try again.");
@@ -70,16 +70,37 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         },
     });
 
+    const isEmailValid = (email) => {
+        // Regular expression to check if the email follows a standard format
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailFormat.test(email);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUpdateInputs((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+
+        if (name === "email" && !isEmailValid(value)) {
+            setErrorEmailMessage(true);
+        } 
+        else {
+            setErrorEmailMessage(false);
+        }
+    };
+
     const handleUpdate = async (e) => {
         e.preventDefault();
         //If token expired, exit the function
-        let isToken = await authorizeToken();
-        if (isToken === false) {
-            return;
-        };
+        // let isToken = await authorizeToken();
+        // if (isToken === false) {
+        //     return;
+        // };
 
-        if (updateInputs.bio.length > 300) {
-            // Do not proceed with the update if the bio exceeds 300 characters
+        if (updateInputs.bio.length > 300 || errorEmailMessage || !isEmailValid(updateInputs.email)) {
+            // Do not proceed with the update if the bio exceeds 300 characters or the email format is incorrect
             return;
         }
 
@@ -113,7 +134,6 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
         updateProfilePhotoData(profilePhotoUrl);
         setUpdateInputs("");
-        //setUpdatedCoverPhoto(null);
         setUpdatedProfilePhoto(null);
         setOpenUpdateBox(false);
     };
@@ -124,25 +144,9 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 <h1>Update Profile</h1>
                 <form>
                     <div className="files">
-                        {/* cover photo is only for club */}
-                        {/* {user.role === "club" && (
-                            <label htmlFor="coverPhoto">
-                                <span>Cover Photo</span>
-                                <div className="imageContainer">
-                                    <img
-                                        src={ updatedCoverPhoto ? URL.createObjectURL(updatedCoverPhoto)
-                                            : "/upload/" + (user.coverPhoto || "/default/upload.png")
-                                        }
-                                        alt="cover photo"
-                                    />
-                                </div>
-                                <input type="file" id="coverPhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedCoverPhoto(e.target.files[0])}} />
-                            </label>
-                            )
-                        } */}
                         {/* profile photo */}
+                        <span>Profile Photo</span>
                         <label htmlFor="profilePhoto">
-                            <span>Profile Photo</span>
                             <div className="imageContainer">
                                 <img
                                     src={ updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
@@ -156,34 +160,41 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                     {/* name input whether club name or student name */}
                     <label>Name</label>
                     <input type="text" value={updateInputs.name} name="name" onChange={handleChange} />
+                    {/* email input whether club email or student email */}
+                    <label>
+                        Email
+                        {errorEmailMessage && <span className="error-message">Invalid email format</span>}
+                    </label>
+                    <input type="text" value={updateInputs.email} name="email" onChange={handleChange} />
+                    {user.role === "participant" && 
+                        <>
+                            <label>Phone</label>
+                            <input type="text" value={updateInputs.phoneNumber} name="phoneNumber" onChange={handleChange} />
+                        </>
+                    }
                     {/* bio is only for club */}
                     {user.role === "club" && 
-                        (
-                            <>
-                                <label>Bio</label>
-                                <textarea type="text" rows={3} 
-                                placeholder="Write bio here..." 
-                                name="bio" 
-                                onChange={handleChange} 
-                                value={updateInputs.bio} 
-                                />
-                                <div className="char-count">{updateInputs.bio.length} / 300</div>
-                            </>
-                        )
+                        <>
+                            <label>
+                                Bio
+                                {updateInputs.bio.length > 300 && <span className="error-message">Bio exceeds 300 characters</span>}
+                            </label>
+                            <textarea type="text" rows={3} 
+                            placeholder="Write bio here..." 
+                            name="bio" 
+                            onChange={handleChange} 
+                            value={updateInputs.bio} 
+                            />
+                            <div className="char-count">{updateInputs.bio.length} / 300</div>
+                        </>
                     }
                     {/* button that will be disabled when bio exceeds 300 characters */}
-                    {user.role === "club" ?
-                        (
-                            <button 
-                                className={updateInputs.bio.length > 300 ? "disabled-button" : ""} 
-                                onClick={handleUpdate} 
-                            > 
-                                {updateInputs.bio.length > 300 ? "Bio exceeds 300 characters" : "Update"}
-                            </button>
-                        ) : (
-                            <button onClick={handleUpdate}>Update</button>
-                        )
-                    }
+                    <button 
+                        className={updateInputs.bio.length > 300 || errorEmailMessage ? "disabled-button" : ""} 
+                        onClick={handleUpdate} 
+                    > 
+                        Update
+                    </button>
                 </form>
                 <CloseIcon className="close" style={{cursor: "pointer", width: "30px", height: "30px"}} onClick={() => setOpenUpdateBox(false)} />
             </div>

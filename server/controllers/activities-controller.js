@@ -74,7 +74,7 @@ export const addActivities = (req, res) => {
             activityDescription = " registered for your event: ";
         }
         else if (req.body.activityType === "like") {
-            activityDescription = " liked one of your posts: ";
+            activityDescription = " liked your post: ";
         }
         else {
             activityDescription = " is now following you.";

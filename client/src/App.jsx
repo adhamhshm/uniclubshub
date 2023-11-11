@@ -19,6 +19,7 @@ import Activities from "./pages/activities/Activities";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import { io } from "socket.io-client";
+import PostView from "./pages/postView/PostView";
 
 function App() {
 
@@ -79,11 +80,11 @@ function App() {
     
         useEffect(() => {
             checkToken();
-        }, [children]);
+        }, []);
         
-        // if (!currentUser) {
-        //     return <Navigate to="/login" />;
-        // }
+        if (!currentUser) {
+            return <Navigate to="/login" />;
+        }
         
         // children is the protected Layout
         return children;
@@ -113,6 +114,10 @@ function App() {
                 {
                     path: "/activities",
                     element: <Activities />
+                },
+                {
+                    path: "/postview/:id",
+                    element: <PostView socket={socket} />
                 }
             ]
         },
@@ -139,7 +144,11 @@ function App() {
                 {
                     path: "/activities",
                     element: <Activities />
-                }
+                },
+                {
+                    path: "/postview/:id",
+                    element: <PostView socket={socket} />
+                },
             ]
         },
         {

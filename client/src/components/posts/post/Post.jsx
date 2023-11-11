@@ -16,6 +16,8 @@ import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
 
 const Post = ({ post, socket }) => {
 
+    console.log("In post component: "+ post)
+
     // Access the client
     const queryClient = useQueryClient();
 
