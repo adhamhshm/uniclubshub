@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
     const { updateProfilePhotoData } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false); // Add loading state
     const [errorEmailMessage, setErrorEmailMessage] = useState(false);
@@ -45,14 +45,14 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
     // Mutations
     const updateProfileMutation = useMutation((updatedUserInfo) => {
-        if (user.role.includes("club")) {
+        if (user.role === "club") {
             return makeRequest.put("/users", updatedUserInfo)
             .catch((error) => {
                 alert(error.response.data)
                 throw error;
             });
         }
-        else if (user.role.includes("participant")) {
+        else if (user.role === "participant") {
             return makeRequest.put("/participants", updatedUserInfo)
             .catch((error) => {
                 alert(error.response.data)
@@ -66,7 +66,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "user" })
+            queryClient.invalidateQueries(["user"]);
         },
     });
 
@@ -93,47 +93,27 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        //If token expired, exit the function
-        // let isToken = await authorizeToken();
-        // if (isToken === false) {
-        //     return;
-        // };
 
         if (updateInputs.bio.length > 300 || errorEmailMessage || !isEmailValid(updateInputs.email)) {
             // Do not proceed with the update if the bio exceeds 300 characters or the email format is incorrect
             return;
         }
 
-        //let coverPhotoUrl;
-        let profilePhotoUrl = "";
-        
-        //coverPhotoUrl = updatedCoverPhoto ? await uploadPhoto(updatedCoverPhoto, user.coverPhoto) : user.coverPhoto;
-        //profilePhotoUrl = updatedProfilePhoto ? await uploadPhoto(updatedProfilePhoto, user.profilePhoto) : user.profilePhoto;
+        let profilePhotoUrl = user.profilePhoto;
 
         if (updatedProfilePhoto) {
             try {
                 setIsLoading(true); // Set loading state
                 profilePhotoUrl = await uploadPhoto(updatedProfilePhoto, user.profilePhoto)
-                // if (!imageUrl.length > 0 || imageUrl === undefined) {
-                //     alert("Hello")
-                //     setShowErrorImgUpload(true);
-                //     setTimeout(() => {
-                //         setShowErrorImgUpload(false);
-                //     }, 3000);
-                //     return;
-                // }
             }
             finally {
                 setIsLoading(false);
             }
         }
-        else {
-            profilePhotoUrl = user.profilePhoto;
-        }
         
-        updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
+        await updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
+        // This is use to update the local data
         updateProfilePhotoData(profilePhotoUrl);
-        setUpdateInputs("");
         setUpdatedProfilePhoto(null);
         setOpenUpdateBox(false);
     };

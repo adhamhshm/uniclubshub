@@ -1,55 +1,43 @@
 @import "../../globals.scss";
 
-.profileMenu {
+.profile-menu {
     @include themify($theme) {
         position: fixed;
         top: 60px;
         right: 20px;
 
-        .wrapper {
+        .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
             background-color: themed("bg");
-            width: fit-content;
+            width: 150px;
             height: fit-content;
-            padding: 20px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+            cursor: pointer;
 
-            .slider-div {
+            .list {
+                padding: 5px;
+                border-radius: 5px;
+            }
+
+            .list:hover {
+                background-color: themed("activitiesHighlight");
+            }
+
+            .theme-div {
                 display: flex;
-                justify-content: center;
-                gap: 20px;
-                padding: 10px;
-                font-weight: bold;
+                gap: 10px;
             }
              
-            .button-div {
-                justify-content: center;
-                align-items: left;
+            .sign-out-div {
                 display: flex;
-
-                button {
-                    border: none;
-                    padding: 10px 20px;
-                    color: white;
-                    cursor: pointer;
-                    background-color: #f0544f;
-                    font-weight: bold;
-                    border-radius: 20px;
-                }
-        
-                button:hover {
-                    background-color: #a3413d;
-                }
+                gap: 10px;
             }
         }
 
-        @include mobile {
-            
-        }
     }
 };

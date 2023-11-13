@@ -43,6 +43,46 @@ const Event = () => {
         );
     };
 
+    const downloadCSV = (eventTitle) => {
+        // Selects the table with the ID 'participants' from the DOM.
+        // If the table is not found, the function returns, terminating the operation
+        const table = document.getElementById('participants');
+        if (!table) return;
+    
+        // Selects all the table rows (tr) within the table.
+        const rows = table.querySelectorAll('tr');
+        const csvData = [];
+        
+        // Loops through each row and extracts the data from each cell (td) in the row.
+        rows.forEach((row) => {
+            const rowData = [];
+            // Collects the text content of each cell and creates an array (rowData) for each row.
+            row.childNodes.forEach((cell) => {
+                if (cell.textContent) {
+                    rowData.push(cell.textContent);
+                }
+            });
+            //Joins the cell data with commas and pushes it as a string to csvData.
+            csvData.push(rowData.join(','));
+        });
+    
+        // Convert the data to CSV string
+        // Starts with the CSV file content type and charset, followed by the CSV data joined by newline characters.
+        const csvContent = 'data:text/csv;charset=utf-8,' + csvData.join('\n');
+        
+        // Creates an anchor element (<a>) and sets its attributes: 
+        // - href is set to the prepared CSV content. 
+        // - download specifies the default filename for the downloaded file.
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `Namelist-${eventTitle}.csv`);
+        document.body.appendChild(link);
+    
+        // Simulate the click to trigger the download
+        link.click();
+    };
+
     // Handle year selection change
     const handleYearChange = (e) => {
         setSelectedPostId("");
@@ -56,7 +96,7 @@ const Event = () => {
     };
 
     // Refresh list
-    const refreshList = (e) => {
+    const refreshList = () => {
         queryClient.invalidateQueries(["participants", selectedPostId]);
     };
 
@@ -71,10 +111,10 @@ const Event = () => {
                     </select>
                     <select id="events" onChange={handlePostChange}>
                         <option value="0">Choose event:</option>
-                        {postsLoading ? <option>Loading...</option> :
-                         postsError ? <option value="0">Error loading events</option> :
-                         postsData ? postsData.map((post) => ( <option key={post.id} value={post.id}>{post.title}</option> )) :
-                         null 
+                        {
+                            postsLoading ? <option>Loading...</option> :
+                            postsError ? <option value="0">Error loading events</option> :
+                            postsData && postsData.map((post) => ( <option key={post.id} value={post.id}>{post.title}</option> ))  
                         }
                     </select>
                 </div>
@@ -83,9 +123,15 @@ const Event = () => {
                         <SyncIcon />
                         <span>Refresh List</span>
                     </button>
-                    <button>
+                    {/* 
+                        Receives the title of the selected post if it exists. postsData is an array of posts. 
+                        The find() method is used to locate a post in the postsData array whose ID matches the selectedPostId. 
+                        Once found, the title property of the post is retrieved. 
+                        The ?. (optional chaining) is used to safeguard against a null or undefined post object, preventing a potential error.
+                    */}
+                    <button onClick={() => {downloadCSV(postsData.find(post => post.id === selectedPostId)?.title || "participants")}}>
                         <DownloadIcon />
-                        <span>Download list</span>
+                        <span>Download List</span>
                     </button>
                 </div>
                 <div className="table-participant-list">

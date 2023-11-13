@@ -19,7 +19,7 @@ const Login = () => {
         {
             name: "id",
             type: "text",
-            placeholder: showEmptyInputMessage ? "Id cannot be blank." : "Student/Club Id",
+            placeholder: showEmptyInputMessage ? "ID cannot be blank." : "Student/Club ID",
             value: signinInputs.id,
             required: true
         },
@@ -93,15 +93,11 @@ const Login = () => {
     return (
         <div className="login">
             <div className="card">
-                <div className="left">
-                    <h1>Let's Connect</h1>
-                    <p>
-                        Uniclubshub is a platform designed to foster a thriving club culture 
-                        within the university to promotes clubs and enhance students' engagement.
-                    </p>
-                </div>
-                <div className="right">
-                    <h1>Login</h1>
+                <div className="login-input">
+                    <div className="logo-container">
+                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
+                    </div>
+                    <h2>Sign In</h2>
                     <form>
                         {formInputs.map((input) => (
                             <input
@@ -124,7 +120,7 @@ const Login = () => {
                         <div className="button-div">
                             <button onClick={handleSignin}>Sign In</button>
                         </div>
-                        <p><span>No account?</span><Link to="/register"> Register Here</Link></p>
+                        <p><span>No account? </span><Link to="/register">Sign Up</Link></p>
                     </form>
                 </div>
             </div>

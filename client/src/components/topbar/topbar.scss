@@ -32,11 +32,18 @@
             
             .left{
                 display: flex;
+                align-items: center;
     
                 span {
                     font-weight: 900;
                     font-size: 20px;
                     color: themed("logo");
+                }
+
+                .font-logo {
+                    width: 140px;
+                    height: auto;
+                    filter: themed("filterColor");
                 }
             }
     

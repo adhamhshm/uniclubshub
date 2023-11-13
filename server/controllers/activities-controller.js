@@ -37,8 +37,8 @@ export const getActivitiesClubUser = (req, res) => {
         const values = [req.query.userId, req.query.userId];
         db.query(q, values, (err, data) => {
             if (err) {
-                console.log("Error fetching club user activities: " + err.message);
-                return res.status(500).json({ error : "Error fetching club user activities." });
+                console.log("Error fetching user activities: " + err.message);
+                return res.status(500).json("Error fetching club user activities.");
             }
             else {
                     return res.status(200).json(data);
@@ -51,7 +51,7 @@ export const addActivities = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized add activities: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized add activities: No token authenticated."});
+        return res.status(401).json("Unauthorized add activities: No token authenticated.");
     };
 
 
@@ -59,7 +59,7 @@ export const addActivities = (req, res) => {
         
         if (err) {
             console.log("Unauthorized add activities: Invalid or expired token.")
-            return res.status(403).json({ error : "Unauthorized add activities: Invalid or expired token." });
+            return res.status(403).json("Unauthorized add activities: Invalid or expired token.");
         };
 
         let activityDescription = "";
@@ -96,10 +96,10 @@ export const addActivities = (req, res) => {
                 console.log("Error adding activities: " + err.message)
                 return res.status(500).json(err);
             }
-            else {
-                const insertedActivityId = data.insertId; // Get the ID of the newly added activity
-                return res.status(200).json({ message: "Activity is added.", activityId: insertedActivityId });
-            }
+            // else {
+            //     const insertedActivityId = data.insertId; // Get the ID of the newly added activity
+            //     return res.status(200).json({ message: "Activity is added.", activityId: insertedActivityId });
+            // }
         })
     })
 };
@@ -130,10 +130,10 @@ export const removeLikeActivities = (req, res) => {
                 return res.status(500).json(err);
             }
             else if (data.affectedRows > 0) {
-                return res.status(200).json({ message : "Activity has been deleted."});
+                return res.status(200).json("Activity has been deleted.");
             }
             else {
-                return res.status(403).json({ error: "Not authorized to delete activities."});
+                return res.status(403).json("Not authorized to delete activities.");
             }
         })
     })
@@ -143,12 +143,12 @@ export const removeFollowActivities = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized delete post: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
+        return res.status(401).json("Unauthorized delete post: No token authenticated.");
     };
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
         if (err) {
             console.log("Unauthorized delete post: Invalid or expired token.")
-            return res.status(403).json({ error : "Unauthorized delete post: Invalid or expired token." });
+            return res.status(403).json("Unauthorized delete post: Invalid or expired token.");
         };
 
         const q = "DELETE FROM activities WHERE `receiverUserId` = ? AND `senderUserId` = ? AND `activityType` = ?";
@@ -165,10 +165,10 @@ export const removeFollowActivities = (req, res) => {
                 return res.status(500).json(err);
             }
             else if (data.affectedRows > 0) {
-                return res.status(200).json({ message : "Activity has been deleted."});
+                return res.status(200).json("Activity has been deleted.");
             }
             else {
-                return res.status(403).json({ error: "Not authorized to delete activities."});
+                return res.status(403).json("Not authorized to delete activities.");
             }
         })
     })
@@ -180,13 +180,13 @@ export const markAsRead = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized delete post: No token authenticated.")
-        return res.status(401).json({ error : "Unauthorized delete post: No token authenticated."});
+        return res.status(401).json("Unauthorized delete post: No token authenticated.");
     };
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
             console.log("Unauthorized delete post: Invalid or expired token.")
-            return res.status(403).json({ error : "Unauthorized delete post: Invalid or expired token." });
+            return res.status(403).json("Unauthorized delete post: Invalid or expired token.");
         }
         const q = "UPDATE activities SET `hasRead` = ? WHERE id = ?";
         const values = [
@@ -196,7 +196,7 @@ export const markAsRead = (req, res) => {
         db.query(q, values, (err, data) => {
             if (err) {
                 console.log("Error mark as read: " + err.message);
-                return res.status(500).json(err);
+                return res.status(500).json("Error mark activity as read.");
             }
             if (data.affectedRows > 0) {
                 console.log("Activities mark as read.");

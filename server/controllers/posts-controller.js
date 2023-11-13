@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
-// get posts that is relevant to user
+// Get posts that is relevant to user
 export const getPosts = (req, res) => {
     const userId = req.query.userId;
     const token = req.cookies.accessToken;
@@ -42,9 +42,8 @@ export const getPosts = (req, res) => {
     })
 };
 
-// get posts that is relevant to user
+// Get only a single post
 export const getSinglePost = (req, res) => {
-    console.log("Nak satu post "+ req.params.id)
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get posts: No token authenticated.")
@@ -56,7 +55,10 @@ export const getSinglePost = (req, res) => {
             console.log("Unauthorized get posts: Invalid or expired token.")
             return res.status(403).json("Session had expired.");
         }
-        const q = `SELECT * FROM posts WHERE id = ?`;
+        const q = `SELECT posts.*, users.name, users.profilePhoto
+                   FROM posts
+                   JOIN users ON posts.userId = users.id
+                   WHERE posts.id = ?`;
 
         const values = [req.params.id];
         db.query(q, values, (err, data) => {
@@ -71,7 +73,32 @@ export const getSinglePost = (req, res) => {
     })
 };
 
+// Get the number of posts
+export const getPostsNumber = (req, res) => {
+    const q = `SELECT COUNT(userId) AS postsNumber
+               FROM posts
+               WHERE userId = ?`;
+
+    db.query(q, [req.query.userId], (err, data) => {
+        if (err) {
+            console.log("Error retrieving posts number: " + err.message);
+            return res.status(500).json("Error retrieving posts number.");
+        } 
+        else {
+            // Checking if there's any data returned before accessing it
+            if (data.length > 0 && data[0].postsNumber) {
+                const postsNumber = data[0].postsNumber;
+                return res.status(200).json({ postsNumber });
+            } 
+            else {
+                return res.status(200).json(0);
+            }
+        }
+    });
+};
+
 export const getPostsByYear = (req, res) => {
+    console.log("Get posts by year")
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get posts by year: No token authenticated.")

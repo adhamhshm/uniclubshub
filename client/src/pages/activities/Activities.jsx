@@ -10,10 +10,11 @@ const Activities = () => {
     const { currentUser } = useContext(AuthContext);
     const [finishedReading, setFinishedReading] = useState(false);
 
-    const { isLoading: activitiesLoading, error: activitiesError, data: activitiesData } = useQuery(["activities", currentUser?.id], async () => {
+    const { isLoading: activitiesLoading, error: activitiesError, data: activitiesData } = useQuery(["activities"], () => {
         return makeRequest.get("/activities?userId=" + currentUser?.id)
         .then((res) => res.data)
         .catch((error) => {
+            alert(error.response.data)
             throw error; // Propagate the error for proper error handling
         })
     });
@@ -25,7 +26,7 @@ const Activities = () => {
     );
 
     const markAsRead = (activity) => {
-        if (activity.hasRead = "no") {
+        if (activity.hasRead === "no") {
             // Mark the activity as read and update it in the database
             updateHasReadMutation.mutate({ activityId: activity.id, hasRead: "yes"});
         }
@@ -38,10 +39,12 @@ const Activities = () => {
                     markAsRead(activity);
                 }
             });
-            setFinishedReading(true); // Update the state after all activities have been processed
         }
+        setFinishedReading(true);
 
     }, [activitiesData, finishedReading]); // Monitor changes in activitiesData and finishedReading
+
+    console.log(activitiesData);
 
     return (
         <div className="activities">
@@ -54,7 +57,10 @@ const Activities = () => {
                      (
                         activitiesData.map((activity) => {
                             return (
-                                <div className={`activity ${activity.hasRead === "yes" ? "read" : "non-read"}`} key={activity.id}>
+                                <div 
+                                    className={`activity ${activity.hasRead === "yes" ? "read" : "non-read"}`} 
+                                    key={activity.id} 
+                                >
                                     <div className="activity-icon">
                                         <img
                                             src={
@@ -79,7 +85,7 @@ const Activities = () => {
                                             {activity.senderName}
                                             <span>{activity.activityDescription}</span>
                                             <Link to={`/postview/${activity.postId}`} style={{ textDecoration: "none"}}>
-                                                <span>{activity.activityType !== "follow" ? activity.postTitle : ""}</span>
+                                                <span className="post-link">{activity.activityType !== "follow" ? activity.postTitle : ""}</span>
                                             </Link>
                                         </span>
                                     </div>

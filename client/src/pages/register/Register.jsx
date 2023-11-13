@@ -23,7 +23,7 @@ const Register = () => {
         {
             name: "id",
             type: "text",
-            placeholder: showEmptyInputMessage ? "Id cannot be blank." : "Student/Club Id",
+            placeholder: showEmptyInputMessage ? "ID cannot be blank." : "Student/Club ID",
             value: signupInputs.id,
             required: true
         },
@@ -171,15 +171,11 @@ const Register = () => {
     return (
         <div className="register">
             <div className="card">
-                <div className="right">
-                    <h1>Let's Connect</h1>
-                    <p>
-                        ConnectHub is a platform designed to foster a thriving club culture 
-                        within the university to promotes clubs and enhance students' engagement.
-                    </p>
-                </div>
-                <div className="left">
-                    <h1>Register</h1>
+                <div className="register-input">
+                    <div className="logo-container">
+                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
+                    </div>
+                    <h2>Sign Up</h2>
                     <form>
                         {inputFields.map((input) => (
                             <input
@@ -202,7 +198,7 @@ const Register = () => {
                         <div className="button-div">
                             <button onClick={handleSignup}>Sign Up</button>
                         </div>
-                        <p><span>Have account?</span> <Link to="/login">Sign In Here</Link></p>
+                        <p><span>Have account?</span> <Link to="/login">Sign In</Link></p>
                     </form>
                 </div>
             </div>

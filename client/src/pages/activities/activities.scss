@@ -51,6 +51,12 @@
                             width: 30px;
                             height: 30px;
                         }
+
+                        .post-link {
+                            color: themed("textColor");
+                            font-weight: 600;
+                            text-decoration: underline;
+                        }
                     }
                 }
 

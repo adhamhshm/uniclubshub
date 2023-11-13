@@ -8,5 +8,37 @@
         min-height: calc(100vh - 70px);
         color: themed("textColor");
 
+        .post-view-container {
+
+            .title {
+                border-radius: 20px;
+                background-color: themed("bg");
+                box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+                -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+                -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+                padding: 5px 20px 5px 20px;
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+
+                .back-button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 10px;
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+    
+                .back-button:hover {
+                    background-color: themed("mainButtonColorHover");
+                    color: white;
+                }
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ const TopBar = () => {
             <div className="topbar-container">
                 <div className="left">
                     <Link to="/" style={{ textDecoration: "none" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
-                        <span>UNICLUBSHUB</span>
+                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
                     </Link>
                 </div>
                 <div className="right">

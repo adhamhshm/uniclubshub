@@ -27,17 +27,7 @@ function App() {
     const { darkMode } = useContext(DarkModeContext);
     const [socket, setSocket] = useState(null);
     
-    const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchIntervalInBackground: false,
-            cacheTime: 10_000,
-            refetchOnWindowFocus: false,
-          },
-        },
-    });
-
-    
+    const queryClient = new QueryClient();
 
     useEffect(() => {
         setSocket(io("http://localhost:8800"));
@@ -72,7 +62,6 @@ function App() {
         const checkToken = useCallback(async () => {
             const isTokenValid = await authorizeToken();
             if (isTokenValid === false) {
-                console.log("hello")
                 localStorage.clear();
                 navigate("/login");
             }
@@ -80,7 +69,7 @@ function App() {
     
         useEffect(() => {
             checkToken();
-        }, []);
+        }, [checkToken]);
         
         if (!currentUser) {
             return <Navigate to="/login" />;

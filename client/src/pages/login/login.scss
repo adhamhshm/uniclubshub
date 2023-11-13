@@ -4,66 +4,36 @@
     height: 100vh;
     margin-bottom: -50px;
     min-height: calc(100vh - 70px);
-    background-color: rgb(193, 190, 255);
+    background: linear-gradient(rgba(21, 2, 55, 0.852), rgba(103, 67, 145, 0.699)), url("/default/front-image.png"), center;
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .card {
-        width: 60%;
+        width: 30%;
         display: flex;
-        background-color: white;
+        background-color: aliceblue;
         border-radius: 10px;
-        min-height: 600px;
-        overflow: hidden;
+        min-height: fit-content;
 
-        .left {
-            flex: 1;
-            background: linear-gradient(rgba(21, 2, 55, 0.852), rgba(103, 67, 145, 0.699)), url(https://images.pexels.com/photos/1036804/pexels-photo-1036804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1) center;
-            background-size: cover;
-            padding: 50px;
-            display: inline-flex;
-            flex-direction: column;
-            gap: 30px;
-            color: white;
-            justify-content: space-between;
-
-            h1 {
-                font-size: 100px;
-                line-height: 100px;
-                // margin-bottom: 300px;
-
-                @include tablet {
-                    font-size: 50px;
-                    line-height: 50px;
-                    margin-bottom: 200px;
-                }
-            }
-
-            span {
-                font-size: 14px;
-            }
-
-            @include mobile {
-                display: none;
-            }
-
-            @include tablet {
-                display: none;
-            }
-
-        }
-
-        .right {
+        .login-input {
             flex: 1;
             padding: 50px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            width: max-content;
 
-            h1 {
-                color: #555555;
+            .logo-container {
+                display: flex;
+                justify-content: center;
+
+                .font-logo {
+                    width: 150px;
+                    height: auto;
+                }
             }
 
             form {
@@ -74,8 +44,9 @@
                 input {
                     border: none;
                     border-bottom: 1px solid lightgray;
-                    padding: 10px;
+                    padding: 10px 10px 10px 0;
                     outline: none;
+                    background-color: transparent;
                 }
 
                 .input-invalid::placeholder {
@@ -120,12 +91,10 @@
 
         @include mobile {
             width: 80%;
-            min-height: 400px;
         }
 
         @include tablet {
-            width: 80%;
-            min-height: 600px;
+            width: 50%;
         }
     }
 }

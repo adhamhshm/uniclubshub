@@ -6,8 +6,9 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useRef } from "react";
 
 // reference: https://mui.com/material-ui/material-icons/
-import MoonIcon from '@mui/icons-material/Brightness4Rounded';
-import SunIcon from '@mui/icons-material/Brightness5Rounded';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const ProfileMenu = ({ setOpenMenuModal }) => {
 
@@ -39,24 +40,23 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
     }
 
     // Attach a 'mousedown' event listener to the document to call handleOutsideClick
-    //document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('mousedown', handleOutsideClick);
 
     return (
-        <div className="profileMenu">
-            <div className="wrapper">
-                <div className="slider-div">
-                    <label>Theme Mode</label>
+        <div className="profile-menu">
+            <div className="menu-list" ref={modalRef}>
+                <div className="list theme-div" onClick={toggle} >
                     {/* render the icon based on the current theme */}
                     {darkMode ? (
-                        <SunIcon style={{ cursor: "pointer" }} onClick={toggle} />
+                        <LightModeIcon style={{ cursor: "pointer" }} />
                     ) : (
-                        <MoonIcon style={{ cursor: "pointer" }} onClick={toggle} />
+                        <DarkModeIcon style={{ cursor: "pointer" }} />
                     )}
+                    <span>Theme</span>
                 </div>
-                <div className="button-div">
-                    <button onClick={handleSignout}>
-                        Sign Out
-                    </button>
+                <div className="list sign-out-div" onClick={handleSignout}>
+                    <LogoutIcon />
+                    <span>Sign Out</span>
                 </div>
             </div>
         </div>

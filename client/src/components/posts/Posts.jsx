@@ -7,12 +7,13 @@ import { makeRequest } from "../../request.js";
 // the userId may come from the profile of the user
 const Posts = ({ userId, socket }) => {
 
-    const { isLoading, error, data } = useQuery(["posts", userId], () => {
-        return makeRequest.get("/posts?userId=" + userId)
-        .then((res) => res.data)
-        .catch((error) => {
+    const { isLoading, error, data } = useQuery(["posts", userId], async () => {
+        try {
+            const res = await makeRequest.get("/posts?userId=" + userId);
+            return res.data;
+        } catch (error) {
             throw error; // Propagate the error for proper error handling
-        })
+        }
     });
 
     return (

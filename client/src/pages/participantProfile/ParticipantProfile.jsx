@@ -17,45 +17,53 @@ const ParticipantProfile = () => {
     const isCurrentUser = currentUser?.id === userId;
 
     // fetch user info
-    const { isLoading, error, data } = useQuery(["user", userId], () => 
-        makeRequest.get("/participants/find/" + userId)
-        .then((res) => {
-            return res.data;
+    const { isLoading: profileLoading, error: profileError, data: profileData } = useQuery(["user"], () => {
+        return makeRequest.get("/participants/find/" + userId)
+        .then((res) => res.data)
+        .catch((error) => {
+            throw error; // Propagate the error for proper error handling
         })
-    );
+    });
 
-    // useEffect(() => {
-    //     // If the user is not authorized to access this profile, navigate to an error page
-    //     if (!isCurrentUser) {
-    //         navigate("/unauthorized"); // Replace with the actual URL of your unauthorized page
-    //     }
-    // }, [isCurrentUser]);
+    useEffect(() => {
+        // If the user is not authorized to access this profile, navigate to an error page
+        if (!isCurrentUser) {
+            navigate("/unauthorized"); // Replace with the actual URL of your unauthorized page
+        }
+    }, [isCurrentUser]);
 
     return (
         <div className="participant-profile">
-            <div className="participant-profile-container">
-                <div className="participant-images">
-                    <img 
-                        src={data?.profilePhoto ? data.profilePhoto : "/default/default-participant-image.png"} 
-                        alt="profile" 
-                        className="participant-profile-photo" 
-                    />
-                </div>
-                <div className="participant-details">
-                    <div className="participant-name">
-                        <span>{data?.name}</span>
+            {profileLoading ? ("Loading...") :
+             profileError ? ("Something went wrong.") :
+             (
+                <>
+                    <div className="participant-profile-container">
+                        <div className="participant-images">
+                            <img 
+                                src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-participant-image.png"} 
+                                alt="profile" 
+                                className="participant-profile-photo" 
+                            />
+                        </div>
+                        <div className="participant-details">
+                            <div className="participant-name">
+                                <span>{profileData?.name}</span>
+                            </div>
+                            <div className="participant-bio">
+                                <span>Student ID: {profileData?.id}</span>
+                                <span>Email: {profileData?.email}</span>
+                                <span>Phone: {profileData?.phoneNumber}</span>
+                            </div>
+                        </div>
+                        <div className="participant-button">
+                            {userId === currentUser?.id && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
+                        </div>
                     </div>
-                    <div className="participant-bio">
-                        <span>Student ID: {data?.id}</span>
-                        <span>Email: {data?.email}</span>
-                        <span>Phone: {data?.phoneNumber}</span>
-                    </div>
-                </div>
-                <div className="participant-button">
-                    {userId === currentUser?.id && <button onClick={() => setOpenUpdateBox(true)}>Update</button>}
-                </div>
-            </div>
-            {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={data} />}
+                    {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={profileData} />}
+                </>
+             )
+             }
         </div>
     )
 }

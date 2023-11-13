@@ -14,14 +14,11 @@ import NoFillLikeIcon from '@mui/icons-material/FavoriteBorder';
 import FillLikeIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
 
-const Post = ({ post, socket }) => {
-
-    console.log("In post component: "+ post)
+const Post = ({ post, socket, viewComment }) => {
 
     // Access the client
     const queryClient = useQueryClient();
-
-    const [commentOpen, setCommentOpen] = useState(false);
+    const [commentOpen, setCommentOpen] = useState(viewComment || false);
     const [openMenu, setMenuOpen] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
     const { currentUser } = useContext(AuthContext);
@@ -107,9 +104,9 @@ const Post = ({ post, socket }) => {
         const urlRegex = /(https?:\/\/[^\s]+)/g;
 
         // Split the description by URLs and render links
-        const parts = description.split(urlRegex);
-        return parts.map((part, index) => {
-            if (part.match(urlRegex)) {
+        const parts = description?.split(urlRegex);
+        return parts?.map((part, index) => {
+            if (part?.match(urlRegex)) {
                 // Render links
                 return (
                     <a
