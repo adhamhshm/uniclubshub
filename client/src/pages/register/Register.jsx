@@ -198,7 +198,7 @@ const Register = () => {
                         <div className="button-div">
                             <button onClick={handleSignup}>Sign Up</button>
                         </div>
-                        <p><span>Have account?</span> <Link to="/login">Sign In</Link></p>
+                        <p><span>Have an account?</span> <Link to="/login">Sign In</Link></p>
                     </form>
                 </div>
             </div>

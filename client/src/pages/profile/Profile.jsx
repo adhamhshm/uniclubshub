@@ -1,5 +1,5 @@
 import "./profile.scss";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,15 +7,18 @@ import { makeRequest } from "../../request";
 import Posts from "../../components/posts/Posts";
 
 import UpdateProfile from "../../components/updateProfile/UpdateProfile";
+import CommitteeList from "../../components/committeelist/CommitteeList";
 
 
 const Profile = ({ socket }) => {
 
+    const navigate = useNavigate();
+    const location = useLocation();
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const { currentUser } = useContext(AuthContext);
-    const userId = useLocation().pathname.split("/")[2];
-    const navigate = useNavigate();
+    const userId = location.pathname.split("/")[2];
     const queryClient = useQueryClient();
+    const [activeTab, setActiveTab] = useState("posts"); // State to manage the active tab
 
     // Fetch user info
     const { isLoading: profileLoading, error: profileError, data: profileData } = useQuery(["user"], () => {
@@ -85,6 +88,16 @@ const Profile = ({ socket }) => {
         },
     });
 
+    // // Use `useEffect` to set the active tab from the URL when the component mounts
+    // useEffect(() => {
+    //     const searchParams = new URLSearchParams(location.search);
+    //     const tab = searchParams.get("tab");
+    //     if (tab && (tab === "posts" || tab === "committees")) {
+    //         // Set the active tab based on the URL parameter
+    //         setActiveTab(tab);
+    //     }
+    // }, []);
+
     // Function to add follow activity
     const addFollowActivityInfo = async () => {
         addActivitiesMutation.mutate({ receiverUserId: userId, postId: "n/a", senderUserId: currentUser.id, activityType: "follow" });
@@ -110,65 +123,100 @@ const Profile = ({ socket }) => {
         })
     };
 
+    // Function to update the active tab and update the URL
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        // Update the URL with the tab parameter
+        //navigate(`/profile/${userId}?tab=${tab}`);
+    };
+
     return (
         <div className="profile">
-            {profileLoading ? ("Loading...") :
-             profileError ? ("Something went wrong.") :
-             (
-                <>
-                    <div className="profile-container">
-                        <div className="images">
-                            <img 
-                                src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-club-image.png"} 
-                                alt="profile" 
-                                className="profile-photo" 
-                            />
-                        </div>
-                        <div className="details">
-                            <div className="name">
-                                <span>{profileData?.name}</span>
-                            </div>
-                            <div className="engagement-number">
-                                <span>
-                                    {
-                                        followersLoading ? ("0. ") : 
-                                        followersError ? ("0. ") :
-                                        followersData !== 0 ? (`${followersData.followerCount} `) : ("0 ")
+            {
+                profileLoading ? ("Loading...") :
+                profileError ? ("Something went wrong.") :
+                (
+                    <>
+                        <div className="profile-container">
+                            <div className="profile-info">
+                                <div className="images">
+                                    <img 
+                                        src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-club-image.png"} 
+                                        alt="profile" 
+                                        className="profile-photo" 
+                                    />
+                                </div>
+                                <div className="details">
+                                    <div className="name">
+                                        <span>{profileData?.name}</span>
+                                    </div>
+                                    <div className="engagement-number">
+                                        <span>
+                                            {
+                                                followersLoading ? ("0. ") : 
+                                                followersError ? ("0. ") :
+                                                followersData !== 0 ? (`${followersData.followerCount} `) : ("0 ")
+                                            }
+                                            Followers
+                                        </span>
+                                        <span> | </span>
+                                        <span>
+                                            {
+                                                postsNumLoading ? ("0. ") : 
+                                                postsNumError ? ("0. ") :
+                                                postsNumData !== 0 ? (`${postsNumData.postsNumber} `) : ("0 ")
+                                            }
+                                            Posts
+                                        </span>
+                                    </div>
+                                    <div className="bio">
+                                        <span>{profileData?.bio}</span>
+                                        <span>Email: {profileData?.email}</span>
+                                    </div>
+                                </div>
+                                <div className="button">
+                                    {userId === currentUser?.id ? 
+                                    <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
+                                    currentUser?.role === "participant" &&
+                                    <button 
+                                        className={followRelationData?.includes(currentUser?.id) ? "following-button" : ""} 
+                                        onClick={handleFollow}
+                                    > 
+                                        {followRelationData?.includes(currentUser?.id) ? "Following" : "Follow"}
+                                    </button>
                                     }
-                                    Followers
-                                </span>
-                                <span> | </span>
-                                <span>
-                                    {
-                                        postsNumLoading ? ("0. ") : 
-                                        postsNumError ? ("0. ") :
-                                        postsNumData !== 0 ? (`${postsNumData.postsNumber} `) : ("0 ")
-                                    }
-                                    Posts
-                                </span>
+                                </div>
                             </div>
-                            <div className="bio">
-                                <span>{profileData?.bio}</span>
-                                <span>Email: {profileData?.email}</span>
+                            <div className="profile-tabs">
+                                <div className="tabs-container">
+                                    <div className="tabs">
+                                        <div
+                                            className={`tab ${activeTab === "posts" ? "active" : ""}`}
+                                            onClick={() => handleTabChange("posts")}
+                                        >
+                                            Posts
+                                        </div>
+                                        <div
+                                            className={`tab ${activeTab === "committees" ? "active" : ""}`}
+                                            onClick={() => handleTabChange("committees")}
+                                        >
+                                            Committees
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="button">
-                            {userId === currentUser?.id ? 
-                            <button onClick={() => setOpenUpdateBox(true)}>Update</button> : 
-                            currentUser?.role === "participant" &&
-                            <button className={followRelationData?.includes(currentUser?.id) ? "following-button" : ""} onClick={handleFollow}> 
-                                {followRelationData?.includes(currentUser?.id) ? "Following" : "Follow"}
-                            </button>
-                            }
-                        </div>
-                    </div>
-                    <div className="profile-posts">
-                        <Posts userId={userId} socket={socket} />
-                    </div>
-                    {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={profileData} />}
-                </>
-             ) 
-             }
+                        {activeTab === "committees" && <CommitteeList profileData={profileData} currentUser={currentUser} />}
+                        {
+                            activeTab === "posts" && 
+                            <div className="profile-posts">
+                                <Posts userId={userId} socket={socket} />
+                            </div> 
+                        }
+                    </>
+                ) 
+            }
+            {openUpdateBox && <UpdateProfile setOpenUpdateBox={setOpenUpdateBox} user={profileData} />}
         </div>
     )
 }

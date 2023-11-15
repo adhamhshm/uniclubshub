@@ -43,9 +43,9 @@ const Explore = ({ socket }) => {
     // Use `useEffect` to set the active tab from the URL when the component mounts
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        const tab = searchParams.get('tab');
+        const tab = searchParams.get("tab");
         const query = searchParams.get('query');
-        if (tab && (tab === 'posts' || tab === 'clubs')) {
+        if (tab && (tab === "posts" || tab === "clubs")) {
             // Set the active tab based on the URL parameter
             setActiveTab(tab);
         }
@@ -84,10 +84,11 @@ const Explore = ({ socket }) => {
         <div className="explore">
             <div className="explore-top-container">
                 <div className="search-container">
-                    {searchQuery !== "" && 
-                    <div className="back-button-box" onClick={clearSearch}>
-                        <BackIcon className="back-icon"/>
-                    </div>
+                    {
+                        searchQuery !== "" && 
+                        <div className="back-button-box" onClick={clearSearch}>
+                            <BackIcon className="back-icon"/>
+                        </div>
                     }
                     <div className="text-box">
                         <input 

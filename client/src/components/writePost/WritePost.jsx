@@ -72,7 +72,7 @@ const WritePost = () => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "posts" })
+            queryClient.invalidateQueries(["posts"]);
         },
     });
 

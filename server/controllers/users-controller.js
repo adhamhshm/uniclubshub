@@ -54,7 +54,8 @@ export const updateUser = (req, res) => {
             req.body.profilePhoto, 
             req.body.email, 
             req.body.bio, 
-            userInfo.id]
+            userInfo.id
+        ]
         db.query(q, values, (err, data) => {
             if (err) {
                 console.log("Error updating user: " + err.message);

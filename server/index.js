@@ -14,6 +14,7 @@ import followRelationsRoute from "./routes/followRelations.js";
 import eventsRoute from "./routes/events.js";
 import imagesRoutes from "./routes/images.js";
 import activitiesRoutes from "./routes/activities.js";
+import committeesRoutes from "./routes/committees.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -44,6 +45,7 @@ app.use("/server/follow_relations", followRelationsRoute);
 app.use("/server/events", eventsRoute);
 app.use("/server/images", imagesRoutes);
 app.use("/server/activities", activitiesRoutes);
+app.use("/server/committees", committeesRoutes);
 
 // Create an HTTP server using the Express app
 const server = http.createServer(app);

@@ -1,0 +1,101 @@
+@import "../../globals.scss";
+
+.committee-list {
+    @include themify($theme) {
+        border-radius: 20px;
+        box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+        -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
+        -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+        background-color: themed("bg");
+        margin-top: 20px;
+
+        .add-option-container {
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+
+            @include mobile {
+                span {
+                    display: none;
+                }
+            }
+
+            .description {
+                flex: 1;
+                display: flex;
+                text-align: left;
+                align-items: center;
+            }
+
+            button {
+                border: none;
+                padding: 10px;
+                padding-right: 15px;
+                color: white;
+                cursor: pointer;
+                background-color: themed("mainButtonColor");
+                font-weight: bold;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                @include mobile {
+                    height: 35px;
+                    padding-right: 10px;
+                }
+            }
+
+            button:hover {
+                background-color: themed("mainButtonColorHover");
+            }
+        }
+
+        .committee-list-container {
+            padding: 0 20px 20px 20px;
+            font-size: 14px;
+            overflow-x: auto;
+
+            #committees {
+                border-collapse: collapse;
+                width: 100%;
+                //word-break: break-word;
+            }
+
+            #committees td, #committees th {
+                //border: 1px solid #dddddd;
+                padding: 5px;
+            }
+
+            #committees th {
+                text-align: left;
+                background-color: themed("bgSoft");
+
+                &:nth-child(4) {
+                    text-align: center; // Apply text-align: center only to the 4th child (Operation title)
+                }
+            }
+
+            #operations {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+
+                .icons {
+                    cursor: pointer;
+                    padding: 5px;
+                    color: themed("mainButtonColor");
+                }
+                
+                .icons:hover {
+                    color: themed("mainButtonColorHover");
+                }
+            }
+
+            @include mobile {
+                width: 75vw;
+            }
+        }
+    }
+}

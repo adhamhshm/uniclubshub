@@ -11,7 +11,7 @@
             border-radius: 20px;
             background-color: themed("bg");
             //background-color: red;
-            padding: 5px 0 0 0;
+            padding: 20px 20px 0 20px;
             height: fit-content;
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
@@ -20,16 +20,13 @@
             
 
             .search-container {
-                border-bottom: 1px solid lightgray;
                 display: flex;
                 flex-direction: row;
-                //margin-bottom: 20px;
     
                 .back-button-box {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    padding: 10px;
                     width: 15px;
                     height: 15px;
                     margin: auto;
@@ -60,7 +57,7 @@
                     input {
                         border: none;
                         outline: none;
-                        padding: 10px;
+                        padding: 5px;
                         background-color: transparent;
                         color: themed("textColor");
                         width: 95%;
@@ -90,6 +87,8 @@
             }
 
             .tabs-container {
+                border-top: 1px solid lightgray;
+
                 .tabs {
                     display: flex;
                     flex-direction: row;

@@ -1,21 +1,25 @@
 import "./event.scss";
 
 import { makeRequest } from "../../request";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 import SyncIcon from '@mui/icons-material/Sync';
 import DownloadIcon from '@mui/icons-material/Download';
 
-
 const Event = () => {
 
+    const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext);
     const [selectedYear, setSelectedYear] = useState("");
     const [selectedPostId, setSelectedPostId] = useState("");
     const currentYear = new Date().getFullYear(); // Get the current year
     const queryClient = useQueryClient();
+    const getFromCache = (key) => {
+        return queryClient.getQueryData(key);
+    };
 
     const { isLoading: postsLoading, error: postsError, data: postsData } = useQuery(["posts", selectedYear], async () => {
         return makeRequest.get(`/posts/year?userId=${currentUser.id}&year=${selectedYear}`)
@@ -26,6 +30,11 @@ const Event = () => {
     });
 
     const { isLoading: listLoading, error: listError, data: listData } = useQuery(["participants", selectedPostId], async () => {
+        // // Attempt to get data from the cache without making a network request.
+        // const cache = getFromCache(["participants", selectedPostId]);
+        // if (cache) {
+        //     return cache;
+        // };
         return makeRequest.get(`/events/participants?postId=${selectedPostId}`)
         .then((res) => res.data)
         .catch((error) => {
@@ -92,7 +101,8 @@ const Event = () => {
     // Handle selected post to view participants
     const handlePostChange = (e) => {
         setSelectedPostId(e.target.value);
-        //queryClient.invalidateQueries(["participants", selectedPostId]);
+        navigate(`/event?year=${selectedYear}&postId=${e.target.value}`)
+        
     };
 
     // Refresh list
@@ -100,16 +110,28 @@ const Event = () => {
         queryClient.invalidateQueries(["participants", selectedPostId]);
     };
 
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const year = searchParams.get("year");
+        const postId = searchParams.get("postId");
+        if (year && postId) {
+            if (year && postId) {
+                setSelectedYear(year);
+                setSelectedPostId(postId);
+            }
+        }
+    }, [location]);
+
     return (
         <div className="event">
             <div className="event-container">
                 <h2>Manage event.</h2>
                 <div className="event-selection">
-                    <select id="dates" onChange={handleYearChange}>
+                    <select id="dates" onChange={handleYearChange} value={selectedYear || "0"}>
                         <option value="0">Select year:</option>
                         {yearOptions}
                     </select>
-                    <select id="events" onChange={handlePostChange}>
+                    <select id="events" onChange={handlePostChange} value={selectedPostId || "0"}>
                         <option value="0">Choose event:</option>
                         {
                             postsLoading ? <option>Loading...</option> :
@@ -118,7 +140,7 @@ const Event = () => {
                         }
                     </select>
                 </div>
-                <div className="download-button-div">
+                <div className="buttons-container">
                     <button onClick={refreshList}>
                         <SyncIcon />
                         <span>Refresh List</span>

@@ -2,14 +2,15 @@
 
 .club-list {
     @include themify($theme) {
-        .user-list-container {
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 20px;
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
             background-color: themed("bg");
-            border-radius: 20px;
+            
+        .user-list-container {
+            padding: 20px;
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;

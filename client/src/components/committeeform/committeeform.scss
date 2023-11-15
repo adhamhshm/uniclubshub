@@ -1,7 +1,7 @@
 @import "../../globals.scss";
 
-.update-profile {
-        @include themify($theme) {
+.committee-form {
+    @include themify($theme) {
         position: fixed;
         top: 0;
         left: 0;
@@ -13,9 +13,9 @@
         justify-content: center;
         z-index: 999;
         overflow: auto;
-    
+
         .wrapper {
-            width: 30%;
+            width: 20%;
             height: fit-content;
             background-color: themed("bg");
             padding: 20px;
@@ -45,17 +45,28 @@
                     font-size: 20px;
                 }
             }
-    
+
             form {
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
-    
-                .files {
-                    display: flex;
-                    flex-direction: column;
-                    flex-wrap: wrap;
-                    gap: 10px;
+
+                select {
+                    width: 100%;
+                    padding: 5px 5px 5px 0;
+                    font-size: 13px;
+                    background-color: transparent;
+                    color: themed("textColor");
+                    border: none;
+                    outline: none;
+                    border-bottom: 1px solid lightgray;
+                    margin-top: -20px;
+
+                    option {
+                        padding: 10px;
+                        color: themed("textColor");
+                        background-color: themed("bgSoft");
+                    }
                 }
 
                 label {
@@ -64,30 +75,6 @@
                     color: gray;
                     font-size: 14px;
                     color: themed("textColor");
-        
-                    .imageContainer {
-                        position: relative;
-                        
-                        img {
-                            width: 100px;
-                            height: 100px;
-                            object-fit: cover;
-                            cursor: pointer;
-                            border-radius: 10px;
-                        }
-            
-                        .icon {
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            margin: auto;
-                            font-size: 30px;
-                            color: lightgray;
-                            cursor: pointer;
-                        }
-                    }
                 }
     
                 input {
@@ -98,33 +85,6 @@
                     outline: none;
                     background-color: transparent;
                     color: themed("textColor");
-                }
-
-                textarea {
-                    resize: none;
-                    padding: 10px;
-                    margin-top: -10px;
-                    border-radius: 5px;
-                    border-bottom: 1px solid themed("border");
-                    color: themed("textColor");
-                    outline: none;
-                    background-color: transparent;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    white-space: pre-wrap;
-
-                }
-
-                .char-count {
-                    display: flex;
-                    align-items: right;
-                    justify-content: right;
-                    color: gray;
-                    margin-top: -20px;
-                    font-size: 15px;
-                }
-
-                .error-message {
-                    color: red;
                 }
         
                 button {
@@ -150,7 +110,7 @@
                     background-color: gray;
                 }
             }
-    
+
             .close {
                 position: absolute;
                 top: 10px;
@@ -161,5 +121,6 @@
                 color: themed("textColor");
             }
         }
+
     }
 }

@@ -119,7 +119,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     };
 
     return (
-        <div className="updateProfile">
+        <div className="update-profile">
             <div className="wrapper">
                 <h1>Update Profile</h1>
                 <form>
