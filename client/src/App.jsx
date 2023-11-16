@@ -25,13 +25,8 @@ function App() {
 
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
-    const [socket, setSocket] = useState(null);
-    
+    const socket = io("http://localhost:8800");
     const queryClient = new QueryClient();
-
-    useEffect(() => {
-        setSocket(io("http://localhost:8800"));
-    }, []);
 
     useEffect(() => {
         socket?.emit("newUser", currentUser?.id);
@@ -62,7 +57,7 @@ function App() {
         const checkToken = useCallback(async () => {
             const isTokenValid = await authorizeToken();
             if (isTokenValid === false) {
-                localStorage.clear();
+                localStorage.removeItem("user");
                 navigate("/login");
             }
         }, [authorizeToken]);
@@ -71,9 +66,6 @@ function App() {
             checkToken();
         }, [checkToken]);
         
-        if (!currentUser) {
-            return <Navigate to="/login" />;
-        }
         
         // children is the protected Layout
         return children;

@@ -53,7 +53,7 @@ const Post = ({ post, socket, viewComment }) => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "likes" })
+            queryClient.invalidateQueries({ queryKey: "likes" });
         },
     })
 
@@ -66,9 +66,9 @@ const Post = ({ post, socket, viewComment }) => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "posts" })
+            queryClient.invalidateQueries(["posts"]);
         },
-    })
+    });
 
     // Adding info to activities mutation
     const addActivitiesMutation = useMutation((activityInfo) => {

@@ -26,7 +26,10 @@ export const signin = (req, res) => {
 
             // initialize web token
             // data[0] is the userInfo
-            const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
+            const token = jwt.sign({ 
+                id: data[0].id, 
+                role: data[0].role
+            }, process.env.JWT_SECRET_KEY, {
                 expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
@@ -62,7 +65,10 @@ export const signin = (req, res) => {
 
             // initialize web token
             // data[0] is the userInfo
-            const token = jwt.sign({ id: data[0].id }, process.env.JWT_SECRET_KEY, {
+            const token = jwt.sign({ 
+                id: data[0].id, 
+                role: data[0].role
+            }, process.env.JWT_SECRET_KEY, {
                 expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
             });
             // destructure the data[0] to get the password
@@ -178,17 +184,22 @@ export const authorizeToken = (req, res) => {
 
     
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
+
         if (err) {
             console.log("Unauthorized token: Invalid or expired token.")
             return res.status(401).json("Session had expired.");
         }
-        // console.log("In server for checking " + userInfo.id)
-        // console.log("From client for checking " + req.query.currentUserId)
 
         if(userInfo.id !== req.query.currentUserId) {
             console.log("ID mismatched: You may had sent an unauthorized ID to the server")
-            return res.status(401).json("Unauthorized ID.");
+            return res.status(401).json("System encounter invalid data.");
         }
+
+        if(userInfo.role !== req.query.role) {
+            console.log("Data mismatched: You may had sent an invalid data to the server")
+            return res.status(401).json("System encounter invalid data.");
+        }
+
         // Token is valid
         res.status(200).json("Authorization approved.");
     });

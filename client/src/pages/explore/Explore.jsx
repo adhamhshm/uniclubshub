@@ -93,6 +93,7 @@ const Explore = ({ socket }) => {
                     <div className="text-box">
                         <input 
                             type="text" 
+                            name="search-input"
                             placeholder="Search for clubs/events..." 
                             autoFocus
                             value={searchText}

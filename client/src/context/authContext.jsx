@@ -5,6 +5,7 @@ import { makeRequest } from "../request.js";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
     const login = async (signinInputs) => {
@@ -36,11 +37,17 @@ export const AuthContextProvider = ({ children }) => {
     // fetch the token authorization from the server
     const authorizeToken = async () => {
         try {
-            const response = await makeRequest.get("/auth/authorizeToken?currentUserId=" + currentUser?.id);
-            console.log(response.data); // Response will indicate if the token is valid
-            return true;
-        } catch (error) {
-            console.log(error);
+            const response = await makeRequest.get(`/auth/authorizeToken?currentUserId=${currentUser?.id}&role=${currentUser?.role}`);
+            // Check if the response status is OK (200)
+            if (response.status === 200) {
+                console.log(response.data);
+                return true;
+            } 
+            else {
+                return false;
+            }
+        } 
+        catch (error) {
             return false;
         }
     };

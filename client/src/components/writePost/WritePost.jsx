@@ -131,6 +131,7 @@ const WritePost = () => {
                         <div className="input-box">
                             <input
                                 className={showInvalidMessage ? "input-invalid" : ""}
+                                name="title"
                                 type="text"
                                 placeholder={showInvalidMessage ? "Please fill out this field." : "Event title here..."}
                                 onChange={(e) => {setTitle(e.target.value)}}
@@ -138,6 +139,7 @@ const WritePost = () => {
                             />
                             <textarea
                                 className={showInvalidMessage ? "input-invalid" : ""}
+                                name="description"
                                 type="text"
                                 rows={6}
                                 placeholder={showInvalidMessage ? "Please fill out this field." : "Event description here..."}

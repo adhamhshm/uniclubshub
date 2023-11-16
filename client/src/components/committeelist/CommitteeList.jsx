@@ -1,6 +1,6 @@
 import "./committeelist.scss";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import CommitteeForm from "../committeeform/CommitteeForm";
 
@@ -8,20 +8,38 @@ import AddIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const CommitteeList = ({ profileData, currentUser }) => {
+const CommitteeList = ({ profileData, userId, currentUser }) => {
 
+    const queryClient = useQueryClient();
     const [openUpdateBox, setOpenUpdateBox] = useState(false);
     const [writeMode, setWriteMode] = useState("");
     const [committeeInfo, setCommitteeInfo] = useState({});
 
-    const { isLoading: committeeListLoading, error: committeeListError, data: committeeListData } = useQuery(["committeeList"], () => {
+    const { isLoading: committeeListLoading, error: committeeListError, data: committeeListData } = useQuery(["committeeList", profileData.id], () => {
         return makeRequest.get("/committees/" + profileData.id)
         .then((res) => res.data)
         .catch((error) => {
             alert(error.response.data)
             throw error; // Propagate the error for proper error handling
         })
-    })
+    });
+
+    // Delete committee mutation
+    const deleteCommitteeMutation = useMutation((committeeId) => {
+        if (committeeId) {
+            return makeRequest.delete("/committees/" + committeeId);
+        }
+    }, 
+    {
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries(["committeeList"]);
+        },
+    });
+
+    const handleDelete = async (committeeIdToDelete) => {
+        deleteCommitteeMutation.mutate(committeeIdToDelete);
+    };
 
     return (
         <div className="committee-list">
@@ -30,7 +48,7 @@ const CommitteeList = ({ profileData, currentUser }) => {
                     Committee list for the club.
                 </div>
                 {
-                    currentUser.role === "club" &&
+                    currentUser.id === userId && currentUser.role === "club" &&
                     <button 
                         onClick={() => {
                             setOpenUpdateBox(true); 
@@ -87,7 +105,7 @@ const CommitteeList = ({ profileData, currentUser }) => {
                                                     setCommitteeInfo(committee)
                                                 }} 
                                                 />
-                                            <DeleteIcon className="icons" />
+                                            <DeleteIcon className="icons" onClick={() => {handleDelete(committee.id)}} />
                                         </td>
                                     }
                                 </tr>
@@ -101,7 +119,6 @@ const CommitteeList = ({ profileData, currentUser }) => {
                 <CommitteeForm 
                     setOpenUpdateBox={setOpenUpdateBox} 
                     writeMode={writeMode} 
-                    userId={profileData.id} 
                     committeeInfo={committeeInfo}
                 />
             }

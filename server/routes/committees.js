@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/:userId", getCommittees);
 router.post("/", addCommittee);
-router.delete("/", deleteCommittee);
+router.delete("/:committeeId", deleteCommittee);
 router.put("/", editCommittee);
 
 export default router;

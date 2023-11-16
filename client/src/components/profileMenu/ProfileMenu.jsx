@@ -30,8 +30,7 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
     const handleSignout = async () => {
         try {
             await makeRequest.post("/auth/signout", {});
-            localStorage.clear();
-            window.location.reload(false);
+            localStorage.removeItem("user");
             navigate("/login");
         }
         catch (error) {

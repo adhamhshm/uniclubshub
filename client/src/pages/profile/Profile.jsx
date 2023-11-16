@@ -21,7 +21,7 @@ const Profile = ({ socket }) => {
     const [activeTab, setActiveTab] = useState("posts"); // State to manage the active tab
 
     // Fetch user info
-    const { isLoading: profileLoading, error: profileError, data: profileData } = useQuery(["user"], () => {
+    const { isLoading: profileLoading, error: profileError, data: profileData } = useQuery(["user", userId], () => {
         return makeRequest.get("/users/find/" + userId)
         .then((res) => res.data)
         .catch((error) => {
@@ -88,15 +88,15 @@ const Profile = ({ socket }) => {
         },
     });
 
-    // // Use `useEffect` to set the active tab from the URL when the component mounts
-    // useEffect(() => {
-    //     const searchParams = new URLSearchParams(location.search);
-    //     const tab = searchParams.get("tab");
-    //     if (tab && (tab === "posts" || tab === "committees")) {
-    //         // Set the active tab based on the URL parameter
-    //         setActiveTab(tab);
-    //     }
-    // }, []);
+    // Use `useEffect` to set the active tab from the URL when the component mounts
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const tab = searchParams.get("tab");
+        if (tab && (tab === "posts" || tab === "committees")) {
+            // Set the active tab based on the URL parameter
+            setActiveTab(tab);
+        }
+    }, [location]);
 
     // Function to add follow activity
     const addFollowActivityInfo = async () => {
@@ -127,7 +127,7 @@ const Profile = ({ socket }) => {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         // Update the URL with the tab parameter
-        //navigate(`/profile/${userId}?tab=${tab}`);
+        navigate(`/profile/${userId}?tab=${tab}`);
     };
 
     return (
@@ -206,7 +206,7 @@ const Profile = ({ socket }) => {
                                 </div>
                             </div>
                         </div>
-                        {activeTab === "committees" && <CommitteeList profileData={profileData} currentUser={currentUser} />}
+                        {activeTab === "committees" && <CommitteeList profileData={profileData} userId={userId} currentUser={currentUser} />}
                         {
                             activeTab === "posts" && 
                             <div className="profile-posts">

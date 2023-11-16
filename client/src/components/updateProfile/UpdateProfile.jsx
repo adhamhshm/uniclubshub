@@ -138,27 +138,27 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                         <input type="file" id="profilePhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />
                     </div>
                     {/* name input whether club name or student name */}
-                    <label>Name</label>
+                    <span>Name</span>
                     <input type="text" value={updateInputs.name} name="name" onChange={handleChange} />
                     {/* email input whether club email or student email */}
-                    <label>
+                    <span>
                         Email
                         {errorEmailMessage && <span className="error-message">Invalid email format</span>}
-                    </label>
+                    </span>
                     <input type="text" value={updateInputs.email} name="email" onChange={handleChange} />
                     {user.role === "participant" && 
                         <>
-                            <label>Phone</label>
+                            <span>Phone</span>
                             <input type="text" value={updateInputs.phoneNumber} name="phoneNumber" onChange={handleChange} />
                         </>
                     }
                     {/* bio is only for club */}
                     {user.role === "club" && 
                         <>
-                            <label>
+                            <span>
                                 Bio
                                 {updateInputs.bio.length > 300 && <span className="error-message">Bio exceeds 300 characters</span>}
-                            </label>
+                            </span>
                             <textarea type="text" rows={3} 
                             placeholder="Write bio here..." 
                             name="bio" 

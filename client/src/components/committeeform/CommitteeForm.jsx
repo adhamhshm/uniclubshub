@@ -2,8 +2,6 @@ import "./committeeform.scss";
 import { makeRequest } from "../../request";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
 
 import CloseIcon from '@mui/icons-material/CloseOutlined';
 
@@ -15,25 +13,24 @@ const positionType = [
     {position: "Secretary", value : 5},
     {position: "Bureau Head", value : 6},
     {position: "Bureau Member", value : 7},
-]
+];
 
-const CommitteeForm = ({ setOpenUpdateBox, writeMode, userId, committeeInfo }) => {
+const CommitteeForm = ({ setOpenUpdateBox, writeMode, committeeInfo }) => {
 
     const queryClient = useQueryClient();
     const [committeeInputs, setCommitteeInputs] = useState({
         position: committeeInfo.position || "",
         name: committeeInfo.name || "",
-        rank: committeeInfo.rank || 0,
+        positionRank: committeeInfo.positionRank || 0,
     });
 
-    // Mutation for adding a new post
-    const addCommitteeMutation = useMutation(async (newCommittee) => {
-        try {
-            return await makeRequest.post("/committees", newCommittee);
-        } catch (error) {
+    // Adding a new committee mutation
+    const addCommitteeMutation = useMutation((newCommittee) => {
+        return makeRequest.post("/committees", newCommittee)
+        .catch((error) => {
             alert(error.response.data);
             throw error;
-        }
+        });
     }, 
     {
         onSuccess: () => {
@@ -41,6 +38,19 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, userId, committeeInfo }) =
             queryClient.invalidateQueries(["committeeList"]);
         },
     });
+
+    const editCommitteeMutation = useMutation((editedCommittee) => {
+        return makeRequest.put("/committees", editedCommittee)
+        .catch((error) => {
+            alert(error.response.data);
+            throw error;
+        })
+    },
+    {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["committeeList"]);
+        }
+    })
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -50,11 +60,25 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, userId, committeeInfo }) =
         }));
     };
 
-    const handleWriteCommitee = async (e) => {
+    const handleWriteCommitee = (e) => {
         e.preventDefault();
+
+        if (committeeInputs.position === "" || committeeInputs.name === "") {
+            return;
+        };
+
         if (writeMode === "Add") {
-            await addCommitteeMutation.mutate({ position: committeeInputs.position, name: committeeInputs.name, rank: committeeInputs.rank });
-        }
+            addCommitteeMutation.mutate({ position: committeeInputs.position, name: committeeInputs.name, positionRank: committeeInputs.positionRank });
+        };
+
+        if (writeMode === "Edit") {
+            editCommitteeMutation.mutate({ 
+                position: committeeInputs.position, 
+                name: committeeInputs.name, 
+                positionRank: committeeInputs.positionRank, 
+                id: committeeInfo.id  
+            })
+        };
         setOpenUpdateBox(false);
     };
 
@@ -64,11 +88,11 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, userId, committeeInfo }) =
                 <h1><span>{writeMode}</span> Commitee</h1>
                 <form>
                     {/* position input */}
-                    <label>Position Name</label>
+                    <span>Position Name</span>
                     <input type="text" value={committeeInputs.position} name="position" onChange={handleChange} autoComplete="off" />
                     {/* position input */}
-                    <label>Position Type</label>
-                    <select id="position-type" name="rank" onChange={handleChange} value={committeeInputs.rank}>
+                    <span>Position Type</span>
+                    <select id="position-type" name="positionRank" onChange={handleChange} value={committeeInputs.positionRank}>
                         <option value="0">Select:</option>
                         {positionType.map((type) => (
                             <option key={type.value} value={type.value}>
@@ -77,7 +101,7 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, userId, committeeInfo }) =
                         ))}
                     </select>
                     {/* name input */}
-                    <label>Commitee Name</label>
+                    <span>Commitee Name</span>
                     <input type="text" value={committeeInputs.name} name="name" onChange={handleChange} autoComplete="off" />
                     <button onClick={handleWriteCommitee}> 
                         {writeMode}
