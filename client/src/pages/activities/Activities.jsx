@@ -41,17 +41,15 @@ const Activities = () => {
 
     useEffect(() => {
         if (activitiesData && !finishedReading) {
-            console.log("Inside")
             activitiesData?.forEach(activity => {
                 if (activity.hasRead === 'no') {
-                    console.log("Insideeeeee")
                     markAsRead(activity);
                 }
             });
         }
         setFinishedReading(true);
 
-    }, [activitiesData]); // Monitor changes in activitiesData and finishedReading
+    }, [activitiesData]);
     
 
     return (
