@@ -1,11 +1,11 @@
 import "./participantprofile.scss";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../request";
-
 import UpdateProfile from "../../components/updateProfile/UpdateProfile";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
 const ParticipantProfile = () => {
 
@@ -34,8 +34,8 @@ const ParticipantProfile = () => {
 
     return (
         <div className="participant-profile">
-            {profileLoading ? ("Loading...") :
-             profileError ? ("Something went wrong.") :
+            {profileLoading ? ( <LoadingSpinner /> ) :
+             profileError ? ( <LoadingSpinner /> ) :
              (
                 <>
                     <div className="participant-profile-container">

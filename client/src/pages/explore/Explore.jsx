@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../../context/authContext";
 import Post from "../../components/posts/post/Post";
 import ClubList from "../../components/clublist/ClubList";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner.jsx";
 
 import BackIcon from '@mui/icons-material/KeyboardBackspace';
 
@@ -126,8 +127,8 @@ const Explore = ({ socket }) => {
             </div>
             {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} socket={socket} />}
             {activeTab === "posts" && <div className="posts">
-                {isLoading ? ( "Loading..." ) : 
-                 error ? ( "Something went wrong...") : 
+                {isLoading ? ( <LoadingSpinner /> ) : 
+                 error ? ( <LoadingSpinner /> ) : 
                  data.length === 0 && searchQuery === ""  ? 
                     (
                         <div className="not-found-message">

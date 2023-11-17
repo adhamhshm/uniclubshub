@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
 import SyncIcon from '@mui/icons-material/Sync';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -135,7 +136,7 @@ const Event = () => {
                         <option value="0">Choose event:</option>
                         {
                             postsLoading ? <option>Loading...</option> :
-                            postsError ? <option value="0">Error loading events</option> :
+                            postsError ? <option value="0">Something when wrong. Please try again.</option> :
                             postsData && postsData.map((post) => ( <option key={post.id} value={post.id}>{post.title}</option> ))  
                         }
                     </select>
@@ -168,11 +169,11 @@ const Event = () => {
                             </tr>
                             {listLoading ? 
                                 <tr>
-                                    <td colSpan="5">Loading participants...</td>
+                                    <td colSpan="5"><LoadingSpinner /></td>
                                 </tr> 
                                 : listError ? 
                                 <tr>
-                                    <td colSpan="5">Error loading participants.</td>
+                                    <td colSpan="5"><LoadingSpinner /></td>
                                 </tr>
                                 : listData.length === 0 ?
                                 <tr>

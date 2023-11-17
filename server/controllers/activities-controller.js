@@ -41,7 +41,7 @@ export const getActivitiesClubUser = (req, res) => {
                 return res.status(500).json("Error fetching user activities.");
             }
             else {
-                    return res.status(200).json(data);
+                return res.status(200).json(data);
             }
         });
     });
@@ -96,10 +96,9 @@ export const addActivities = (req, res) => {
                 console.log("Error adding activities: " + err.message)
                 return res.status(500).json("Error adding activities.");
             }
-            // else {
-            //     const insertedActivityId = data.insertId; // Get the ID of the newly added activity
-            //     return res.status(200).json({ message: "Activity is added.", activityId: insertedActivityId });
-            // }
+            else {
+                return res.status(200).json("Activity added.");
+            }
         })
     })
 };

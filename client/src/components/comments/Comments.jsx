@@ -106,6 +106,7 @@ const Comments = ({ post, socket }) => {
                 />
                 <textarea 
                     type="text" 
+                    name="description"
                     rows={2} 
                     placeholder="Write a comment..." 
                     value={description}

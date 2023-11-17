@@ -3,6 +3,7 @@ import "./clublist.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../loadingspinner/LoadingSpinner";
 
 const ClubList = ({ currentUser, searchQuery, socket }) => {
 
@@ -102,8 +103,8 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
     return (
         <div className="club-list">
             <div className="user-list-container">
-                {clubListLoading ? ( "Loading clubs..." ) : 
-                    clubListError ? ( "Cannot fetch the club list." ) : 
+                {clubListLoading ? ( <LoadingSpinner /> ) : 
+                    clubListError ? ( <LoadingSpinner /> ) : 
                     !clubListData || clubListData.length === 0 && searchQuery === "" ? ( "No clubs." ) :
                     clubListData.length !== 0 ? (
                         clubListData.map((clubUser) => {

@@ -4,9 +4,11 @@ import { AuthContext } from "../../context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
 const Activities = () => {
 
+    const queryClient = useQueryClient();
     const { currentUser } = useContext(AuthContext);
     const [finishedReading, setFinishedReading] = useState(false);
 
@@ -20,9 +22,14 @@ const Activities = () => {
     });
 
     const updateHasReadMutation = useMutation(async (activityHasReadData) => {
-            // Send a PATCH request to update the hasRead property in the database
-            await makeRequest.patch(`/activities/read`, activityHasReadData);
-        }
+        // Send a PATCH request to update the hasRead property in the database
+        await makeRequest.patch(`/activities/read`, activityHasReadData);
+    },
+    {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["activities"]);
+        },
+    }
     );
 
     const markAsRead = (activity) => {
@@ -34,25 +41,26 @@ const Activities = () => {
 
     useEffect(() => {
         if (activitiesData && !finishedReading) {
-            activitiesData.forEach(activity => {
+            console.log("Inside")
+            activitiesData?.forEach(activity => {
                 if (activity.hasRead === 'no') {
+                    console.log("Insideeeeee")
                     markAsRead(activity);
                 }
             });
         }
         setFinishedReading(true);
 
-    }, [activitiesData, finishedReading]); // Monitor changes in activitiesData and finishedReading
-
-    console.log(activitiesData);
+    }, [activitiesData]); // Monitor changes in activitiesData and finishedReading
+    
 
     return (
         <div className="activities">
             <div className="activities-container">
                 <h2>Account activities.</h2>
                 <div className="activities-list">
-                    {activitiesLoading ? ( "Loading...") : 
-                     activitiesError ? ( "Something went wrong...") : 
+                    {activitiesLoading ? ( <LoadingSpinner /> ) : 
+                     activitiesError ? ( <LoadingSpinner /> ) : 
                      activitiesData.length !== 0 ? 
                      (
                         activitiesData.map((activity) => {

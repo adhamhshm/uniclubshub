@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import CommitteeForm from "../committeeform/CommitteeForm";
+import LoadingSpinner from "../loadingspinner/LoadingSpinner";
 
 import AddIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/BorderColor';
@@ -78,11 +79,11 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                         {
                             committeeListLoading ? 
                             <tr>
-                                <td colSpan="5">Loading participants...</td>
+                                <td colSpan="5"><LoadingSpinner /></td>
                             </tr> 
                             : committeeListError ? 
                             <tr>
-                                <td colSpan="5">Error loading participants.</td>
+                                <td colSpan="5"><LoadingSpinner /></td>
                             </tr>
                             : committeeListData.length === 0 ?
                             <tr>

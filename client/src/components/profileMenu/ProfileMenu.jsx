@@ -27,7 +27,8 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
         }
     };
 
-    const handleSignout = async () => {
+    const handleSignout = async (e) => {
+        e.preventDefault();
         try {
             await makeRequest.post("/auth/signout", {});
             localStorage.removeItem("user");

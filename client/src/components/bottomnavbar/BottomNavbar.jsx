@@ -33,7 +33,7 @@ const BottomNavbar = ({ currentUser, socket }) => {
                                     window.scrollTo({ top: 0, behavior: "smooth" });
                                     if (link.text === "Activities") {
                                         setNotifications([]);
-                                        queryClient.invalidateQueries(["activities", currentUser?.id]);
+                                        queryClient.invalidateQueries(["activities"]);
                                     }
                                 }}
                             >

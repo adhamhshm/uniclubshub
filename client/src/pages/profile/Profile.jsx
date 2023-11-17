@@ -5,9 +5,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../request";
 import Posts from "../../components/posts/Posts";
-
 import UpdateProfile from "../../components/updateProfile/UpdateProfile";
 import CommitteeList from "../../components/committeelist/CommitteeList";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
 
 const Profile = ({ socket }) => {
@@ -133,8 +133,8 @@ const Profile = ({ socket }) => {
     return (
         <div className="profile">
             {
-                profileLoading ? ("Loading...") :
-                profileError ? ("Something went wrong.") :
+                profileLoading ? ( <LoadingSpinner /> ) :
+                profileError ? ( <LoadingSpinner /> ) :
                 (
                     <>
                         <div className="profile-container">

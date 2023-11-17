@@ -1,7 +1,7 @@
 import "./globals.scss";
 
-import { createBrowserRouter, RouterProvider, Outlet, Navigate, useNavigate } from "react-router-dom";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate, Navigate } from "react-router-dom";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -26,7 +26,30 @@ function App() {
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
     const socket = io("http://localhost:8800");
-    const queryClient = new QueryClient();
+    /* 
+    useMemo(() => ..., []): This hook takes a function as its first argument, 
+    which contains the computation you want to memoize. The second argument is an array of dependencies. 
+    If any of these dependencies change between renders, the memoized value will be recomputed.
+
+    new QueryClient({ ... }): This part creates a new instance of the QueryClient. 
+    The QueryClient is a part of the React Query library and is used to manage the 
+    state of queries and mutations in your application.
+
+    The object passed as an argument to QueryClient configures its default options. 
+    In this case, it sets the default options for all queries with refetchOnWindowFocus: false. 
+    This means that queries won't automatically refetch when the window regains focus.
+
+    [] as the second argument to useMemo: Since there are no dependencies specified, 
+    the memoized value (in this case, the QueryClient instance) will be created only once 
+    during the initial render and won't be recreated on subsequent renders.
+     */
+    const queryClient = useMemo(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false,
+            },
+        },
+    }), []);
 
     useEffect(() => {
         socket?.emit("newUser", currentUser?.id);
@@ -50,7 +73,7 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children }) => {
+    const ProtectedRoute = ({ children, requiredRole }) => {
 
         const navigate = useNavigate();
         
@@ -65,7 +88,6 @@ function App() {
         useEffect(() => {
             checkToken();
         }, [checkToken]);
-        
         
         // children is the protected Layout
         return children;
