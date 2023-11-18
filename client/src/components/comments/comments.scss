@@ -2,10 +2,10 @@
 
 .comments {
     @include themify($theme) {
-        img {
+        #user-photo-comment {
+            border-radius: 50%;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
             object-fit: cover;
         }
 
@@ -29,31 +29,27 @@
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
 
-            .send-icon {
-                color: themed("textColor");
+            .send-icon-container {
                 display: flex;
-                justify-content: center;cursor: pointer;
-                padding: 7px;
-                border-radius: 50%;
-            }
-
-            .send-icon:hover {
-                background-color: themed("mainButtonColorHover");
-                color: #FFFFFF;
-            }
-
-            button {
-                border: none;
-                color: white;
-                padding: 10px 20px;
+                justify-content: center;
                 cursor: pointer;
-                background-color: themed("mainButtonColor");
-                font-weight: bold;
-                border-radius: 20px;
+                padding: 10px;
+                border-radius: 50%;
+
+                #send-icon {
+                    width: 24px;
+                    height: 24px;
+                    filter: themed("invertColorFilter");
+                }
+
             }
 
-            button:hover {
-                background-color: themed("mainButtonColorHover");
+            .send-icon-container:hover {
+                background-color: themed("mainButtonColor");
+
+                #send-icon {
+                    filter: invert(1);
+                }
             }
         }
 

@@ -9,11 +9,6 @@ import moment from "moment";
 import Comments from "../../comments/Comments";
 import ConfirmBox from "../confirmbox/ConfirmBox";
 
-import MoreIcon from '@mui/icons-material/MoreHoriz';
-import NoFillLikeIcon from '@mui/icons-material/FavoriteBorder';
-import FillLikeIcon from '@mui/icons-material/Favorite';
-import CommentIcon from '@mui/icons-material/InsertCommentOutlined';
-
 const Post = ({ post, socket, viewComment }) => {
 
     // Access the client
@@ -53,7 +48,7 @@ const Post = ({ post, socket, viewComment }) => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "likes" });
+            queryClient.invalidateQueries({ queryKey: ["likes"] });
         },
     })
 
@@ -73,13 +68,7 @@ const Post = ({ post, socket, viewComment }) => {
     // Adding info to activities mutation
     const addActivitiesMutation = useMutation((activityInfo) => {
         return makeRequest.post("/activities", activityInfo);
-    }, 
-    {
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "activities" })
-        },
-    })
+    });
 
     const handleLike = () => {
         likePostMutation.mutate(likesData.includes(currentUser.id));
@@ -126,6 +115,22 @@ const Post = ({ post, socket, viewComment }) => {
         });
     };
 
+    const handleShare = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: post.title,
+                text: post.description,
+                url: window.location.href + "postView/" + post.id,
+            })
+            .then(() => console.log("Successfully shared"))
+            .catch((error) => console.log("Error sharing: " + error));
+        } else {
+            // Fallback for browsers that do not support Web Share API
+            console.log("Web Share API is not supported");
+        }
+        setMenuOpen(null)
+    };
+
     const handleNotification = (activityType) => {
         // Send the notification data to the server
         socket?.emit("sendNotification" , {
@@ -141,7 +146,7 @@ const Post = ({ post, socket, viewComment }) => {
                 <div className="user-container">
                     <div className="user-details">
                         {/* Post owner profile photo */}
-                        <img src={post.profilePhoto ? post.profilePhoto : "/default/default-club-image.png"} alt={post.name} />
+                        <img src={post.profilePhoto ? post.profilePhoto : "/default/default-club-image.webp"} alt={post.name} />
                         {/* Name of the owner and the date of post */}
                         <div className="user-info">
                             <Link to={`/profile/${post.userId}`} style={{ textDecoration: "none", color: "inherit" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
@@ -151,8 +156,23 @@ const Post = ({ post, socket, viewComment }) => {
                         </div>
                     </div>
                     {/* Icon can be clicked to open post menu */}
-                    <MoreIcon style={{ cursor: "pointer" }} onClick={() => setMenuOpen(!openMenu)} />
-                    {openMenu && post.userId === currentUser.id && <button onClick={handleDelete}>Delete</button>}
+                    <img id="menu-icon" src="/default/menu.webp" alt="menu" onClick={() => setMenuOpen(!openMenu)} />
+                    {   
+                        openMenu && 
+                        <div className="post-option-menu">
+                            {
+                                post.userId === currentUser.id && 
+                                <div className="option-list" onClick={handleDelete}>
+                                    <img src="/default/trash.webp" alt="delete" /> 
+                                    Delete
+                                </div>
+                            }
+                            <div className="option-list" onClick={handleShare}>
+                                <img src="/default/share.webp" alt="share" /> 
+                                Share
+                            </div>
+                        </div> 
+                    }
                 </div>
                 {/* The content of the post */}
                 <div className="post-content-container">
@@ -175,17 +195,17 @@ const Post = ({ post, socket, viewComment }) => {
                             likesError ? "Unable to find likes." : 
                             (
                                 likesData.includes(currentUser.id)
-                                    ? <FillLikeIcon style={{ color: "red" }} onClick={handleLike} />
-                                    : <NoFillLikeIcon onClick={handleLike} />
+                                    ? <img src="/default/heart-filled.webp" alt="heart filled" onClick={handleLike} />
+                                    : <img id="label-icon" src="/default/heart.webp" alt="heart" onClick={handleLike} />
                             )
                         ) : (
-                            <NoFillLikeIcon />
+                            <img id="label-icon" src="/default/heart.webp" alt="heart" />
                         )}
                         {likesData !== undefined && `${likesData.length}`}   
                     </div>
                     {/* Comment label */}
                     <div className="label" onClick={() => {setCommentOpen(!commentOpen)}}>
-                        <CommentIcon/>
+                        <img id="label-icon" src="/default/comment.webp" alt="heart" />
                         {commentsLoading ? "Loading comments..." :
                          commentsError ? "Unable to find comments." :
                          commentsData === undefined ? "Comment" : 

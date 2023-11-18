@@ -27,18 +27,26 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    width: 15px;
-                    height: 15px;
                     margin: auto;
-                    margin-left: 10px;
+                    margin-left: 5px;
                     border-radius: 50%;
-                    
                     cursor: pointer;
+                    padding: 5px;
+
+                    .back-icon {
+                        width: 24px;
+                        height: 24px;
+                        filter: themed("invertColorFilter");
+                    }
                 }
     
                 .back-button-box:hover {
-                    background-color: themed("mainButtonColorHover");
+                    background-color: themed("mainButtonColor");
                     color: white;
+
+                    .back-icon {
+                        filter: invert(1);
+                    }
                 }
     
                 .text-box {
@@ -49,10 +57,6 @@
                     flex-direction: row;
                     align-items: center;
                     color: themed("textColor");
-    
-                    .search-icon {
-                        padding-right: 15px;
-                    }
     
                     input {
                         border: none;
@@ -121,6 +125,10 @@
             box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.19);
             -moz-box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.19);
+        }
+
+        @include mobile {
+            padding: 80px 10px 20px 10px;
         }
     }
 }

@@ -1,6 +1,6 @@
 import "./explore.scss";
 import { useContext, useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -8,8 +8,6 @@ import { AuthContext } from "../../context/authContext";
 import Post from "../../components/posts/post/Post";
 import ClubList from "../../components/clublist/ClubList";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner.jsx";
-
-import BackIcon from '@mui/icons-material/KeyboardBackspace';
 
 const Explore = ({ socket }) => {
 
@@ -20,18 +18,8 @@ const Explore = ({ socket }) => {
     const [searchQuery, setSearchQuery] = useState(""); // State to store search query
     const [searchText, setSearchText] = useState("");
     const [activeTab, setActiveTab] = useState("posts"); // State to manage the active tab
-    
-    const queryClient = useQueryClient();
-    const getFromCache = (key) => {
-        return queryClient.getQueryData(key);
-    };
 
     const { isLoading, error, data } = useQuery(["posts", searchQuery], () => {
-        // Attempt to get data from the cache
-        const cache = getFromCache(["posts", searchQuery]);
-        if (cache) {
-            return cache;
-        };
         // If not in cache, fetch data from the server
         return makeRequest.get("/posts/explore?q=", { params: { searchQuery: searchQuery } })
             .then((res) => res.data)
@@ -88,7 +76,7 @@ const Explore = ({ socket }) => {
                     {
                         searchQuery !== "" && 
                         <div className="back-button-box" onClick={clearSearch}>
-                            <BackIcon className="back-icon"/>
+                            <img src="default/back.webp" alt="back" className="back-icon"/>
                         </div>
                     }
                     <div className="text-box">
@@ -97,6 +85,7 @@ const Explore = ({ socket }) => {
                             name="search-input"
                             placeholder="Search for clubs/events..." 
                             autoFocus
+                            autoComplete="off"
                             value={searchText}
                             onChange={(e) => {setSearchText(e.target.value)}} 
                             onKeyDown={handleInputKeyDown}
@@ -127,9 +116,10 @@ const Explore = ({ socket }) => {
             </div>
             {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} socket={socket} />}
             {activeTab === "posts" && <div className="posts">
-                {isLoading ? ( <LoadingSpinner /> ) : 
-                 error ? ( <LoadingSpinner /> ) : 
-                 data.length === 0 && searchQuery === ""  ? 
+                {
+                    isLoading ? ( <LoadingSpinner /> ) : 
+                    error ? ( <LoadingSpinner /> ) : 
+                    data.length === 0 && searchQuery === ""  ? 
                     (
                         <div className="not-found-message">
                            No posts. 

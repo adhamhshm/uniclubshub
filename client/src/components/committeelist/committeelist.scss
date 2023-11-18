@@ -28,6 +28,12 @@
                 align-items: center;
             }
 
+            img {
+                width: 20px;
+                height: 20px;
+                filter: invert(1);
+            }
+
             button {
                 border: none;
                 padding: 10px;
@@ -82,19 +88,22 @@
                 justify-content: center;
                 gap: 20px;
 
-                .icons {
+                #icons {
+                    width: 20px;
+                    height: 20px;
                     cursor: pointer;
                     padding: 5px;
-                    color: themed("mainButtonColor");
+                    filter: themed("invertColorFilter");
+                    
                 }
                 
-                .icons:hover {
-                    color: themed("mainButtonColorHover");
+                #icons:hover {
+                    filter: themed("filterMainColor");
                 }
             }
 
             @include mobile {
-                width: 75vw;
+                width: 83vw;
             }
         }
     }

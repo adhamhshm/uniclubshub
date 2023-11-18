@@ -107,7 +107,7 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, committeeInfo }) => {
                         {writeMode}
                     </button>
                 </form>
-                <CloseIcon className="close" style={{cursor: "pointer", width: "30px", height: "30px"}} onClick={() => setOpenUpdateBox(false)} />
+                <img id="close-icon" src="/default/cross.webp" alt="cross" onClick={() => setOpenUpdateBox(false)} />
             </div>
         </div>
     )

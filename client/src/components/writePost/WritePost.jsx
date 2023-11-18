@@ -127,7 +127,7 @@ const WritePost = () => {
             <div className="writepost-container">
                 <div className="writepost-container-top">
                     <div className="top-left-part">
-                        <img src={currentUser?.profilePhoto ? currentUser?.profilePhoto : "/default/default-club-image.png"} alt="user" />
+                        <img src={currentUser?.profilePhoto ? currentUser?.profilePhoto : "/default/default-club-image.webp"} alt="user" />
                         <div className="input-box">
                             <input
                                 className={showInvalidMessage ? "input-invalid" : ""}
@@ -167,8 +167,9 @@ const WritePost = () => {
                                     className="imageFile"  
                                     key={URL.createObjectURL(imageFile)}
                                     src={URL.createObjectURL(imageFile)} 
-                                    alt="" />
-                                <CloseIcon className="close-icon" onClick={clearImageFile} />
+                                    alt="image file" 
+                                />
+                                <img id="close-icon" src="/default/cross.webp" onClick={clearImageFile} />
                             </div>
                         )}
                     </div>
@@ -186,7 +187,7 @@ const WritePost = () => {
                         />
                         <label htmlFor="file">
                             <div className="item">
-                                <InsertPhotoIcon />
+                                <img src="/default/image.webp" alt="upload image" />
                                 <span>Add Image</span>
                             </div>
                         </label>

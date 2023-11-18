@@ -173,7 +173,7 @@ const Register = () => {
             <div className="card">
                 <div className="register-input">
                     <div className="logo-container">
-                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
+                        <img className="font-logo" src="/default/font-logo.webp" alt="logo" />
                     </div>
                     <h2>Sign Up</h2>
                     <form>

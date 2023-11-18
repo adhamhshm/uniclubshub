@@ -41,7 +41,7 @@ const ParticipantProfile = () => {
                     <div className="participant-profile-container">
                         <div className="participant-images">
                             <img 
-                                src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-participant-image.png"} 
+                                src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-participant-image.webp"} 
                                 alt="profile" 
                                 className="participant-profile-photo" 
                             />

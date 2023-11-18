@@ -95,7 +95,7 @@ const Login = () => {
             <div className="card">
                 <div className="login-input">
                     <div className="logo-container">
-                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
+                        <img className="font-logo" src="/default/font-logo.webp" alt="logo" />
                     </div>
                     <h2>Sign In</h2>
                     <form>

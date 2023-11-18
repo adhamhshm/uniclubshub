@@ -88,7 +88,7 @@
                         border-radius: 10px;
                     }
 
-                    .close-icon {
+                    #close-icon {
                         position: absolute;
                         top: 5px;
                         right: 5px;
@@ -98,6 +98,9 @@
                         font-weight: bold;
                         cursor: pointer;
                         color: white;
+                        width: 24px;
+                        height: 24px;
+                        filter: invert(1);
                     }
                 }
 
@@ -132,7 +135,9 @@
                         cursor: pointer;
             
                         img {
-                            height: 20px;
+                            width: 24px;
+                            height: 24px;
+                            filter: themed("invertColorFilter");
                         }
             
                         span {

@@ -48,12 +48,6 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
     // Adding info to activities
     const addActivitiesMutation = useMutation((activityInfo) => {
         return makeRequest.post("/activities", activityInfo);
-    }, 
-    {
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "activities" })
-        },
     });
 
     // Define a mutation for following/unfollowing clubs
@@ -113,7 +107,7 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
                             return (
                                 <div className="user-list" key={clubUser.id}>
                                     <div className="user-info">
-                                        <img src={clubUser.profilePhoto ? clubUser.profilePhoto : "/default/default-club-image.png"} alt={clubUser.name} />
+                                        <img src={clubUser.profilePhoto ? clubUser.profilePhoto : "/default/default-club-image.webp"} alt={clubUser.name} />
                                         <Link to={`/profile/${clubUser.id}`} style={{ textDecoration: "none"}}>
                                             <span>{clubUser.name}</span>
                                         </Link>

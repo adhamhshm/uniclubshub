@@ -6,8 +6,6 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import Loading from "../loading/loading";
 
-import CloseIcon from '@mui/icons-material/CloseOutlined';
-
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
     const queryClient = useQueryClient();
@@ -130,7 +128,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                             <div className="imageContainer">
                                 <img
                                     src={ updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
-                                        user.profilePhoto ? user.profilePhoto : "/default/upload.png"}
+                                        user.profilePhoto ? user.profilePhoto : "/default/upload-gradient.webp"}
                                     alt="cover photo"
                                 />
                             </div>
@@ -176,7 +174,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                         Update
                     </button>
                 </form>
-                <CloseIcon className="close" style={{cursor: "pointer", width: "30px", height: "30px"}} onClick={() => setOpenUpdateBox(false)} />
+                <img id="close-icon" src="/default/cross.webp" alt="cross" onClick={() => setOpenUpdateBox(false)} />
             </div>
             {isLoading && <Loading />}
         </div>

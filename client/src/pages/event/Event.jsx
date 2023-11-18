@@ -143,7 +143,7 @@ const Event = () => {
                 </div>
                 <div className="buttons-container">
                     <button onClick={refreshList}>
-                        <SyncIcon />
+                        <img src="default/refresh.webp" alt="refresh" />
                         <span>Refresh List</span>
                     </button>
                     {/* 
@@ -153,7 +153,7 @@ const Event = () => {
                         The ?. (optional chaining) is used to safeguard against a null or undefined post object, preventing a potential error.
                     */}
                     <button onClick={() => {downloadCSV(postsData.find(post => post.id === selectedPostId)?.title || "participants")}}>
-                        <DownloadIcon />
+                        <img src="default/download.webp" alt="download" />
                         <span>Download List</span>
                     </button>
                 </div>

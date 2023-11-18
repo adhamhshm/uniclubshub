@@ -10,18 +10,6 @@
         top: 0;
         width: 100%;
         z-index: 999;
-        // display: flex;
-        // align-items: center;
-        // padding: 20px;
-        // height: 50px;
-        // width: 100vw;
-        // border-bottom: 1px solid themed("border");
-        // position: sticky;
-        // top: 0;
-        // background-color: themed("bg");
-        // color: themed("textColor");
-        // z-index: 9999;
-        // overflow: hidden;
 
         .topbar-container {
             display: flex;
@@ -33,17 +21,11 @@
             .left{
                 display: flex;
                 align-items: center;
-    
-                span {
-                    font-weight: 900;
-                    font-size: 20px;
-                    color: themed("logo");
-                }
 
                 .font-logo {
                     width: 140px;
                     height: auto;
-                    filter: themed("filterColor");
+                    filter: themed("invertColorFilter");
                 }
             }
     
@@ -54,14 +36,11 @@
     
                 .user {
                     display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    font-weight: 500px;
+                    border-radius: 50%;
     
                     img {
                         width: 30px;
                         height: 30px;
-                        border-radius: 50%;
                         object-fit: cover;
                         cursor: pointer;
                     }

@@ -6,11 +6,14 @@ import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
+import MoreIcon from '@mui/icons-material/MoreHoriz';
+import ReadIcon from '@mui/icons-material/TaskAlt';
+
 const Activities = () => {
 
     const queryClient = useQueryClient();
     const { currentUser } = useContext(AuthContext);
-    const [finishedReading, setFinishedReading] = useState(false);
+    const [openMenu, setMenuOpen] = useState(null);
 
     const { isLoading: activitiesLoading, error: activitiesError, data: activitiesData } = useQuery(["activities"], () => {
         return makeRequest.get("/activities?userId=" + currentUser?.id)
@@ -37,25 +40,15 @@ const Activities = () => {
             // Mark the activity as read and update it in the database
             updateHasReadMutation.mutate({ activityId: activity.id, hasRead: "yes"});
         }
+        setMenuOpen(null);
     };
-
-    useEffect(() => {
-        if (activitiesData && !finishedReading) {
-            activitiesData?.forEach(activity => {
-                if (activity.hasRead === 'no') {
-                    markAsRead(activity);
-                }
-            });
-        }
-        setFinishedReading(true);
-
-    }, [activitiesData]);
-    
 
     return (
         <div className="activities">
             <div className="activities-container">
-                <h2>Account activities.</h2>
+                <div className="activities-subject">
+                    <h2>Account activities.</h2>
+                </div>
                 <div className="activities-list">
                     {activitiesLoading ? ( <LoadingSpinner /> ) : 
                      activitiesError ? ( <LoadingSpinner /> ) : 
@@ -71,12 +64,12 @@ const Activities = () => {
                                         <img
                                             src={
                                                 activity.activityType === "comment"
-                                                    ? "default/comment.png"
+                                                    ? "/default/comment-gradient.webp"
                                                     : activity.activityType === "like"
-                                                    ? "default/heart.png"
+                                                    ? "/default/heart-gradient.webp"
                                                     : activity.activityType === "register"
-                                                    ? "default/register.png"
-                                                    : "default/follow.png"
+                                                    ? "/default/register-gradient.webp"
+                                                    : "/default/follow-gradient.webp"
                                             }
                                             alt="icon"
                                         />
@@ -84,17 +77,30 @@ const Activities = () => {
                                     <div className="activity-label">
                                         <img
                                             src={activity.senderProfilePhoto ? activity.senderProfilePhoto :
-                                                 activity.senderUserId.length === 10 ? "/default/default-participant-image.png" : "/default/default-club-image.png"}
+                                                 activity.senderUserId.length === 10 ? "/default/default-participant-image.webp" : "/default/default-club-image.webp"}
                                             alt="sender profile photo"
                                         />
                                         <span>
                                             {activity.senderName}
                                             <span>{activity.activityDescription}</span>
                                             <Link to={`/postview/${activity.postId}`} style={{ textDecoration: "none"}}>
-                                                <span className="post-link">{activity.activityType !== "follow" ? activity.postTitle : ""}</span>
+                                                <span className="post-link" onClick={() => {markAsRead(activity)}}>
+                                                    {activity.activityType !== "follow" ? activity.postTitle : ""}
+                                                </span>
                                             </Link>
                                         </span>
                                     </div>
+                                    <div className="menu-icon-container">
+                                        <img src="/default/menu.webp" alt="menu" onClick={() => setMenuOpen(prevId => (prevId === activity.id ? null : activity.id))} />
+                                    </div>
+                                    {
+                                        openMenu === activity.id &&
+                                        <div className="activities-option-menu">
+                                            <div className="option-list" onClick={() => {markAsRead(activity)}}>
+                                                <img src="/default/read.webp" alt="read" /> Mark as read
+                                            </div>
+                                        </div> 
+                                    }
                                 </div>
                             );
                         })

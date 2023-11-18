@@ -61,12 +61,6 @@ const Profile = ({ socket }) => {
     // Adding info to activities
     const addActivitiesMutation = useMutation((activityInfo) => {
         return makeRequest.post("/activities", activityInfo);
-    }, 
-    {
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "activities" })
-        },
     });
 
     // Mutations
@@ -141,7 +135,7 @@ const Profile = ({ socket }) => {
                             <div className="profile-info">
                                 <div className="images">
                                     <img 
-                                        src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-club-image.png"} 
+                                        src={profileData?.profilePhoto ? profileData.profilePhoto : "/default/default-club-image.webp"} 
                                         alt="profile" 
                                         className="profile-photo" 
                                     />

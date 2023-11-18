@@ -22,20 +22,19 @@
             .list {
                 padding: 5px;
                 border-radius: 5px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                #icon {
+                    width: 24px;
+                    height: 24px;
+                    filter: themed("invertColorFilter");
+                }
             }
 
             .list:hover {
                 background-color: themed("activitiesHighlight");
-            }
-
-            .theme-div {
-                display: flex;
-                gap: 10px;
-            }
-             
-            .sign-out-div {
-                display: flex;
-                gap: 10px;
             }
         }
 

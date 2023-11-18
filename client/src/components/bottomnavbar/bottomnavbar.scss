@@ -22,8 +22,8 @@
                     justify-items: center;
                     align-items: center;
                     position: relative;
+                    
                     span {
-                        font-size: 20px;
                         display: flex;
                         padding: 5px 10px;
                         text-decoration: none;
@@ -31,9 +31,9 @@
                     }
     
                     img {
-                        width: 20px;
-                        height: 20px;
-                        filter: themed("filterColor");
+                        width: 24px;
+                        height: 24px;
+                        filter: themed("invertColorFilter");
                     }
 
                     .notification-dot {
@@ -41,8 +41,8 @@
                         height: 7px;
                         width: 7px;
                         border-radius: 50%;
-                        top: 1px;
-                        right: 1px;
+                        top: -1px;
+                        right: -1px;
                         position: absolute;
                     }
                 }

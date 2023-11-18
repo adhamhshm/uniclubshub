@@ -68,6 +68,12 @@
                         display: none;
                     }
                 }
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    filter: invert(1);
+                }
                
                 button {
                     border: none;
@@ -119,9 +125,13 @@
                 }
 
                 @include mobile {
-                    width: 75vw;
+                    width: 83vw;
                 }
             }
+        }
+
+        @include mobile {
+            padding: 80px 10px 20px 10px;
         }
     }
 }

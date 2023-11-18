@@ -5,11 +5,6 @@ import { makeRequest } from "../../request";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useRef } from "react";
 
-// reference: https://mui.com/material-ui/material-icons/
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import LogoutIcon from '@mui/icons-material/Logout';
-
 const ProfileMenu = ({ setOpenMenuModal }) => {
 
     const navigate = useNavigate();
@@ -48,14 +43,14 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
                 <div className="list theme-div" onClick={toggle} >
                     {/* render the icon based on the current theme */}
                     {darkMode ? (
-                        <LightModeIcon style={{ cursor: "pointer" }} />
+                        <img id="icon" src="/default/light.webp" alt="light mode" width={24} height={24} />
                     ) : (
-                        <DarkModeIcon style={{ cursor: "pointer" }} />
+                        <img id="icon" src="/default/dark.webp" alt="dark mode" width={24} height={24} />
                     )}
                     <span>Theme</span>
                 </div>
                 <div className="list sign-out-div" onClick={handleSignout}>
-                    <LogoutIcon />
+                    <img id="icon" src="/default/logout.webp" alt="logout" />
                     <span>Sign Out</span>
                 </div>
             </div>

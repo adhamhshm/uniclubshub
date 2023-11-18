@@ -57,7 +57,7 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                             setCommitteeInfo({});
                         }}
                     >
-                        <AddIcon />
+                        <img src="/default/add.webp" alt="add" />
                         <span>Add Committee</span>
                     </button>
                 }
@@ -98,15 +98,17 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                                     {   
                                         currentUser.role === "club" &&
                                         <td id="operations">
-                                            <EditIcon 
-                                                className="icons" 
+                                            <img 
+                                                id="icons" 
+                                                src="/default/edit2.webp" 
+                                                alt="edit"
                                                 onClick={() => {
                                                     setOpenUpdateBox(true); 
                                                     setWriteMode("Edit");
                                                     setCommitteeInfo(committee)
                                                 }} 
                                                 />
-                                            <DeleteIcon className="icons" onClick={() => {handleDelete(committee.id)}} />
+                                            <img id="icons" src="/default/trash.webp" alt="delete" onClick={() => {handleDelete(committee.id)}} />
                                         </td>
                                     }
                                 </tr>

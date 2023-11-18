@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
-import SendIcon from '@mui/icons-material/Send';
 
 const Comments = ({ post, socket }) => {
 
@@ -30,18 +29,12 @@ const Comments = ({ post, socket }) => {
             // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: "comments" })
         },
-    })
+    });
 
     // Adding info to activities
     const addActivitiesMutation = useMutation((activityInfo) => {
         return makeRequest.post("/activities", activityInfo);
-    }, 
-    {
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: "activities" })
-        },
-    })
+    });
 
     const handleSend = async (e) => {
         e.preventDefault();
@@ -101,8 +94,9 @@ const Comments = ({ post, socket }) => {
             <div className="write-comment-container">
                 <img src={currentUser.profilePhoto ? 
                           currentUser.profilePhoto : 
-                          (currentUser.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")}  
+                          (currentUser.role === "club" ? "/default/default-club-image.webp" : "/default/default-participant-image.webp")}  
                      alt="photo"
+                     id="user-photo-comment"
                 />
                 <textarea 
                     type="text" 
@@ -112,8 +106,8 @@ const Comments = ({ post, socket }) => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <div className="send-icon">
-                    <SendIcon onClick={handleSend} />
+                <div className="send-icon-container">
+                    <img id="send-icon" src="default/send.webp" alt="delete" onClick={handleSend} />
                 </div>
             </div>
             {isLoading
@@ -125,7 +119,10 @@ const Comments = ({ post, socket }) => {
                         <div className="comment-container" key={comment?.id}>
                             <img src={comment.profilePhoto ? 
                                      comment.profilePhoto : 
-                                     (comment.userId.includes("C") ? "/default/default-club-image.png" : "/default/default-participant-image.png")}   
+                                     (comment.userId.includes("C") ? "/default/default-club-image.webp" : "/default/default-participant-image.webp")
+                                }
+                                alt="user photo"
+                                id="user-photo-comment"   
                             />
                             <div className="comment-user-info">
                                 <span>{comment.name}</span>

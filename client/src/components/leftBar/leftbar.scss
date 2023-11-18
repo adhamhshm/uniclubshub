@@ -45,9 +45,9 @@
                         }
     
                         img {
-                            width: 20px;
-                            height: 20px;
-                            filter: themed("filterColor");
+                            width: 24px;
+                            height: 24px;
+                            filter: themed("invertColorFilter");
                         }
 
                         .notification-dot {

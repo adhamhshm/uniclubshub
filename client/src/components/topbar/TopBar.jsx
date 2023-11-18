@@ -15,7 +15,7 @@ const TopBar = () => {
             <div className="topbar-container">
                 <div className="left">
                     <Link to="/" style={{ textDecoration: "none" }} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} >
-                        <img className="font-logo" src="/default/font-logo.png" alt="logo" />
+                        <img className="font-logo" src="/default/font-logo.webp" alt="logo" />
                     </Link>
                 </div>
                 <div className="right">
@@ -23,7 +23,7 @@ const TopBar = () => {
                         <img 
                             src={currentUser?.profilePhoto ? 
                                 currentUser?.profilePhoto : 
-                                (currentUser?.role === "club" ? "/default/default-club-image.png" : "/default/default-participant-image.png")} 
+                                (currentUser?.role === "club" ? "/default/default-club-image.webp" : "/default/default-participant-image.webp")} 
                             alt="profile photo" 
                         />
                         {openMenuModal && <ProfileMenu setOpenMenuModal={setOpenMenuModal} />}

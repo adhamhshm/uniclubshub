@@ -36,11 +36,11 @@
                         height: 150px;
                         border-radius: 50%;
                         object-fit: cover;
-                        // position: absolute;
-                        // left: 0;
-                        // right: 0;
-                        // margin: auto;
-                        // top: 50px;
+
+                        @include mobile {
+                            width: 100px;
+                            height: 100px;
+                        }
                     }
                 }
         
@@ -149,6 +149,10 @@
 
         .profile-posts {
             padding-top: 20px;
+        }
+
+        @include mobile {
+            padding: 80px 10px 20px 10px;
         }
     }
 }
