@@ -1,8 +1,11 @@
 import "./globals.scss";
 
-import { createBrowserRouter, RouterProvider, Outlet, useNavigate, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from "react-router-dom";
 import { useCallback, useContext, useEffect, useMemo } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DarkModeContext } from "./context/darkModeContext";
+import { AuthContext } from "./context/authContext";
+import { io } from "socket.io-client";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import TopBar from "./components/topbar/TopBar";
@@ -16,9 +19,6 @@ import ParticipantProfile from "./pages/participantProfile/ParticipantProfile";
 import Explore from "./pages/explore/Explore";
 import Event from "./pages/event/Event";
 import Activities from "./pages/activities/Activities";
-import { DarkModeContext } from "./context/darkModeContext";
-import { AuthContext } from "./context/authContext";
-import { io } from "socket.io-client";
 import PostView from "./pages/postView/PostView";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
@@ -104,26 +104,11 @@ function App() {
                 </ProtectedRoute>
             ),
             children: [
-                {
-                    path: "/",
-                    element: <Home socket={socket} currentUser={currentUser}/>
-                },
-                {
-                    path: "/profile/:id",
-                    element: <Profile socket={socket} />
-                },
-                {
-                    path: "/event",
-                    element: <Event />
-                },
-                {
-                    path: "/activities",
-                    element: <Activities />
-                },
-                {
-                    path: "/postview/:id",
-                    element: <PostView socket={socket} />
-                }
+                { path: "/", element: <Home socket={socket} currentUser={currentUser}/> },
+                { path: "/profile/:id", element: <Profile socket={socket} /> },
+                { path: "/event", element: <Event /> },
+                { path: "/activities", element: <Activities /> },
+                { path: "/postview/:id", element: <PostView socket={socket} /> }
             ]
         },
         {
@@ -134,48 +119,18 @@ function App() {
                 </ProtectedRoute>
             ),
             children: [
-                {
-                    path: "/",
-                    element: <Home socket={socket} currentUser={currentUser} />
-                },
-                {
-                    path: "/profile/participant/:id",
-                    element: <ParticipantProfile />
-                },
-                {
-                    path: "/explore",
-                    element: <Explore socket={socket} />
-                },
-                {
-                    path: "/activities",
-                    element: <Activities />
-                },
-                {
-                    path: "/postview/:id",
-                    element: <PostView socket={socket} />
-                },
+                { path: "/", element: <Home socket={socket} currentUser={currentUser} /> },
+                { path: "/profile/participant/:id", element: <ParticipantProfile /> },
+                { path: "/explore", element: <Explore socket={socket} /> },
+                { path: "/activities", element: <Activities /> },
+                { path: "/postview/:id", element: <PostView socket={socket} /> },
             ]
         },
-        {
-            path: "/login",
-            element: <Login />
-        },
-        {
-            path: "/register",
-            element: <Register />
-        },
-        {
-            path: "/forgot-password",
-            element: <ForgotPassword />
-        },
-        {
-            path: "/reset-password",
-            element: <ResetPassword />
-        },
-        {
-            path: "*",
-            element: <Unauthorized />
-        }
+        { path: "/login", element: <Login /> },
+        { path: "/register", element: <Register /> },
+        { path: "/forgot-password", element: <ForgotPassword /> },
+        { path: "/reset-password", element: <ResetPassword /> },
+        { path: "*", element: <Unauthorized /> }
     ]);
 
     return (

@@ -4,7 +4,7 @@
     @include themify($theme) {
         background-color: themed("bgSoft");
         //padding: 70px 0 0 0;
-        padding: 90px 30px 30px 30px;
+        padding: 90px 20px 30px 30px;
         min-height: calc(100vh - 70px);
         color: themed("textColor");
 

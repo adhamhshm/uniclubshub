@@ -1,5 +1,4 @@
 import "./clublist.scss";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
@@ -33,7 +32,7 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
             return cache;
         };
         // If the cache doesn't have the data, make a request to the server
-        return makeRequest.get(`/users/club-list?from&userId=${userId}&searchQuery=${searchQuery}`)
+        return makeRequest.get(`/users/club-list?from&searchQuery=${searchQuery}`)
         .then((res) => res.data)
         .catch((error) => {
             throw error; // Propagate the error for proper error handling

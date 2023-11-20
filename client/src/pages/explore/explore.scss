@@ -3,7 +3,7 @@
 .explore {
     @include themify($theme) {
         background-color: themed("bgSoft");
-        padding: 90px 30px 30px 30px;
+        padding: 90px 20px 30px 30px;
         min-height: 100vh;
         color: themed("textColor");
 

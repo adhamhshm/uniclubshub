@@ -47,7 +47,6 @@ export const updateUser = (req, res) => {
             console.log("Unauthorized update user: Invalid or expired token.")
             return res.status(401).json("Session had expired.");
         };
-        console.log("Updating user...")
         const q = "UPDATE users SET `name` = ?, `profilePhoto` = ?, `email` = ?, `bio` = ? WHERE id = ?";
         const values = [
             req.body.name, 
@@ -105,7 +104,7 @@ export const getUserList = (req, res) => {
 
             const q = `SELECT id, name, profilePhoto FROM users`;
 
-            db.query(q, [req.query.userId], (err, data) => {
+            db.query(q, (err, data) => {
                 if (err) {
                     console.log("Error fetching user list: " + err.message);
                     return res.status(500).json("Error fetching user list.");
@@ -114,6 +113,39 @@ export const getUserList = (req, res) => {
                 }
             });
         }
+    });
+};
+
+export const getAllUser = (req, res) => {
+
+    const token = req.cookies.accessToken;
+    if (!token) {
+        console.log("Unauthorized get user list: No token authenticated.")
+        return res.status(401).json("No session authenticated.");
+    };
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+        if (err) {
+            console.log("Unauthorized get user list: Invalid or expired token.")
+            return res.status(401).json("Session had expired.");
+        }
+
+        const page = req.query.page || 1;
+        const pageSize = req.query.pageSize || 10;
+        const offset = (page - 1) * pageSize;
+        const limit = parseInt(pageSize);
+
+        const q = `SELECT id, name, profilePhoto FROM users LIMIT ?, ?`;
+        const values = [ offset, limit ];
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.log("Error fetching user list: " + err.message);
+                return res.status(500).json("Error fetching user list.");
+            } else {
+                return res.json(data);
+            }
+        });
     });
 };
 

@@ -1,13 +1,15 @@
 import express from "express";
-import { getUser, getUserList, updateUser } from "../controllers/users-controller.js";
+import { getAllUser, getUser, getUserList, updateUser } from "../controllers/users-controller.js";
 
 const router = express.Router();
 
-// test the users route
-// router.get("/test", testUsersRoute);
 
 router.get("/find/:userId", getUser);
+router.get("/all-users", getAllUser);
 router.put("/", updateUser);
 router.get("/club-list", getUserList);
 
 export default router;
+
+// test the users route
+// router.get("/test", testUsersRoute);

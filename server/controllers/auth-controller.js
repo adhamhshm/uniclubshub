@@ -183,8 +183,8 @@ const sendEmailToUser = (req, res) => {
 
         // Set up nodemailer transporter
         const transporter = nodemailer.createTransport({
-            service: "gmail",
-            host: "smtp.gmail.com",
+            service: process.env.SERVICE,
+            host: process.env.HOST,
             port: 465,
             secure: true,
             auth: {
@@ -207,7 +207,7 @@ const sendEmailToUser = (req, res) => {
         transporter.sendMail(mailOptions, (error) => {
             if (error) {
                 console.log("Error sending email: " + error.message)
-                return res.status(500).json("Error sending email");
+                return res.status(500).json("Error sending email.");
             }
 
             res.cookie("resetToken", resetPasswordToken, {
