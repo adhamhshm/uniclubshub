@@ -23,22 +23,34 @@
                 align-items: center;
                 gap: 10px;
 
-                .back-button {
+                .back-button-container {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    padding: 10px;
-                    width: 15px;
-                    height: 15px;
                     border-radius: 50%;
                     cursor: pointer;
+                    padding: 5px;
+
+                    .back-icon {
+                        width: 24px;
+                        height: 24px;
+                        filter: themed("invertColorFilter");
+                    }
                 }
     
-                .back-button:hover {
-                    background-color: themed("mainButtonColorHover");
+                .back-button-container:hover {
+                    background-color: themed("mainButtonColor");
                     color: white;
+
+                    .back-icon {
+                        filter: invert(1);
+                    }
                 }
             }
+        }
+
+        @include mobile {
+            padding: 80px 10px 20px 10px;
         }
     }
 }

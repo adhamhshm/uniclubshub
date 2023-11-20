@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../request";
 import Post from "../../components/posts/post/Post";
 
-import BackIcon from '@mui/icons-material/KeyboardBackspace';
-
 const PostView = ({ socket }) => {
 
     const navigate = useNavigate();
@@ -26,8 +24,8 @@ const PostView = ({ socket }) => {
         <div className="post-view">
             <div className="post-view-container">
                 <div className="title">
-                    <div className="back-button"  onClick={() => navigate("/activities")}>
-                        <BackIcon className="back-icon"/>
+                    <div className="back-button-container"  onClick={() => navigate("/activities")}>
+                        <img src="/default/back.svg" alt="back" className="back-icon"/>
                     </div>
                     <h3>{(postData && postData[0] && postData[0].title) || ""}</h3>
                 </div>

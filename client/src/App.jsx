@@ -20,6 +20,8 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import { io } from "socket.io-client";
 import PostView from "./pages/postView/PostView";
+import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
+import ResetPassword from "./pages/resetPassword/ResetPassword";
 
 function App() {
 
@@ -161,6 +163,14 @@ function App() {
         {
             path: "/register",
             element: <Register />
+        },
+        {
+            path: "/forgot-password",
+            element: <ForgotPassword />
+        },
+        {
+            path: "/reset-password",
+            element: <ResetPassword />
         },
         {
             path: "*",

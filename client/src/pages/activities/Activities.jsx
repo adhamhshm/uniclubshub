@@ -1,19 +1,17 @@
 import "./activities.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { makeRequest } from "../../request";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
-
-import MoreIcon from '@mui/icons-material/MoreHoriz';
-import ReadIcon from '@mui/icons-material/TaskAlt';
 
 const Activities = () => {
 
     const queryClient = useQueryClient();
     const { currentUser } = useContext(AuthContext);
     const [openMenu, setMenuOpen] = useState(null);
+    const menuRef = useRef(null);
 
     const { isLoading: activitiesLoading, error: activitiesError, data: activitiesData } = useQuery(["activities"], () => {
         return makeRequest.get("/activities?userId=" + currentUser?.id)
@@ -42,6 +40,18 @@ const Activities = () => {
         }
         setMenuOpen(null);
     };
+
+    // Function to handle clicks outside the modal
+    const handleOutsideClick = (event) => {
+        // Check if the menuRef exists and if the clicked element is outside the modal
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            // If the click is outside, close the modal
+            setMenuOpen(false);
+        }
+    };
+
+    // Attach a "mousedown" event listener to the document to call handleOutsideClick
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return (
         <div className="activities">
@@ -91,13 +101,13 @@ const Activities = () => {
                                         </span>
                                     </div>
                                     <div className="menu-icon-container">
-                                        <img src="/default/menu.webp" alt="menu" onClick={() => setMenuOpen(prevId => (prevId === activity.id ? null : activity.id))} />
+                                        <img src="/default/menu.svg" alt="menu" onClick={() => setMenuOpen(prevId => (prevId === activity.id ? null : activity.id))} />
                                     </div>
                                     {
                                         openMenu === activity.id &&
-                                        <div className="activities-option-menu">
-                                            <div className="option-list" onClick={() => {markAsRead(activity)}}>
-                                                <img src="/default/read.webp" alt="read" /> Mark as read
+                                        <div className="activities-option-menu" ref={menuRef}>
+                                            <div className="option-list" onClick={() => {markAsRead(activity)}} >
+                                                <img src="/default/read.svg" alt="read" /> Mark as read
                                             </div>
                                         </div> 
                                     }

@@ -5,10 +5,6 @@ import { makeRequest } from "../../request";
 import CommitteeForm from "../committeeform/CommitteeForm";
 import LoadingSpinner from "../loadingspinner/LoadingSpinner";
 
-import AddIcon from '@mui/icons-material/AddCircle';
-import EditIcon from '@mui/icons-material/BorderColor';
-import DeleteIcon from '@mui/icons-material/Delete';
-
 const CommitteeList = ({ profileData, userId, currentUser }) => {
 
     const queryClient = useQueryClient();
@@ -57,7 +53,7 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                             setCommitteeInfo({});
                         }}
                     >
-                        <img src="/default/add.webp" alt="add" />
+                        <img src="/default/add.svg" alt="add" />
                         <span>Add Committee</span>
                     </button>
                 }
@@ -100,7 +96,7 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                                         <td id="operations">
                                             <img 
                                                 id="icons" 
-                                                src="/default/edit2.webp" 
+                                                src="/default/edit.svg" 
                                                 alt="edit"
                                                 onClick={() => {
                                                     setOpenUpdateBox(true); 
@@ -108,7 +104,7 @@ const CommitteeList = ({ profileData, userId, currentUser }) => {
                                                     setCommitteeInfo(committee)
                                                 }} 
                                                 />
-                                            <img id="icons" src="/default/trash.webp" alt="delete" onClick={() => {handleDelete(committee.id)}} />
+                                            <img id="icons" src="/default/trash.svg" alt="delete" onClick={() => {handleDelete(committee.id)}} />
                                         </td>
                                     }
                                 </tr>

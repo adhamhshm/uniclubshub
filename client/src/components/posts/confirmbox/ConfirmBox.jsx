@@ -4,9 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from 'react';
 import { makeRequest } from "../../../request";
 
-import CloseIcon from '@mui/icons-material/CloseOutlined';
-
-
 const ConfirmBox = ({ postData, currentUser, setShowPostModal, socket }) => {
 
     // Create a ref to hold a reference to the modal container
@@ -77,29 +74,17 @@ const ConfirmBox = ({ postData, currentUser, setShowPostModal, socket }) => {
                     <p>
                         Are you interested?
                         Your information will be shared with the organizer as interested participants. <br/><br/>
-                        Click the button below for confirmation.
+                        Click the button below to confirm your registration for {postData.title}.
                     </p>
                 </div>
                 <div className="post-modal-wrapper">
-                    {/* <div className="post-modal-name">
-                        <h2>{postData.name}</h2>
-                    </div>
-                    <div className="post-modal-info">
-                        <div className="post-modal-description">
-                            <p>{postData.description}</p>
-                        </div>
-                        {postData.image && 
-                        <div className="post-modal-image">
-                            {postData.image && <img src={"../upload/" + postData.image} alt="post" />}
-                        </div>}
-                    </div> */}
                     <div className="modal-confirm-button">
                         <button onClick={handleConfirm}>
                             Confirm
                         </button>
                     </div>
                 </div>
-                <CloseIcon className="close" onClick={() => setShowPostModal(false)} />
+                <img id="close" src="/default/cross.svg" alt="cross" onClick={() => setShowPostModal(false)} />
             </div>
         </div>
     );

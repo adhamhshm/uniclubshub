@@ -23,7 +23,7 @@
                 display: flex;
                 flex-direction: row;
     
-                .back-button-box {
+                .back-button-container {
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -40,7 +40,7 @@
                     }
                 }
     
-                .back-button-box:hover {
+                .back-button-container:hover {
                     background-color: themed("mainButtonColor");
                     color: white;
 

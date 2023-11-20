@@ -75,8 +75,8 @@ const Explore = ({ socket }) => {
                 <div className="search-container">
                     {
                         searchQuery !== "" && 
-                        <div className="back-button-box" onClick={clearSearch}>
-                            <img src="default/back.webp" alt="back" className="back-icon"/>
+                        <div className="back-button-container" onClick={clearSearch}>
+                            <img src="default/back.svg" alt="back" className="back-icon"/>
                         </div>
                     }
                     <div className="text-box">

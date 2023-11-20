@@ -1,12 +1,9 @@
 import "./writepost.scss";
 import { useContext, useRef, useState } from "react";
-import InsertPhotoIcon from '@mui/icons-material/InsertPhotoOutlined';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { AuthContext } from "../../context/authContext";
 import Loading from "../loading/loading";
-
-import CloseIcon from '@mui/icons-material/CloseOutlined';
 
 const WritePost = () => {
 
@@ -169,7 +166,7 @@ const WritePost = () => {
                                     src={URL.createObjectURL(imageFile)} 
                                     alt="image file" 
                                 />
-                                <img id="close-icon" src="/default/cross.webp" onClick={clearImageFile} />
+                                <img id="close-icon" src="/default/cross.svg" onClick={clearImageFile} />
                             </div>
                         )}
                     </div>
@@ -187,7 +184,7 @@ const WritePost = () => {
                         />
                         <label htmlFor="file">
                             <div className="item">
-                                <img src="/default/image.webp" alt="upload image" />
+                                <img src="/default/image.svg" alt="upload image" />
                                 <span>Add Image</span>
                             </div>
                         </label>

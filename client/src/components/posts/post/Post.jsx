@@ -1,5 +1,5 @@
 import "./post.scss";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../../request";
@@ -11,7 +11,7 @@ import ConfirmBox from "../confirmbox/ConfirmBox";
 
 const Post = ({ post, socket, viewComment }) => {
 
-    // Access the client
+    const menuRef = useRef(null);
     const queryClient = useQueryClient();
     const [commentOpen, setCommentOpen] = useState(viewComment || false);
     const [openMenu, setMenuOpen] = useState(false);
@@ -140,6 +140,18 @@ const Post = ({ post, socket, viewComment }) => {
         })
     };
 
+    // Function to handle clicks outside the modal
+    const handleOutsideClick = (event) => {
+        // Check if the menuRef exists and if the clicked element is outside the modal
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            // If the click is outside, close the modal
+            setMenuOpen(false);
+        }
+    };
+
+    // Attach a "mousedown" event listener to the document to call handleOutsideClick
+    document.addEventListener("mousedown", handleOutsideClick);
+
     return (
         <div className="post">
            <div className="post-container">
@@ -156,19 +168,19 @@ const Post = ({ post, socket, viewComment }) => {
                         </div>
                     </div>
                     {/* Icon can be clicked to open post menu */}
-                    <img id="menu-icon" src="/default/menu.webp" alt="menu" onClick={() => setMenuOpen(!openMenu)} />
+                    <img id="menu-icon" src="/default/menu.svg" alt="menu" onClick={() => setMenuOpen(!openMenu)} />
                     {   
                         openMenu && 
-                        <div className="post-option-menu">
+                        <div className="post-option-menu" ref={menuRef}>
                             {
                                 post.userId === currentUser.id && 
                                 <div className="option-list" onClick={handleDelete}>
-                                    <img src="/default/trash.webp" alt="delete" /> 
+                                    <img src="/default/trash.svg" alt="delete" /> 
                                     Delete
                                 </div>
                             }
                             <div className="option-list" onClick={handleShare}>
-                                <img src="/default/share.webp" alt="share" /> 
+                                <img src="/default/share.svg" alt="share" /> 
                                 Share
                             </div>
                         </div> 
@@ -195,17 +207,17 @@ const Post = ({ post, socket, viewComment }) => {
                             likesError ? "Unable to find likes." : 
                             (
                                 likesData.includes(currentUser.id)
-                                    ? <img src="/default/heart-filled.webp" alt="heart filled" onClick={handleLike} />
-                                    : <img id="label-icon" src="/default/heart.webp" alt="heart" onClick={handleLike} />
+                                    ? <img id="liked" src="/default/heart-filled.svg" alt="heart filled" onClick={handleLike} />
+                                    : <img id="label-icon" src="/default/heart.svg" alt="heart" onClick={handleLike} />
                             )
                         ) : (
-                            <img id="label-icon" src="/default/heart.webp" alt="heart" />
+                            <img id="label-icon" src="/default/heart.svg" alt="heart" />
                         )}
                         {likesData !== undefined && `${likesData.length}`}   
                     </div>
                     {/* Comment label */}
                     <div className="label" onClick={() => {setCommentOpen(!commentOpen)}}>
-                        <img id="label-icon" src="/default/comment.webp" alt="heart" />
+                        <img id="label-icon" src="/default/comment.svg" alt="heart" />
                         {commentsLoading ? "Loading comments..." :
                          commentsError ? "Unable to find comments." :
                          commentsData === undefined ? "Comment" : 

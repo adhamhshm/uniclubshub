@@ -141,7 +141,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                     {/* email input whether club email or student email */}
                     <span>
                         Email
-                        {errorEmailMessage && <span className="error-message">Invalid email format</span>}
+                        {errorEmailMessage && <span className="error-message"> Invalid email format</span>}
                     </span>
                     <input type="text" value={updateInputs.email} name="email" onChange={handleChange} />
                     {user.role === "participant" && 
@@ -155,7 +155,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                         <>
                             <span>
                                 Bio
-                                {updateInputs.bio.length > 300 && <span className="error-message">Bio exceeds 300 characters</span>}
+                                {updateInputs.bio.length > 300 && <span className="error-message"> Bio exceeds 300 characters</span>}
                             </span>
                             <textarea type="text" rows={3} 
                             placeholder="Write bio here..." 
@@ -174,7 +174,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                         Update
                     </button>
                 </form>
-                <img id="close-icon" src="/default/cross.webp" alt="cross" onClick={() => setOpenUpdateBox(false)} />
+                <img id="close-icon" src="/default/cross.svg" alt="cross" onClick={() => setOpenUpdateBox(false)} />
             </div>
             {isLoading && <Loading />}
         </div>

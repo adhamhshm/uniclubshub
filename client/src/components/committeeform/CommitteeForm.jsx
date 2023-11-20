@@ -3,16 +3,14 @@ import { makeRequest } from "../../request";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import CloseIcon from '@mui/icons-material/CloseOutlined';
-
 const positionType = [
-    {position: "President", value: 1},
-    {position: "Deputy President", value : 2},
-    {position: "Vice President", value : 3},
-    {position: "Treasurer", value : 4},
-    {position: "Secretary", value : 5},
-    {position: "Bureau Head", value : 6},
-    {position: "Bureau Member", value : 7},
+    { position: "President", value: 1 },
+    { position: "Deputy President", value : 2 },
+    { position: "Vice President", value : 3 },
+    { position: "Treasurer", value : 4 },
+    { position: "Secretary", value : 5 },
+    { position: "Bureau Head", value : 6 },
+    { position: "Bureau Member", value : 7 },
 ];
 
 const CommitteeForm = ({ setOpenUpdateBox, writeMode, committeeInfo }) => {
@@ -107,7 +105,7 @@ const CommitteeForm = ({ setOpenUpdateBox, writeMode, committeeInfo }) => {
                         {writeMode}
                     </button>
                 </form>
-                <img id="close-icon" src="/default/cross.webp" alt="cross" onClick={() => setOpenUpdateBox(false)} />
+                <img id="close-icon" src="/default/cross.svg" alt="cross" onClick={() => setOpenUpdateBox(false)} />
             </div>
         </div>
     )

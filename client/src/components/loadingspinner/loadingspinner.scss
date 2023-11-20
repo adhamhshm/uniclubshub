@@ -5,6 +5,8 @@
         padding: 10px;
         display: flex;
         justify-content: center;
+        background-color: transparent;
+        z-index: 99999;
 
         // Credit to: https://www.w3schools.com/howto/howto_css_loader.asp
         .loader {

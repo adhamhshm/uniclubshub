@@ -23,11 +23,6 @@ const ClubList = ({ currentUser, searchQuery, socket }) => {
         .catch((error) => {
             throw error; // Propagate the error for proper error handling
         })
-    },
-    {
-        // Add caching options
-        cacheTime: 3600 * 1000, // Cache for one hour
-        staleTime: 1000 * 60, // Refetch data if it's stale (1 minute, adjust as needed)
     });
 
     // Use a query to fetch the list of clubs with optional search query

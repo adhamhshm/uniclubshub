@@ -43,14 +43,14 @@ const ProfileMenu = ({ setOpenMenuModal }) => {
                 <div className="list theme-div" onClick={toggle} >
                     {/* render the icon based on the current theme */}
                     {darkMode ? (
-                        <img id="icon" src="/default/light.webp" alt="light mode" width={24} height={24} />
+                        <img id="icon" src="/default/light.svg" alt="light mode" width={24} height={24} />
                     ) : (
-                        <img id="icon" src="/default/dark.webp" alt="dark mode" width={24} height={24} />
+                        <img id="icon" src="/default/dark.svg" alt="dark mode" width={24} height={24} />
                     )}
                     <span>Theme</span>
                 </div>
                 <div className="list sign-out-div" onClick={handleSignout}>
-                    <img id="icon" src="/default/logout.webp" alt="logout" />
+                    <img id="icon" src="/default/logout.svg" alt="logout" />
                     <span>Sign Out</span>
                 </div>
             </div>

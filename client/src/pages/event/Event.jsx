@@ -1,14 +1,10 @@
 import "./event.scss";
-
 import { makeRequest } from "../../request";
 import { useContext, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
-
-import SyncIcon from '@mui/icons-material/Sync';
-import DownloadIcon from '@mui/icons-material/Download';
 
 const Event = () => {
 
@@ -143,7 +139,7 @@ const Event = () => {
                 </div>
                 <div className="buttons-container">
                     <button onClick={refreshList}>
-                        <img src="default/refresh.webp" alt="refresh" />
+                        <img src="default/refresh.svg" alt="refresh" />
                         <span>Refresh List</span>
                     </button>
                     {/* 
@@ -153,7 +149,7 @@ const Event = () => {
                         The ?. (optional chaining) is used to safeguard against a null or undefined post object, preventing a potential error.
                     */}
                     <button onClick={() => {downloadCSV(postsData.find(post => post.id === selectedPostId)?.title || "participants")}}>
-                        <img src="default/download.webp" alt="download" />
+                        <img src="default/download.svg" alt="download" />
                         <span>Download List</span>
                     </button>
                 </div>

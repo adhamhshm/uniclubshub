@@ -107,7 +107,7 @@ const Comments = ({ post, socket }) => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
                 <div className="send-icon-container">
-                    <img id="send-icon" src="default/send.webp" alt="delete" onClick={handleSend} />
+                    <img id="send-icon" src="/default/send.svg" alt="send" onClick={handleSend} />
                 </div>
             </div>
             {isLoading

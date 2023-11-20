@@ -1,4 +1,3 @@
-import ClubList from "../clublist/ClubList";
 import "./rightbar.scss";
 
 const RightBar = ({ currentUser }) => {

@@ -88,7 +88,7 @@ const Login = () => {
                 setFailedSigninMessage("");
             }, 10000); // 10 seconds in milliseconds
         }
-    }
+    };
 
     return (
         <div className="login">
@@ -112,6 +112,9 @@ const Login = () => {
                                 onFocus={() => {setFailedSigninMessage("")}}
                             />
                         ))}
+                        <div className="forgot-password-container">
+                            <span onClick={() => {navigate("/forgot-password")}}>Forgot password?</span>
+                        </div>
                         {failedSigninMessage && 
                             <div className="signin-error-message">
                                 {failedSigninMessage}
