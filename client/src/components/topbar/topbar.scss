@@ -37,6 +37,10 @@
                 .user {
                     display: flex;
                     border-radius: 50%;
+
+                    #user-image {
+                        border-radius: 50%;
+                    }
     
                     img {
                         width: 30px;
@@ -44,11 +48,6 @@
                         object-fit: cover;
                         cursor: pointer;
                     }
-                    span {
-                        cursor: pointer;
-                        -webkit-user-select: none;
-                    }
-    
                 }
     
                 @include tablet {

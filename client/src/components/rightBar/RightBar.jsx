@@ -34,7 +34,7 @@ const RightBar = ({ currentUser }) => {
         <div className="rightbar">
             <div className="rightbar-container">
                 <h3>Clubs & Socities around you</h3>
-                {totalPages && (
+                {totalPages !== 0 && (
                     <div className="pagination-container">
                         <div className="pagination">
                             <button 
@@ -61,7 +61,7 @@ const RightBar = ({ currentUser }) => {
                     {clubListLoading ? ( <LoadingSpinner /> ) : 
                         clubListError ? ( <LoadingSpinner /> ) : 
                         !clubListData || clubListData.length === 0 ? ( "No clubs." ) :
-                        clubListData.length !== 0 ? (
+                        clubListData.length !== 0 && (
                             clubListData.map((clubUser) => {
                                 return (
                                     <div className="user-list" key={clubUser.id}>
@@ -74,9 +74,7 @@ const RightBar = ({ currentUser }) => {
                                     </div>
                                 );
                             })
-                        ) : (
-                            ( "Nothing here." )
-                        )
+                        ) 
                     }
                 </div>
             </div>
