@@ -62,7 +62,7 @@ export const signup = (req, res) => {
         return res.status(400).json("Invalid email format.");
     }
 
-    // check if user exists
+    // check if user exists OR email = ?
     const q = `SELECT * FROM users WHERE id = ? OR email = ?
                UNION
                SELECT * FROM participants WHERE id = ? OR email = ?`;

@@ -27,7 +27,8 @@ function App() {
 
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
-    const socket = io("http://localhost:8800");
+    const socket = io(import.meta.env.VITE_SOCKET_URL);
+
     /* 
     useMemo(() => ..., []): This hook takes a function as its first argument, 
     which contains the computation you want to memoize. The second argument is an array of dependencies. 

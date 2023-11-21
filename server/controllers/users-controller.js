@@ -126,7 +126,7 @@ export const getAllUser = (req, res) => {
 
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
         if (err) {
-            console.log("Unauthorized get user list: Invalid or expired token.")
+            console.log("Unauthorized get user list: Invalid or expired token.");
             return res.status(401).json("Session had expired.");
         }
 
@@ -135,16 +135,28 @@ export const getAllUser = (req, res) => {
         const offset = (page - 1) * pageSize;
         const limit = parseInt(pageSize);
 
-        const q = `SELECT id, name, profilePhoto FROM users LIMIT ?, ?`;
-        const values = [ offset, limit ];
+        const qUserList = `SELECT id, name, profilePhoto FROM users LIMIT ?,?`;
+        const valuesUserList = [offset, limit];
 
-        db.query(q, values, (err, data) => {
+        const qTotalUsers = `SELECT COUNT(*) as totalUsers FROM users`;
+        
+        db.query(qUserList, valuesUserList, (err, clubUserList) => {
             if (err) {
                 console.log("Error fetching user list: " + err.message);
                 return res.status(500).json("Error fetching user list.");
-            } else {
-                return res.json(data);
             }
+
+            db.query(qTotalUsers, (err, countResult) => {
+                if (err) {
+                    console.log("Error fetching total users: " + err.message);
+                    return res.status(500).json("Error fetching total users.");
+                }
+
+                const totalUsers = countResult[0].totalUsers;
+
+                // Return both the user list and the total count
+                return res.json({ clubs: clubUserList, totalClubs: totalUsers });
+            });
         });
     });
 };

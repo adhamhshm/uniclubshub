@@ -8,16 +8,22 @@ import { useState } from "react";
 const RightBar = ({ currentUser }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 2; // Adjust the page size as needed
+    const [totalPages, setTotalPages] = useState(1);
+    const pageSize = 5; // Adjust the page size as needed
 
     // Use a query to fetch the list of clubs with optional search query
     const { isLoading: clubListLoading, error: clubListError, data: clubListData } = useQuery(["clubUserLists", currentPage], async () => {
         return makeRequest.get(`/users/all-users?page=${currentPage}&pageSize=${pageSize}`)
-        .then((res) => res.data)
+        .then((res) => {
+            // Set total pages when data is available
+            setTotalPages(Math.ceil(res.data.totalClubs / pageSize));
+            return res.data.clubs;
+        })
         .catch((error) => {
             throw error;
         })
     });
+
 
     // Function to handle page changes
     const handlePageChange = (newPage) => {
@@ -27,11 +33,34 @@ const RightBar = ({ currentUser }) => {
     return (
         <div className="rightbar">
             <div className="rightbar-container">
-                <h3>Club and socities around you.</h3>
+                <h3>Clubs & Socities around you</h3>
+                {totalPages && (
+                    <div className="pagination-container">
+                        <div className="pagination">
+                            <button 
+                                className={ currentPage === 1 ? "disabled" : ""}
+                                id="previous"
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                            >
+                                <img src="/default/arrow-left.svg" alt="previous" />
+                            </button>
+                            <span>{currentPage} / {totalPages} </span>
+                            <button
+                                className={ currentPage === totalPages ? "disabled" : ""}
+                                id="next"
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                            >
+                                <img src="/default/arrow-right.svg" alt="next" />
+                            </button>
+                        </div>
+                    </div>
+                )}
                 <div className="user-list-container">
                     {clubListLoading ? ( <LoadingSpinner /> ) : 
                         clubListError ? ( <LoadingSpinner /> ) : 
-                        !clubListData || clubListData.length === 0 && searchQuery === "" ? ( "No clubs." ) :
+                        !clubListData || clubListData.length === 0 ? ( "No clubs." ) :
                         clubListData.length !== 0 ? (
                             clubListData.map((clubUser) => {
                                 return (
@@ -50,25 +79,6 @@ const RightBar = ({ currentUser }) => {
                         )
                     }
                 </div>
-                {clubListData && clubListData.length > 0 && (
-                    <div className="pagination">
-                        <button 
-                            id="previous"
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            <img src="/default/arrow-left.svg" alt="previous" />
-                        </button>
-                        <span>Page {currentPage} </span>
-                        <button
-                            id="next"
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={clubListData.length < pageSize}
-                        >
-                            <img src="/default/arrow-right.svg" alt="next" />
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     )
