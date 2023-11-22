@@ -11,11 +11,5 @@
         "source": "/server/:path*",
         "destination": "index.js"
       }
-    ],
-    "server": {
-      "cors": {
-        "origin": "https://uniclubshub.netlify.app",
-        "credentials": true
-      }
-    }
+    ]
   }
