@@ -20,8 +20,8 @@ const Posts = ({ userId, socket }) => {
         <div className="posts">
             {isLoading ? ( <LoadingSpinner /> ) : 
              error ? ( <LoadingSpinner /> ) : 
-             data.length !== 0 ? (
-                data.map((post) => {
+             data?.length !== 0 ? (
+                data?.map((post) => {
                     return (
                         <Post post={post} key={post.id} socket={socket} />
                     )
