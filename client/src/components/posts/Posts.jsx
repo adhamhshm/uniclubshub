@@ -21,7 +21,7 @@ const Posts = ({ userId, socket }) => {
             {isLoading ? ( <LoadingSpinner /> ) : 
              error ? ( <LoadingSpinner /> ) : 
              data?.length !== 0 ? (
-                data?.map((post) => {
+                data.map((post) => {
                     return (
                         <Post post={post} key={post.id} socket={socket} />
                     )
