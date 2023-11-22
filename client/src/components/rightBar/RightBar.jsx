@@ -45,7 +45,9 @@ const RightBar = ({ currentUser }) => {
                             >
                                 <img src="/default/arrow-left.svg" alt="previous" />
                             </button>
-                            <span>{currentPage} / {totalPages} </span>
+                            <div className="page-number">
+                                <span>{currentPage} / {totalPages} </span>
+                            </div>
                             <button
                                 className={ currentPage === totalPages ? "disabled" : ""}
                                 id="next"

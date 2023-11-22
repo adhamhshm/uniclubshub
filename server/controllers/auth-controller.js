@@ -14,7 +14,8 @@ export const signin = (req, res) => {
     const q = `SELECT * FROM ${tableName} WHERE id = ?`;
     db.query(q, [req.body.id], (err, data) => {
         if (err) {
-            return console.log("Error signing in user: " + res.status(500).json(err));
+            console.log("Error signing in user: "+ err.message)
+            return res.status(500).json("Error signing in user.");
         }
         if (data.length === 0) {
             return res.status(404).json("User not found.");
@@ -32,7 +33,7 @@ export const signin = (req, res) => {
             id: data[0].id, 
             role: data[0].role
         }, process.env.JWT_SECRET_KEY, {
-            expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
+            //expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
         });
         // destructure the data[0] to get the password
         // remaining properties will be collected to the object named "others"

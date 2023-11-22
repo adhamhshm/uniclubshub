@@ -1,6 +1,6 @@
 import "./updateprofile.scss";
 import { makeRequest } from "../../request";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
@@ -13,11 +13,12 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     const [isLoading, setIsLoading] = useState(false); // Add loading state
     const [errorEmailMessage, setErrorEmailMessage] = useState(false);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
+    const [removePhoto, setRemovePhoto] = useState(true);
     const [updateInputs, setUpdateInputs] = useState({
         name: user.name,
         bio: user.bio || "",
         email: user.email,
-        phoneNumber: user.phoneNumber,
+        phoneNumber: user.phoneNumber || "",
     });
 
     const uploadPhoto = async (newImageFile, currentImageFilename) => {
@@ -97,17 +98,29 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
             return;
         }
 
+        // First just give its value to the existing photo
         let profilePhotoUrl = user.profilePhoto;
 
-        if (updatedProfilePhoto) {
+        // If updatedProfilePhoto not null, it can be "" or there is a image
+        // If null, user do not want to change the photo
+        if (updatedProfilePhoto !== null) {
             try {
-                setIsLoading(true); // Set loading state
-                profilePhotoUrl = await uploadPhoto(updatedProfilePhoto, user.profilePhoto)
+                setIsLoading(true);
+                if (updatedProfilePhoto !== "") {
+                    // If updatedProfilePhoto in not "", store the image
+                    profilePhotoUrl = await uploadPhoto(updatedProfilePhoto, user.profilePhoto)
+                }
+                else {
+                    // Else, the photo is set to "", which means user just want to remove current photo
+                    profilePhotoUrl = updatedProfilePhoto;
+                    makeRequest.delete("/images/delete" , { data : { imageToBeDeleted: user.profilePhoto }});
+                }
             }
             finally {
                 setIsLoading(false);
             }
         }
+
         
         await updateProfileMutation.mutate({ ...updateInputs, profilePhoto: profilePhotoUrl });
         // This is use to update the local data
@@ -116,6 +129,11 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         setOpenUpdateBox(false);
     };
 
+    const handleRemovePhoto = () => {
+        setRemovePhoto(false);
+        setUpdatedProfilePhoto("");
+    }
+
     return (
         <div className="update-profile">
             <div className="wrapper">
@@ -123,17 +141,26 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 <form>
                     <div className="files">
                         {/* profile photo */}
-                        <span>Profile Photo</span>
+                        <span>
+                            Profile Photo 
+                        </span>
                         <label htmlFor="profilePhoto">
                             <div className="imageContainer">
                                 <img
-                                    src={ updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
-                                        user.profilePhoto ? user.profilePhoto : "/default/upload-gradient.webp"}
+                                src={updatedProfilePhoto ? URL.createObjectURL(updatedProfilePhoto) : 
+                                    (user.profilePhoto && removePhoto) ? user.profilePhoto : 
+                                    "/default/upload-gradient.webp"}
                                     alt="cover photo"
                                 />
                             </div>
                         </label>
-                        <input type="file" id="profilePhoto" style={{ display: "none" }} onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} />
+                        <input 
+                            type="file" 
+                            id="profilePhoto" 
+                            style={{ display: "none" }} 
+                            onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} 
+                        />
+                        {((user.profilePhoto || updatedProfilePhoto) && removePhoto) && <span className="remove-image" onClick={handleRemovePhoto}> [Remove photo]</span>}
                     </div>
                     {/* name input whether club name or student name */}
                     <span>Name</span>

@@ -56,6 +56,13 @@
                     flex-direction: column;
                     flex-wrap: wrap;
                     gap: 10px;
+
+                    .remove-image {
+                        color: #838383;
+                        margin-top: -10px;
+                        font-size: 14px;
+                        cursor: pointer;
+                    }
                 }
 
                 label {
@@ -66,7 +73,6 @@
                     color: themed("textColor");
         
                     .imageContainer {
-                        position: relative;
                         
                         img {
                             width: 100px;
@@ -74,18 +80,6 @@
                             object-fit: cover;
                             cursor: pointer;
                             border-radius: 10px;
-                        }
-            
-                        .icon {
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            margin: auto;
-                            font-size: 30px;
-                            color: lightgray;
-                            cursor: pointer;
                         }
                     }
                 }
