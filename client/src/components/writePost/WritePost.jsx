@@ -3,7 +3,7 @@ import { useContext, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { AuthContext } from "../../context/authContext";
-import Loading from "../loading/loading";
+import Loading from "../loading/Loading";
 
 const WritePost = () => {
 
