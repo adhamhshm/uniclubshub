@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
-import Loading from "../loading/loading";
+import Loading from "../loading/Loading";
 
 const UpdateProfile = ({ setOpenUpdateBox, user }) => {
 
