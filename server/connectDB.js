@@ -1,8 +1,6 @@
-// "mysql" cause error, use "mysql2" instead
 import mysql from "mysql2";
 import dotenv from "dotenv";
 
-// Load environment variables from .env file
 dotenv.config();
 
 export const db = mysql.createConnection(process.env.MYSQL_CONNECTION_URI);
