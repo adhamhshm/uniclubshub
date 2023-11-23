@@ -139,7 +139,7 @@ export const authorizeToken = (req, res) => {
         }
 
         // Token is valid
-        res.status(200).json("Authorization approved.");
+        return res.status(200).json("Authorization approved.");
     });
 };
 
