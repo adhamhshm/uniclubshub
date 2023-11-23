@@ -31,7 +31,8 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({
-    origin: process.env.INTERNAL_CLIENT_URL
+    origin: process.env.INTERNAL_CLIENT_URL,
+    credentials: true,
 }));
 app.use(cookieParser());
 
@@ -54,7 +55,8 @@ const server = http.createServer(app);
 // Initialize Socket.io by passing the HTTP server
 const io = new Server(server, {
     cors: {
-        origin: process.env.INTERNAL_CLIENT_URL
+        origin: process.env.INTERNAL_CLIENT_URL,
+        credentials: true,
     }
 });
 
