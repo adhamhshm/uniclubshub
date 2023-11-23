@@ -24,6 +24,7 @@ const app = express();
 
 // middlewares
 app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", process.env.INTERNAL_CLIENT_URL);
     res.header("Access-Control-Allow-Credentials", true);
     next();
 });

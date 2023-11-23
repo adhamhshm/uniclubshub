@@ -174,7 +174,6 @@ export const removeFollowActivities = (req, res) => {
 };
 
 export const markAsRead = (req, res) => {
-    console.log("markkkk")
 
     const token = req.cookies.accessToken;
     if (!token) {
