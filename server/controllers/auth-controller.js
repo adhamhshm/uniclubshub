@@ -44,9 +44,10 @@ export const signin = (req, res) => {
             // means it cannot be accessed or modified via JavaScript on the client-side. 
             // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
             httpOnly: true,
-            sameSite: "strict",
             secure: true, // Only send the cookie over HTTPS
         }).status(200).json(others);
+
+        console.log("Signing in: " + req.cookies.accessToken);
     })
 };
 
@@ -108,7 +109,6 @@ export const signup = (req, res) => {
 export const signout = (req, res) => {
     res.clearCookie("accessToken", {
         httpOnly: true,
-        sameSite: "strict",
         secure: true, 
     }).status(200).json("User already signed out.");
 };
@@ -120,6 +120,7 @@ export const authorizeToken = (req, res) => {
         return res.status(401).json("No session authenticated.");
     }
 
+    console.log("Authorize Token: " + req.cookies.accessToken);
     
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
 
@@ -213,7 +214,6 @@ const sendEmailToUser = (req, res) => {
 
             res.cookie("resetToken", resetPasswordToken, {
                 httpOnly: true,
-                sameSite: "strict",
                 secure: true,
             });
 
@@ -265,7 +265,6 @@ export const resetPassword = (req, res) => {
                 console.log("The password has been reset.");
                 res.clearCookie("resetToken", {
                     httpOnly: true,
-                    sameSite: "strict",
                     secure: true, 
                 });
                 return res.json("The password has been reset.");
