@@ -37,7 +37,7 @@ export const AuthContextProvider = ({ children }) => {
     // fetch the token authorization from the server
     const authorizeToken = async () => {
         try {
-            const response = await makeRequest.get(`/auth/authorizeToken?currentUserId=${currentUser?.id}&role=${currentUser?.role}`, {});
+            const response = await makeRequest.get(`/auth/authorizeToken?currentUserId=${currentUser?.id}&role=${currentUser?.role}`);
             // Check if the response status is OK (200)
             if (response.status === 200) {
                 return true;
