@@ -32,9 +32,7 @@ export const signin = (req, res) => {
         const token = jwt.sign({ 
             id: data[0].id, 
             role: data[0].role
-        }, process.env.JWT_SECRET_KEY, {
-            //expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
-        });
+        }, process.env.JWT_SECRET_KEY);
         // destructure the data[0] to get the password
         // remaining properties will be collected to the object named "others"
         // "password": Contains the value of the password property from data[0].
@@ -45,10 +43,12 @@ export const signin = (req, res) => {
             // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
             httpOnly: true,
             secure: true, // Only send the cookie over HTTPS
+            domain: process.env.INTERNAL_CLIENT_URL,
+            path: process.env.INTERNAL_CLIENT_PATH,
         }).status(200).json(others);
-
-        console.log("Signing in: " + req.cookies.accessToken);
     })
+
+    console.log(process.env.INTERNAL_CLIENT_URL);
 };
 
 export const signup = (req, res) => {
@@ -110,6 +110,8 @@ export const signout = (req, res) => {
     res.clearCookie("accessToken", {
         httpOnly: true,
         secure: true, 
+        domain: process.env.INTERNAL_CLIENT_URL,
+        path: process.env.INTERNAL_CLIENT_PATH,
     }).status(200).json("User already signed out.");
 };
 
@@ -215,6 +217,8 @@ const sendEmailToUser = (req, res) => {
             res.cookie("resetToken", resetPasswordToken, {
                 httpOnly: true,
                 secure: true,
+                domain: process.env.INTERNAL_CLIENT_URL,
+                path: process.env.INTERNAL_CLIENT_PATH,
             });
 
             res.status(200).json("Email sent successfully.");
@@ -266,6 +270,8 @@ export const resetPassword = (req, res) => {
                 res.clearCookie("resetToken", {
                     httpOnly: true,
                     secure: true, 
+                    domain: process.env.INTERNAL_CLIENT_URL,
+                    path: process.env.INTERNAL_CLIENT_PATH,
                 });
                 return res.json("The password has been reset.");
             }

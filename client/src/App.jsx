@@ -27,7 +27,7 @@ function App() {
 
     const { currentUser, authorizeToken } = useContext(AuthContext);
     const { darkMode } = useContext(DarkModeContext);
-    const socket = io(import.meta.env.VITE_SOCKET_URL);
+    const socket = io(import.meta.env.VITE_SOCKET_URL_DEV || import.meta.env.VITE_SOCKET_URL_PROD);
 
     /* 
     useMemo(() => ..., []): This hook takes a function as its first argument, 

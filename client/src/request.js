@@ -3,7 +3,7 @@ import axios from "axios";
 // This is used to standardized the API endpoint request to the server
 // The instance is exported, making it available for use in other parts of your application. 
 export const makeRequest = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_URL_DEV || import.meta.env.VITE_BASE_URL_PROD,
     withCredentials: true,
 });
 
