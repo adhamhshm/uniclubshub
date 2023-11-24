@@ -76,7 +76,7 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children, requiredRole }) => {
+    const ProtectedRoute = ({ children }) => {
 
         const navigate = useNavigate();
         
@@ -86,11 +86,11 @@ function App() {
                 localStorage.removeItem("user");
                 navigate("/login");
             }
-        }, [authorizeToken]);
+        }, [authorizeToken, navigate]);
     
         useEffect(() => {
             checkToken();
-        }, [checkToken]);
+        }, [checkToken, authorizeToken, navigate]);
         
         // children is the protected Layout
         return children;
