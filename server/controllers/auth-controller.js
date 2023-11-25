@@ -32,7 +32,9 @@ export const signin = (req, res) => {
         const token = jwt.sign({ 
             id: data[0].id, 
             role: data[0].role
-        }, process.env.JWT_SECRET_KEY);
+        }, process.env.JWT_SECRET_KEY, {
+            expiresIn: 3600, // Set the token expiry time to 1 hour (3600 seconds)
+        });
         // destructure the data[0] to get the password
         // remaining properties will be collected to the object named "others"
         // "password": Contains the value of the password property from data[0].
@@ -48,8 +50,6 @@ export const signin = (req, res) => {
             // path: process.env.INTERNAL_CLIENT_PATH,
         }).status(200).json(others);
     })
-
-    console.log(process.env.INTERNAL_CLIENT_URL);
 };
 
 export const signup = (req, res) => {
@@ -123,8 +123,6 @@ export const authorizeToken = (req, res) => {
         console.log("Unauthorized token: No token provided.")
         return res.status(401).json("No session authenticated.");
     }
-
-    console.log("Authorize Token: " + req.cookies.accessToken);
     
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, userInfo) => {
 
@@ -151,7 +149,6 @@ export const authorizeToken = (req, res) => {
 export const sendResetPasswordEmailRequest = (req, res) => {
   
     const resetToken = req.cookies.resetToken;
-    console.log("In email request -> reset Token: " + resetToken)
     if (resetToken) {
         jwt.verify(resetToken, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
             if (!err && decodedToken.email === req.body.email) {

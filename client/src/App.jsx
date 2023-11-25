@@ -86,11 +86,11 @@ function App() {
                 localStorage.removeItem("user");
                 navigate("/login");
             }
-        }, [authorizeToken, navigate]);
+        }, [authorizeToken]);
     
         useEffect(() => {
             checkToken();
-        }, [checkToken, authorizeToken, navigate]);
+        }, [checkToken, authorizeToken]);
         
         // children is the protected Layout
         return children;

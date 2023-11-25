@@ -13,8 +13,6 @@ const ResetPassword = () => {
     const email = searchParams.get("email");
     const id = searchParams.get("id");
 
-    console.log(email);
-
     const [passwordInputs, setPasswordInputs] = useState({ 
         newPassword: "",
         newConfirmPassword: "",
@@ -95,7 +93,7 @@ const ResetPassword = () => {
         catch (error) {
             setFailedResetPasswordMessage(error.response.data);
         }
-        setPasswordInputs({});
+        
 
     };
 
