@@ -13,6 +13,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
     const [isLoading, setIsLoading] = useState(false); // Add loading state
     const [errorEmailMessage, setErrorEmailMessage] = useState(false);
     const [updatedProfilePhoto, setUpdatedProfilePhoto] = useState(null);
+    const [updatedProfilePhotoUrl, setUpdatedProfilePhotoUrl] = useState(null);
     const [removePhoto, setRemovePhoto] = useState(true);
     const [updateInputs, setUpdateInputs] = useState({
         name: user.name,
@@ -108,7 +109,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                 setIsLoading(true);
                 if (updatedProfilePhoto !== "") {
                     // If updatedProfilePhoto in not "", store the image
-                    profilePhotoUrl = await uploadPhoto(updatedProfilePhoto, user.profilePhoto)
+                    profilePhotoUrl = await uploadPhoto(updatedProfilePhotoUrl, user.profilePhoto)
                 }
                 else {
                     // Else, the photo is set to "", which means user just want to remove current photo
@@ -129,10 +130,20 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
         setOpenUpdateBox(false);
     };
 
+    const handleImageChange = (file) => {
+        setUpdatedProfilePhoto(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            setUpdatedProfilePhotoUrl(result);
+        };
+        reader.readAsDataURL(file);
+    };
+
     const handleRemovePhoto = () => {
         setRemovePhoto(false);
         setUpdatedProfilePhoto("");
-    }
+    };
 
     return (
         <div className="update-profile">
@@ -158,7 +169,7 @@ const UpdateProfile = ({ setOpenUpdateBox, user }) => {
                             type="file" 
                             id="profilePhoto" 
                             style={{ display: "none" }} 
-                            onChange={(e) => {setUpdatedProfilePhoto(e.target.files[0])}} 
+                            onChange={(e) => {handleImageChange(e.target.files[0])}} 
                         />
                         {((user.profilePhoto || updatedProfilePhoto) && removePhoto) && <span className="remove-image" onClick={handleRemovePhoto}> [Remove photo]</span>}
                     </div>

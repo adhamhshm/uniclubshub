@@ -166,7 +166,6 @@ export const getSearchedPosts = (req, res) => {
                     return res.status(500).json("Error fetching searched posts.");
                 } 
                 else {
-                    console.log("Done fetching searched posts");
                     return res.status(200).json(data);
                 }
             });
@@ -181,7 +180,6 @@ export const getSearchedPosts = (req, res) => {
                     return res.status(500).json("Error fetching all posts");
                 } 
                 else {
-                    console.log("Done fetching all posts.");
                     return res.status(200).json(data);
                 }
             });

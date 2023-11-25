@@ -90,7 +90,7 @@ function App() {
     
         useEffect(() => {
             checkToken();
-        }, [checkToken, authorizeToken]);
+        }, [checkToken, authorizeToken, navigate]);
         
         // children is the protected Layout
         return children;

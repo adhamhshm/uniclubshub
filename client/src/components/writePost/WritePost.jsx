@@ -12,8 +12,9 @@ const WritePost = () => {
     const MAX_TITLE_LENGTH = 100;
     const inputRef = useRef();
     const queryClient = useQueryClient();
-    const { currentUser, authorizeToken } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
     const [imageFile, setImageFile] = useState(null);
+    const [imageFileUrl, setImageFileUrl] = useState(null);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [showInvalidMessage, setInvalidMessage] = useState(false);
@@ -28,30 +29,15 @@ const WritePost = () => {
     // Function to upload the selected photo to the server
     const uploadPhoto = async () => {
         try {
-            if (!imageFile.type.includes("image")) {
-                // Show the invalid message
-                setShowWrongFileImgUpload(true);
-                // Hide the message after 3 seconds
-                setTimeout(() => {
-                    setShowWrongFileImgUpload(false);
-                }, 3000);
-                // exit the function
-                return;
-            }
-            const formData = new FormData();
-            formData.append("file", imageFile);
-            // send the file to the server
-            return await makeRequest.post("/images/upload" , formData )
-            .then((res) => res.data )
-            .catch((error) => {
-                setIsLoading(false);
-                alert(error.response.data);
-                // setShowErrorImgUpload(true);
-                // setTimeout(() => {
-                //     setShowErrorImgUpload(false);
-                // }, 10000); // 10 seconds
-                throw error;
-            });
+                const formData = new FormData();
+                formData.append("file", imageFileUrl);
+                return await makeRequest.post("/images/upload" , formData)
+                .then((res) => res.data )
+                .catch((error) => {
+                    setIsLoading(false);
+                    alert(error.response.data);
+                    throw error;
+                });
         } 
         catch(error) {
             console.log("Error upload image: " + error.message)
@@ -94,8 +80,18 @@ const WritePost = () => {
 
         let imageUrl = "";
         if (imageFile) {
+            if (!imageFile.type.includes("image")) {
+                // Show the invalid message
+                setShowWrongFileImgUpload(true);
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    setShowWrongFileImgUpload(false);
+                }, 3000);
+                // exit the function
+                return;
+            }
             try {
-                setIsLoading(true); // Set loading state
+                setIsLoading(true);
                 imageUrl = await uploadPhoto();
                 if (!imageUrl) {
                     return;
@@ -110,6 +106,16 @@ const WritePost = () => {
         setTitle("");
         setDescription("");
         clearImageFile();
+    };
+
+    const handleImageChange = (file) => {
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            const result = reader.result;
+            setImageFileUrl(result);
+        };
+        reader.readAsDataURL(file);
     };
 
     // Function to clear the uploaded image file
@@ -179,7 +185,7 @@ const WritePost = () => {
                             id="file"
                             name="file"
                             style={{ display: "none" }}
-                            onChange={(e) => {setImageFile(e.target.files[0])}} 
+                            onChange={(e) => {handleImageChange(e.target.files[0])}} 
                             ref={inputRef}
                         />
                         <label htmlFor="file">
