@@ -42,9 +42,10 @@ export const signin = (req, res) => {
             // means it cannot be accessed or modified via JavaScript on the client-side. 
             // This is a security measure to help protect the cookie from cross-site scripting (XSS) attacks.
             httpOnly: true,
+            sameSite: "None",
             secure: true, // Only send the cookie over HTTPS
-            domain: process.env.INTERNAL_CLIENT_URL,
-            path: process.env.INTERNAL_CLIENT_PATH,
+            // domain: process.env.INTERNAL_CLIENT_URL,
+            // path: process.env.INTERNAL_CLIENT_PATH,
         }).status(200).json(others);
     })
 
@@ -109,9 +110,10 @@ export const signup = (req, res) => {
 export const signout = (req, res) => {
     res.clearCookie("accessToken", {
         httpOnly: true,
+        sameSite: "None",
         secure: true, 
-        domain: process.env.INTERNAL_CLIENT_URL,
-        path: process.env.INTERNAL_CLIENT_PATH,
+        // domain: process.env.INTERNAL_CLIENT_URL,
+        // path: process.env.INTERNAL_CLIENT_PATH,
     }).status(200).json("User already signed out.");
 };
 
@@ -149,6 +151,7 @@ export const authorizeToken = (req, res) => {
 export const sendResetPasswordEmailRequest = (req, res) => {
   
     const resetToken = req.cookies.resetToken;
+    console.log("In email request -> reset Token: " + resetToken)
     if (resetToken) {
         jwt.verify(resetToken, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
             if (!err && decodedToken.email === req.body.email) {
@@ -216,9 +219,10 @@ const sendEmailToUser = (req, res) => {
 
             res.cookie("resetToken", resetPasswordToken, {
                 httpOnly: true,
+                sameSite: "None",
                 secure: true,
-                domain: process.env.INTERNAL_CLIENT_URL,
-                path: process.env.INTERNAL_CLIENT_PATH,
+                // domain: process.env.INTERNAL_CLIENT_URL,
+                // path: process.env.INTERNAL_CLIENT_PATH,
             });
 
             res.status(200).json("Email sent successfully.");
@@ -269,9 +273,10 @@ export const resetPassword = (req, res) => {
                 console.log("The password has been reset.");
                 res.clearCookie("resetToken", {
                     httpOnly: true,
+                    sameSite: "None",
                     secure: true, 
-                    domain: process.env.INTERNAL_CLIENT_URL,
-                    path: process.env.INTERNAL_CLIENT_PATH,
+                    // domain: process.env.INTERNAL_CLIENT_URL,
+                    // path: process.env.INTERNAL_CLIENT_PATH,
                 });
                 return res.json("The password has been reset.");
             }
