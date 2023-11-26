@@ -159,6 +159,12 @@
                         filter: invert(28%) sepia(93%) saturate(5032%) hue-rotate(351deg) brightness(92%) contrast(132%);
                     }
 
+                    #comment-label {
+                        @include mobile {
+                            display: none;
+                        }
+                    }
+
                     button {
                         border: none;
                         color: white;
@@ -169,7 +175,6 @@
                         border-radius: 20px;
 
                         @include mobile {
-                            font-size: 12px;
                             padding: 10px 15px;
                         }
                     }
@@ -185,6 +190,10 @@
                     .disabled-register-button:hover {
                         background-color: gray;
                         cursor: default;
+                    }
+
+                    &:nth-child(3) {
+                        margin-left: auto;
                     }
 
                     // &:hover {

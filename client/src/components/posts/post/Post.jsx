@@ -77,6 +77,7 @@ const Post = ({ post, socket, viewComment }) => {
     const handleDelete = async () => {
         deletePostMutation.mutate(post.id);
         await makeRequest.delete("/images/delete" , { data : { imageToBeDeleted: post.image }});
+        await makeRequest.delete("/activities/post" , { data : { postId: post.id }});
     };
 
     const addLikeActivityInfo = async () => {
@@ -203,8 +204,8 @@ const Post = ({ post, socket, viewComment }) => {
                     {/* Like functionality works only if the user is a participant */}
                     <div className="label">
                         {currentUser.role === "participant" ? (
-                            likesLoading ? "Loading likes..." : 
-                            likesError ? "Unable to find likes." : 
+                            likesLoading ? "" : 
+                            likesError ? "" : 
                             (
                                 likesData.includes(currentUser.id)
                                     ? <img id="liked" src="/default/heart-filled.svg" alt="heart filled" onClick={handleLike} />
@@ -218,11 +219,11 @@ const Post = ({ post, socket, viewComment }) => {
                     {/* Comment label */}
                     <div className="label" onClick={() => {setCommentOpen(!commentOpen)}}>
                         <img id="label-icon" src="/default/comment.svg" alt="heart" />
-                        {commentsLoading ? "Loading comments..." :
-                         commentsError ? "Unable to find comments." :
-                         commentsData === undefined ? "Comment" : 
-                         commentsData.length === 0 ? "Comment" :
-                         `${commentsData.length} Comments`
+                        {commentsLoading ? "" :
+                         commentsError ? "" :
+                         commentsData === undefined ? <span id="comment-label">Comment</span> : 
+                         commentsData.length < 2 ? <>{commentsData.length}<span id="comment-label">Comment</span></> :
+                         <>{commentsData.length}<span id="comment-label">Comments</span></>
                         }
                     </div>
                     {/* The button to register for an event is only for participant */}
@@ -230,8 +231,8 @@ const Post = ({ post, socket, viewComment }) => {
                         (
                             // Fetch registered event data by the participant
                             <div className="label">
-                                {isRegisteredLoading ? "Loading info..." :
-                                 isRegisteredError ? "Cannot find info." : 
+                                {isRegisteredLoading ? "" :
+                                 isRegisteredError ? "" : 
                                  isRegisteredData.includes(currentUser.id) ?
                                  (
                                     // If already registered, button is disabled

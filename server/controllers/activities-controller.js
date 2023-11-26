@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // get posts that is relevant to user
-export const getActivitiesClubUser = (req, res) => {
+export const getActivitiesUser = (req, res) => {
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get account activities: No token authenticated.")
@@ -46,6 +46,37 @@ export const getActivitiesClubUser = (req, res) => {
         });
     });
 };
+
+export const deletePostActivities = (req, res) => {
+    const token = req.cookies.accessToken;
+    if (!token) {
+        console.log("Unauthorized delete post activities: No token authenticated.")
+        return res.status(401).json("No session authenticated.");
+    };
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err) => {
+        if (err) {
+            console.log("Unauthorized get club user activities: Invalid or expired token.")
+            return res.status(403).json("Session had expired.");
+        }
+
+        const q = "DELETE FROM activities WHERE `postId` = ?";
+        const values = [req.body.postId];
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.log("Error deleting activities: " + err.message);
+                return res.status(500).json("Error deleting activities.");
+            }
+            else if (data.affectedRows > 0) {
+                return res.status(200).json("Activity has been deleted.");
+            }
+            else {
+                return res.status(403).json("Not authorized to delete activities.");
+            }
+        });
+    });
+}
 
 export const addActivities = (req, res) => {
     const token = req.cookies.accessToken;

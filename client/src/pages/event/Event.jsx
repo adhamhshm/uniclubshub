@@ -122,7 +122,7 @@ const Event = () => {
     return (
         <div className="event">
             <div className="event-container">
-                <h2>Manage event.</h2>
+                <h2>Manage event</h2>
                 <div className="event-selection">
                     <select id="dates" onChange={handleYearChange} value={selectedYear || "0"}>
                         <option value="0">Select year:</option>

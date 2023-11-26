@@ -84,7 +84,6 @@ const Explore = ({ socket }) => {
                             type="text" 
                             name="search-input"
                             placeholder="Search for clubs/events..." 
-                            autoFocus
                             autoComplete="off"
                             value={searchText}
                             onChange={(e) => {setSearchText(e.target.value)}} 

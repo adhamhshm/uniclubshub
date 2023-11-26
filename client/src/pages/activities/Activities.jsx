@@ -57,7 +57,7 @@ const Activities = () => {
         <div className="activities">
             <div className="activities-container">
                 <div className="activities-subject">
-                    <h2>Account activities.</h2>
+                    <h2>Account activities</h2>
                 </div>
                 <div className="activities-list">
                     {activitiesLoading ? ( <LoadingSpinner /> ) : 
