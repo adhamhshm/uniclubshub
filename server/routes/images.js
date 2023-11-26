@@ -31,7 +31,10 @@ const router = express.Router();
 // const upload = multer({ storage: storage })
 
 const storage = multer.memoryStorage(); // Store the file in memory
-const upload = multer({ storage: storage });
+const upload = multer({ 
+    storage: storage,
+    limits: { fieldSize: 25 * 1024 * 1024 },
+});
 
 router.post("/upload", upload.single("file"), uploadPhoto);
 router.delete("/delete", deletePhoto);

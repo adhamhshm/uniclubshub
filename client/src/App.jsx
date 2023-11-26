@@ -82,7 +82,7 @@ function App() {
         
         const checkToken = useCallback(async () => {
             const isTokenValid = await authorizeToken();
-            if (isTokenValid === false) {
+            if (!currentUser || isTokenValid === false) {
                 localStorage.removeItem("user");
                 navigate("/login");
             }

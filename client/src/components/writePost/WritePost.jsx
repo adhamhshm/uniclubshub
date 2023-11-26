@@ -35,7 +35,7 @@ const WritePost = () => {
                 .then((res) => res.data )
                 .catch((error) => {
                     setIsLoading(false);
-                    alert(error.response.data);
+                    alert("Error uploading image. Please try again.");
                     throw error;
                 });
         } 
