@@ -1,6 +1,6 @@
 ## About Uniclubshub 
 
-A final year project that aims to develop a web-based system to enhance engagement with student clubs and societies at the university. The system is built using React.js for the frontend and utilizes Node.js, Express.js and MySQL for the backend.
+A final year project that aims to develop a web-based system to assist and enhance the engagement with student clubs and societies at the university. The system is built using React.js for the frontend and utilizes Node.js, Express.js and MySQL for the backend.
 
 ![Murmur Homepage](screenshots/uniclubshub.png)
 
