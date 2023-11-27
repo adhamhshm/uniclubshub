@@ -2,6 +2,7 @@ import "./login.scss";
 import { AuthContext } from "../../context/authContext";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SigninDemo from "../../components/signindemo/SigninDemo";
 
 const Login = () => {
 
@@ -123,7 +124,10 @@ const Login = () => {
                         <div className="button-div">
                             <button onClick={handleSignin}>Sign In</button>
                         </div>
-                        <p><span>No account? </span><Link to="/register">Sign Up</Link></p>
+                        <p className="auth-options">
+                            <span>No account? <Link to="/register">Sign Up</Link></span>
+                            <span className="signin-demo"><SigninDemo login={login} /></span>
+                        </p>
                     </form>
                 </div>
             </div>

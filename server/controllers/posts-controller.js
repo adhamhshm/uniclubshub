@@ -98,7 +98,6 @@ export const getPostsNumber = (req, res) => {
 };
 
 export const getPostsByYear = (req, res) => {
-    console.log("Get posts by year")
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get posts by year: No token authenticated.")

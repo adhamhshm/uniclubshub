@@ -7,6 +7,7 @@ dotenv.config();
 
 // get posts that is relevant to user
 export const getActivitiesUser = (req, res) => {
+    
     const token = req.cookies.accessToken;
     if (!token) {
         console.log("Unauthorized get account activities: No token authenticated.")
@@ -34,7 +35,7 @@ export const getActivitiesUser = (req, res) => {
                    WHERE a.receiverUserId = ?
                    ORDER BY id DESC`;
 
-        const values = [req.query.userId, req.query.userId];
+        const values = [userInfo.id, userInfo.id];
         db.query(q, values, (err, data) => {
             if (err) {
                 console.log("Error fetching user activities: " + err.message);

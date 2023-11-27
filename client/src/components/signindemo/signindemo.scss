@@ -1,0 +1,11 @@
+@import "../../globals.scss";
+
+.signin-demo {
+    @include themify($theme) {
+        color: aqua;
+        #signin-participant {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

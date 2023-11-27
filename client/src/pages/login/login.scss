@@ -12,6 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    align-items: start;
 
     .card {
         width: 30%;
@@ -20,6 +21,7 @@
         border-radius: 10px;
         min-height: fit-content;
         justify-content: center;
+        margin-top: 80px;
 
         .login-input {
             width: 100%;
@@ -33,8 +35,9 @@
                 justify-content: center;
 
                 .font-logo {
-                    width: 150px;
+                    width: 120px;
                     height: auto;
+                    margin-bottom: 20px;
                 }
             }
 
@@ -74,12 +77,12 @@
                     }
                 }
 
-                p {
-                    font-size: 14px;
-                    a {
-                        color: #000000;
-                    }
-                }
+                // p {
+                //     font-size: 14px;
+                //     a {
+                //         color: #000000;
+                //     }
+                // }
 
                 .forgot-password-container {
                     display: flex;
@@ -95,6 +98,22 @@
                 .signin-error-message {
                     color: red;
                     font-size: 14px;
+                }
+
+                .auth-options {
+                    font-size: 14px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+                    a {
+                        color: #000000;
+                    }
+
+                    .signin-demo {
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
                 }
             }
 
