@@ -8,12 +8,12 @@ The main concept of the application is to create a social media platform experie
 
 ## Key Features
 
-- Have 2 roles (for club and participant role)
+- Have 2 roles (club and participant)
 - Personalized user profiles for both roles
 - Post events and share updates about the club info
 - Like, comment, and share posts 
 - Follow and unfollow preferred interest clubs
-- Real-time notifications (in local run great, in deployed not)
+- Real-time notifications via Socket.IO
 - View account activities
 - Event registration in the system with downloadable participant list
 - Discover all clubs and events available in the system
