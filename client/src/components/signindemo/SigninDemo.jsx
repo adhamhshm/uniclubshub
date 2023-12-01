@@ -4,28 +4,45 @@ import { useNavigate } from "react-router-dom";
 const SigninDemo = ({ login }) => {
 
     const navigate = useNavigate();
-    const signinInputs = { 
-        id: import.meta.env.VITE_DEMO_ID,
-        password: import.meta.env.VITE_DEMO_PASSWORD,
+    const signinInputsParticipant = { 
+        id: import.meta.env.VITE_DEMO_PARTICIPANT_ID,
+        password: import.meta.env.VITE_DEMO_PARTICIPANT_PASSWORD,
     };
 
-    const handleSignin = async (e) => {
-        
+    const signinInputsClub = { 
+        id: import.meta.env.VITE_DEMO_CLUB_ID,
+        password: import.meta.env.VITE_DEMO_CLUB_PASSWORD,
+    };
+
+    const handleSigninParticipant = async () => {
         try {
-            await login(signinInputs);
+            await login(signinInputsParticipant);
             navigate("/");
         }
         catch (error) {
-            alert("Something went wrong.");
+            alert("Something went wrong. Please try again.");
+        }
+    };
+
+    const handleSigninClub = async () => {
+        try {
+            await login(signinInputsClub);
+            navigate("/");
+        }
+        catch (error) {
+            alert("Something went wrong. Please try again.");
         }
     };
 
     return (
-        <>
-            <span onClick={handleSignin}>
+        <div className="signin-demo disable-select">
+            <span onClick={handleSigninParticipant}>
                 Sign In Participant Demo
             </span>
-        </>
+            <span onClick={handleSigninClub}>
+                Sign In Club User Demo
+            </span>
+        </div>
     )
 }
 

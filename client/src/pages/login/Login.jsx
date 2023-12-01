@@ -126,7 +126,7 @@ const Login = () => {
                         </div>
                         <p className="auth-options">
                             <span>No account? <Link to="/register">Sign Up</Link></span>
-                            <span className="signin-demo"><SigninDemo login={login} /></span>
+                            <SigninDemo login={login} />
                         </p>
                     </form>
                 </div>

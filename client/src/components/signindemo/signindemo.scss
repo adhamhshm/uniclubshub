@@ -1,11 +1,14 @@
 @import "../../globals.scss";
 
 .signin-demo {
-    @include themify($theme) {
-        color: aqua;
-        #signin-participant {
-            cursor: pointer;
-            text-decoration: underline;
-        }
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.disable-select {
+    user-select: none; /* standard */
+    -moz-user-select: none; /* firefox specific */
+    -webkit-user-select: none; /* Chrome, Opera and Safari*/
+    -ms-user-select: none; /* IE, ms-edge */
 }

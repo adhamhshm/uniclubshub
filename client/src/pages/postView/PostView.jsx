@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../request";
 import Post from "../../components/posts/post/Post";
+import LoadingSpinner from "../../components/loadingspinner/LoadingSpinner";
 
 const PostView = ({ socket }) => {
 
@@ -29,8 +30,8 @@ const PostView = ({ socket }) => {
                     </div>
                     <h3>{(postData && postData[0] && postData[0].title) || ""}</h3>
                 </div>
-                {postLoading ? ( "Loading..." ) : 
-                postError ? ( "Something went wrong...") : 
+                {postLoading ? ( <LoadingSpinner /> ) : 
+                postError ? ( <LoadingSpinner /> ) : 
                 postData.length !== 0 ? (
                     // If post data exists, display the Post component with the retrieved post data (data is in an array)
                     // Set viewComment to true so that it will show the post entirely

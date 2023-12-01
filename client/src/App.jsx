@@ -76,7 +76,7 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children, requiredRole }) => {
+    const ProtectedRoute = ({ children }) => {
 
         const navigate = useNavigate();
         
@@ -85,12 +85,6 @@ function App() {
             if (!currentUser || isTokenValid === false) {
                 localStorage.removeItem("user");
                 navigate("/login");
-            }
-
-            // If a specific role is required and the user's role doesn't match, redirect to unauthorized
-            if (requiredRole && currentUser.role !== requiredRole) {
-                alert(`You are not authorized to access ${requiredRole} paths`);
-                navigate("/unauthorized");
             }
 
         }, [authorizeToken]);

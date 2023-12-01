@@ -116,8 +116,8 @@ const Explore = ({ socket }) => {
             {activeTab === "clubs" && <ClubList currentUser={currentUser} searchQuery={searchQuery} socket={socket} />}
             {activeTab === "posts" && <div className="posts">
                 {
-                    isLoading ? ( <LoadingSpinner /> ) : 
-                    error ? ( <LoadingSpinner /> ) : 
+                    isLoading ? ( <div className="loading-spinner-container"><LoadingSpinner /></div> ) : 
+                    error ? ( <div className="loading-spinner-container"><LoadingSpinner /></div> ) : 
                     data.length === 0 && searchQuery === ""  ? 
                     (
                         <div className="not-found-message">

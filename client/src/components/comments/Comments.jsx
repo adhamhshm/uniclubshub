@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../../request";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
+import LoadingSpinner from "../loadingspinner/LoadingSpinner";
 
 const Comments = ({ post, socket }) => {
 
@@ -111,9 +112,9 @@ const Comments = ({ post, socket }) => {
                 </div>
             </div>
             {isLoading
-                ? "Loading..."
+                ? ( <LoadingSpinner /> )
                 : error
-                ? "Something went wrong."
+                ? ( <LoadingSpinner /> )
                 : data.map((comment) => {
                     return (
                         <div className="comment-container" key={comment?.id}>

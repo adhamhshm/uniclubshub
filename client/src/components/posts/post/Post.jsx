@@ -16,6 +16,7 @@ const Post = ({ post, socket, viewComment }) => {
     const [commentOpen, setCommentOpen] = useState(viewComment || false);
     const [openMenu, setMenuOpen] = useState(false);
     const [showPostModal, setShowPostModal] = useState(false);
+    const [likeState, setLikeState] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
     const { isLoading: likesLoading, error: likesError, data: likesData } = useQuery(["likes", post.id], () =>
@@ -71,6 +72,7 @@ const Post = ({ post, socket, viewComment }) => {
     });
 
     const handleLike = () => {
+        setLikeState(!likeState);
         likePostMutation.mutate(likesData.includes(currentUser.id));
     };
 
@@ -207,7 +209,7 @@ const Post = ({ post, socket, viewComment }) => {
                             likesLoading ? "" : 
                             likesError ? "" : 
                             (
-                                likesData.includes(currentUser.id)
+                                likeState || likesData.includes(currentUser.id)
                                     ? <img id="liked" src="/default/heart-filled.svg" alt="heart filled" onClick={handleLike} />
                                     : <img id="label-icon" src="/default/heart.svg" alt="heart" onClick={handleLike} />
                             )
