@@ -36,12 +36,16 @@ const SigninDemo = ({ login }) => {
 
     return (
         <div className="signin-demo disable-select">
-            <span onClick={handleSigninParticipant}>
-                Sign In Participant Demo
-            </span>
-            <span onClick={handleSigninClub}>
-                Sign In Club User Demo
-            </span>
+            <div>
+                <span onClick={handleSigninParticipant}>
+                    Sign In Participant Demo
+                </span>
+            </div>
+            <div>
+                <span onClick={handleSigninClub}>
+                    Sign In Club User Demo
+                </span>
+            </div>
         </div>
     )
 }

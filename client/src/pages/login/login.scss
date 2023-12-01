@@ -13,6 +13,10 @@
     align-items: center;
     justify-content: center;
     align-items: start;
+    user-select: none; /* standard */
+    -moz-user-select: none; /* firefox specific */
+    -webkit-user-select: none; /* Chrome, Opera and Safari*/
+    -ms-user-select: none; /* IE, ms-edge */
 
     .card {
         width: 30%;
