@@ -69,6 +69,12 @@
                             font-weight: 600;
                             text-decoration: underline;
                         }
+                        
+                        @include mobile {
+                            span {
+                                font-size: 14px;
+                            }
+                        }
                     }
 
                     .menu-icon-container {

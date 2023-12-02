@@ -37,7 +37,7 @@ const SigninDemo = ({ login }) => {
     return (
         <div className="signin-demo disable-select">
             <div>
-                <span onClick={handleSigninParticipant}>
+                <span id="sign-in-demo-label" onClick={handleSigninParticipant}>
                     Sign In Participant Demo
                 </span>
             </div>
