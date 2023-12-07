@@ -76,16 +76,22 @@ function App() {
         )
     };
 
-    const ProtectedRoute = ({ children }) => {
+    // Defines a protected route component that checks if the user is authenticated and has the required role.
+    const ProtectedRoute = ({ children, requiredRole }) => {
 
         const navigate = useNavigate();
-        
+
+        if (currentUser?.role !== requiredRole) {
+            // Redirect to unauthorized page if the user's role doesn't match the required role
+            navigate("/unauthorized");
+        }
+
         const checkToken = useCallback(async () => {
             const isTokenValid = await authorizeToken();
             if (!currentUser || isTokenValid === false) {
                 localStorage.removeItem("user");
                 navigate("/login");
-            }
+            };
 
         }, [authorizeToken]);
     
@@ -94,47 +100,82 @@ function App() {
         }, [checkToken, authorizeToken, navigate]);
         
         // children is the protected Layout
+        // The children prop represents the content enclosed within the opening and 
+        // closing tags of the ProtectedRoute component. In the case --> <Layout />
+        // The children prop refers to the <Layout /> component that is passed as a child to the ProtectedRoute. 
+        // This means that when the route is accessed and the user is authenticated and has the required role, 
+        // the <Layout /> component will be rendered as part of the protected content.
         return children;
     }
 
+    const generateRoleRoutes = (role, socket, currentUser) => [
+        {
+            path: "/",
+            element: (
+                <ProtectedRoute requiredRole={role}>
+                    <Layout />
+                </ProtectedRoute>
+            ),
+            // The children array defines child routes that are nested within the protected route. 
+            // These routes are specific to the user's role.
+            children: [
+                { 
+                    path: "/", 
+                    element: <Home socket={socket} currentUser={currentUser} /> 
+                },
+                { 
+                    path: role === "club" ? "/event" : "/unauthorized", 
+                    element: role === "club" ? <Event /> : <Unauthorized /> 
+                },
+                { 
+                    path: role === "participant" ? "/explore" : "/unauthorized", 
+                    element: role === "participant" ? <Explore socket={socket} /> : <Unauthorized /> 
+                },
+                { 
+                    path: role === "club" ? "/profile/:id" : "/profile/participant/:id", 
+                    element: role === "club" ? <Profile socket={socket} /> : <ParticipantProfile /> },
+                { 
+                    path: "/activities", 
+                    element: <Activities /> },
+                { 
+                    path: "/postview/:id", 
+                    element: <PostView socket={socket} /> 
+                },
+            ],
+        },
+    ];
+      
+    // The spread operator (...) is used to spread the elements of an array or object. In the code you provided, 
+    // the spread operator is used to include the generated role-specific routes from the generateRoleRoutes function 
+    // in the array of routes for the application.
     const router = createBrowserRouter([
-        {
-            path: "/",
-            element: (
-                <ProtectedRoute requiredRole="club">
-                    <Layout />
-                </ProtectedRoute>
-            ),
-            children: [
-                { path: "/", element: <Home socket={socket} currentUser={currentUser}/> },
-                { path: "/profile/:id", element: <Profile socket={socket} /> },
-                { path: "/event", element: <Event /> },
-                { path: "/activities", element: <Activities /> },
-                { path: "/postview/:id", element: <PostView socket={socket} /> }
-            ]
+        ...generateRoleRoutes(currentUser?.role, socket, currentUser),
+        { 
+            path: "/login", 
+            element: <Login /> 
         },
-        {
-            path: "/",
-            element: (
-                <ProtectedRoute requiredRole="participant">
-                    <Layout />
-                </ProtectedRoute>
-            ),
-            children: [
-                { path: "/", element: <Home socket={socket} currentUser={currentUser} /> },
-                { path: "/profile/participant/:id", element: <ParticipantProfile /> },
-                { path: "/explore", element: <Explore socket={socket} /> },
-                { path: "/activities", element: <Activities /> },
-                { path: "/postview/:id", element: <PostView socket={socket} /> },
-            ]
+        { 
+            path: "/register", 
+            element: <Register /> 
         },
-        { path: "/login", element: <Login /> },
-        { path: "/register", element: <Register /> },
-        { path: "/forgot-password", element: <ForgotPassword /> },
-        { path: "/reset-password", element: <ResetPassword /> },
-        { path: "*", element: <Unauthorized /> }
+        { 
+            path: "/forgot-password", 
+            element: <ForgotPassword /> 
+        },
+        { 
+            path: "/reset-password", 
+            element: <ResetPassword /> 
+        },
+        { 
+            path: "*", 
+            element: <Unauthorized /> 
+        },
     ]);
 
+    // The RouterProvider is being used to provide the routing configuration (router) to the component tree.
+    // The 'router' prop is being passed to the RouterProvider component, and it likely contains the routing 
+    // configuration for the application. This configuration determines how different URLs or paths in the 
+    // application map to different components.
     return (
         <div>
             <RouterProvider router={router} />

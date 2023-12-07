@@ -3,7 +3,7 @@
 .profile-menu {
     @include themify($theme) {
         position: fixed;
-        top: 60px;
+        top: 50px;
         right: 20px;
 
         .menu-list {

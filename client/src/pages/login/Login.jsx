@@ -124,10 +124,10 @@ const Login = () => {
                         <div className="button-div">
                             <button onClick={handleSignin}>Sign In</button>
                         </div>
-                        <p className="auth-options">
+                        <div className="auth-options">
                             <span>No account? <Link to="/register">Sign Up</Link></span>
                             <SigninDemo login={login} />
-                        </p>
+                        </div>
                     </form>
                 </div>
             </div>

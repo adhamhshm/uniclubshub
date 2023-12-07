@@ -137,12 +137,12 @@
             .post-labels {
                 display: flex;
                 align-items: center;
-                gap: 20px;
+                gap: 10px;
 
                 .label {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 5px;
                     cursor: pointer;
                     font-size: 14px;
                     position: relative; // Add relative positioning to the parent as there is a tooltip with position absolute

@@ -8,7 +8,7 @@ const Unauthorized = () => {
     const handleSignout = async () => {
         try {
             await makeRequest.post("/auth/signout", {});
-            localStorage.clear();
+            localStorage.removeItem("user");
             navigate("/login");
         }
         catch (error) {

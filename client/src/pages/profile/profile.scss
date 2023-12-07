@@ -2,7 +2,7 @@
 
 .profile {
     @include themify($theme) {
-        padding: 90px 20px 30px 30px;
+        padding: 80px 20px 30px 30px;
         background-color: themed("bgSoft");
         min-height: calc(100vh - 70px);
         color: themed("textColor");

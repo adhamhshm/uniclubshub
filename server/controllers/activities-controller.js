@@ -229,7 +229,7 @@ export const markAsRead = (req, res) => {
                 return res.status(500).json("Error mark activity as read.");
             }
             if (data.affectedRows > 0) {
-                console.log("Activities mark as read.");
+                //console.log("Activities mark as read.");
                 return res.json("Activities mark as read.");
             }
             console.log("There is problem to mark as read.");

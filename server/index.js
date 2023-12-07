@@ -70,7 +70,7 @@ const notifications = {};
 // This function is used to add a user to the onlineUsers array if the user doesn't already exist in the array.
 const addUser = (userId, socketId) => {
     !onlineUsers.some((user) => user.userId === userId) && onlineUsers.push({ userId, socketId })
-    console.log("Add user: " + userId + " " + socketId) 
+    //console.log("Add user: " + userId + " " + socketId) 
 };
 
 // This function is used to remove a user from the onlineUsers array when they disconnect. 
@@ -81,13 +81,19 @@ const removeUser = (socketId) => {
 
 // This function is used to retrieve user information from the onlineUsers array based on their userId
 const getUser = (userId) => {
-    console.log("Get user: " + userId) 
+    //console.log("Get user: " + userId) 
     return onlineUsers.find((user) => user.userId === userId)
 };
 
 // Define a Socket.io event handler for the "connection" event, which fires when a user connects to the Socket.io server
 io.on("connection", (socket) => {
-    console.log("A user is connected");
+    //console.log("A user is connected");
+
+    // Handle connection error
+    socket.on("error", (err) => {
+        console.log("Socket connection error:", err.message);
+        // You can perform any necessary actions when the connection fails.
+    });
     
     // This event is emitted when a user logs in.
     socket.on("newUser", (userId) => {
@@ -103,9 +109,9 @@ io.on("connection", (socket) => {
     });
 
     socket.on("sendNotification", ({ senderUserId, receiverUserId, activityType }) => {
-        console.log("Receiver User: " + receiverUserId);
+        //console.log("Receiver User: " + receiverUserId);
         const receiver = getUser(receiverUserId);
-        console.log("Receiver: " + receiver);
+        //console.log("Receiver: " + receiver);
 
         // When this event is received, it checks if the receiver of the notification is connected
         if (receiver) {
@@ -122,7 +128,7 @@ io.on("connection", (socket) => {
 
     // Called when a user disconnects. 
     socket.on("disconnect", () => {
-        console.log("A user is disconnected");
+        //console.log("A user is disconnected");
         removeUser(socket.id);
     })
 });
