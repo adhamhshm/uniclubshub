@@ -99,7 +99,7 @@
                     padding-right: 15px;
                     white-space: pre-wrap;
                     font-size: 14px;
-                    overflow-x: auto;
+                    //overflow-x: auto;
                     word-break: break-word;
 
                     .url-description {
@@ -223,7 +223,7 @@
         }
     }
 
-    @include mobile {
-        width: 94vw;
-    }
+    // @include mobile {
+    //     width: 94vw;
+    // }
 }
