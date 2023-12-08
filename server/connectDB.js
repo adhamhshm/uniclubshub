@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// export const db = mysql.createConnection(process.env.MYSQL_CONNECTION_URI);
+// export const db = mysql.createConnection(process.env.DATABASE_URL);
 // export const db = mysql.createConnection({
 //     host: process.env.MYSQL_DB_HOST,
 //     user: process.env.MYSQL_DB_USER,
@@ -22,7 +22,7 @@ if (process.env.MYSQL_DB_HOST) {
     });    
 } 
 else {
-    db = mysql.createConnection(process.env.MYSQL_CONNECTION_URI);
+    db = mysql.createConnection(process.env.DATABASE_URL);
 }
 
 export { db };

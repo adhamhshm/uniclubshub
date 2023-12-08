@@ -49,7 +49,7 @@ const Post = ({ post, socket, viewComment }) => {
     {
         onSuccess: () => {
             // Invalidate and refetch
-            queryClient.invalidateQueries({ queryKey: ["likes"] });
+            queryClient.invalidateQueries({ queryKey: "likes" });
         },
     })
 
