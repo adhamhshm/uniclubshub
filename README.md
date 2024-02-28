@@ -20,7 +20,7 @@ The main concept of the application is to create a social media platform experie
 
 ## Deployment
 
-Currently, the deployed backend may spin down due to inactivity as it is a part of a free tier service subscription. When you open the deployed website link, you may experience unresponsive clicks or some loading time as it needs to wait for the backend to restart (maybe 1 minute at most). 
+Currently, the deployed backend may spin down due to inactivity as it is a part of a free tier service subscription. Thus, The deployed application cannot be accessed unless a request is made. 
 
 ## Getting Started in Local
 
