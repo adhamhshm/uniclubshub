@@ -58,6 +58,12 @@ function App() {
         socket?.emit("newUser", currentUser?.id);
     }, [socket, currentUser?.id]);
 
+    /*
+    In the provided code, the <Outlet /> component is part of the react-router-dom library, and 
+    it is used within the Layout component to define the location where child routes should be rendered.
+
+    For instance, in the "generateRoleRoutes" function below.
+    */
     const Layout = () => {
         return (
             <QueryClientProvider client={queryClient} >
@@ -132,8 +138,13 @@ function App() {
                     element: role === "participant" ? <Explore socket={socket} /> : <Unauthorized /> 
                 },
                 { 
-                    path: role === "club" ? "/profile/:id" : "/profile/participant/:id", 
-                    element: role === "club" ? <Profile socket={socket} /> : <ParticipantProfile /> },
+                    path: "/profile/:id", 
+                    element: <Profile socket={socket} />
+                },
+                { 
+                    path: "/profile/participant/:id", 
+                    element: <ParticipantProfile /> 
+                },
                 { 
                     path: "/activities", 
                     element: <Activities /> },

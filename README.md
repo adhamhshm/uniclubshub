@@ -2,7 +2,7 @@
 
 A final year project that aims to develop a web-based system to assist and enhance the engagement with student clubs and societies at the university. The system is built using React.js for the frontend and utilizes Node.js, Express.js and MySQL for the backend.
 
-The main concept of the application is to create a social media platform experience, with a specific focus on engaging the audience of university clubs and societies.
+The main concept of the application is to create a social media platform experience, with a specific focus on engaging the audience of university clubs and societies. The application brief walkthrough is [here](https://drive.google.com/file/d/1lPH2ncrjKvKC9rpyTWJYPwf1tQbqSkOd/view?usp=sharing).
 
 ![Uniclubshub Homepage](screenshots/uniclubshub.png)
 
